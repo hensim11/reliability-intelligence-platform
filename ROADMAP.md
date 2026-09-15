@@ -29,7 +29,7 @@ row/incident metrics and reproducible immutable outputs. See docs/BATCH_B_COMPLE
 The schedule holdout exposes substantial degradation and the alert budget does not transfer;
 the gate establishes controlled evaluation capability, not production-performance suitability.
 
-## Batch C — Production Serving + Persistence (next; not started)
+## Batch C — Production Serving + Persistence (implemented; Docker validation outstanding)
 
 **Goal:** reusable inference with durable inputs and outputs.
 
@@ -38,6 +38,12 @@ prediction persistence, SQL analytics, integration and failure tests, local Dock
 
 **Gate:** offline/online feature consistency, explicit time/availability semantics, tested API and
 storage behaviour, reproducible service startup and meaningful error responses.
+
+Delivered: Alembic schema, immutable PostgreSQL telemetry/model/predictions, typed FastAPI,
+explicit retrospective availability cutoff, shared Batch B inference, SQL operational analytics,
+real PostgreSQL integration and HTTP evidence, concurrency exercise, and local Compose files.
+The native path passes; **Docker startup/smoke remains unrun because Docker is not installed**.
+See docs/BATCH_C_COMPLETION.md. Do not mark the whole acceptance gate passed until it runs.
 
 ## Batch D — Monitoring + Reliability + External Validation
 

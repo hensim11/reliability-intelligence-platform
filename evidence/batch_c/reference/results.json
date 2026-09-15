@@ -1,0 +1,322 @@
+{
+  "analytics": {
+    "coverage": [
+      {
+        "expected_minutes": 46,
+        "missing_minutes": 0,
+        "observed_minutes": 46,
+        "service_id": "api-gateway"
+      },
+      {
+        "expected_minutes": 46,
+        "missing_minutes": 0,
+        "observed_minutes": 46,
+        "service_id": "auth-service"
+      },
+      {
+        "expected_minutes": 46,
+        "missing_minutes": 0,
+        "observed_minutes": 46,
+        "service_id": "catalog-service"
+      },
+      {
+        "expected_minutes": 46,
+        "missing_minutes": 0,
+        "observed_minutes": 46,
+        "service_id": "search-service"
+      }
+    ],
+    "daily_risk": [
+      {
+        "day": "2026-01-05",
+        "elevated_predictions": 0,
+        "max_probability": 0.0006825165557851862,
+        "mean_probability": 0.0004015969967962082,
+        "median_probability": 0.00034761801448890845,
+        "min_probability": 0.00024095073238539905,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 31,
+        "service_id": "api-gateway"
+      },
+      {
+        "day": "2026-01-05",
+        "elevated_predictions": 0,
+        "max_probability": 0.0007962329910072293,
+        "mean_probability": 0.0005446859620963368,
+        "median_probability": 0.000558715173391792,
+        "min_probability": 0.00027933668798204816,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "auth-service"
+      },
+      {
+        "day": "2026-01-05",
+        "elevated_predictions": 0,
+        "max_probability": 0.001012369048399714,
+        "mean_probability": 0.00032061287208321967,
+        "median_probability": 0.0002753037140814698,
+        "min_probability": 0.00012187249443503094,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "catalog-service"
+      },
+      {
+        "day": "2026-01-05",
+        "elevated_predictions": 0,
+        "max_probability": 0.0018828060745244284,
+        "mean_probability": 0.0005848195198870482,
+        "median_probability": 0.00046972048062830145,
+        "min_probability": 0.00010107252634163191,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "search-service"
+      }
+    ],
+    "risk_summary": [
+      {
+        "max_probability": 0.0006825165557851862,
+        "mean_probability": 0.0004015969967962082,
+        "median_probability": 0.00034761801448890845,
+        "min_probability": 0.00024095073238539905,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 31,
+        "service_id": "api-gateway"
+      },
+      {
+        "max_probability": 0.0007962329910072293,
+        "mean_probability": 0.0005446859620963368,
+        "median_probability": 0.000558715173391792,
+        "min_probability": 0.00027933668798204816,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "auth-service"
+      },
+      {
+        "max_probability": 0.001012369048399714,
+        "mean_probability": 0.00032061287208321967,
+        "median_probability": 0.0002753037140814698,
+        "min_probability": 0.00012187249443503094,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "catalog-service"
+      },
+      {
+        "max_probability": 0.0018828060745244284,
+        "mean_probability": 0.0005848195198870482,
+        "median_probability": 0.00046972048062830145,
+        "min_probability": 0.00010107252634163191,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 30,
+        "service_id": "search-service"
+      }
+    ]
+  },
+  "api_paths": {
+    "/health/live": [
+      "get"
+    ],
+    "/health/ready": [
+      "get"
+    ],
+    "/predictions": [
+      "get",
+      "post"
+    ],
+    "/telemetry": [
+      "post"
+    ]
+  },
+  "benchmark": {
+    "identical_retries": {
+      "latency_ms": {
+        "max": 7.978667039424181,
+        "min": 3.9384160190820694,
+        "p50": 6.11843797378242,
+        "p95": 7.362758589442819
+      },
+      "requests": 120,
+      "status_counts": {
+        "200": 120
+      },
+      "workers": 8
+    },
+    "new_predictions": {
+      "latency_ms": {
+        "max": 122.6970418356359,
+        "min": 43.8120411708951,
+        "p50": 83.99700000882149,
+        "p95": 116.57883406151086
+      },
+      "requests": 120,
+      "status_counts": {
+        "201": 120
+      },
+      "workers": 8
+    },
+    "same_key_race": {
+      "created": 1,
+      "latency_ms": {
+        "max": 15.709582949057221,
+        "min": 3.932457882910967,
+        "p50": 5.976062500849366,
+        "p95": 14.574458124116063
+      },
+      "requests": 32,
+      "reused": 31,
+      "workers": 8
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "Mako": "1.4.1",
+      "MarkupSafe": "3.0.3",
+      "Pygments": "2.21.0",
+      "SQLAlchemy": "2.0.53",
+      "alembic": "1.20.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "certifi": "2026.7.22",
+      "click": "8.5.0",
+      "cloudpickle": "3.1.2",
+      "contourpy": "1.4.0",
+      "cycler": "0.12.1",
+      "fastapi": "0.141.1",
+      "fonttools": "4.65.0",
+      "h11": "0.16.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "idna": "3.19",
+      "iniconfig": "2.3.0",
+      "joblib": "1.6.0",
+      "kiwisolver": "1.5.1",
+      "matplotlib": "3.11.2",
+      "narwhals": "2.26.0",
+      "numpy": "2.5.3",
+      "packaging": "26.3",
+      "pandas": "3.0.5",
+      "pillow": "12.3.0",
+      "pip": "25.2",
+      "pluggy": "1.6.0",
+      "psycopg": "3.3.5",
+      "psycopg-binary": "3.3.5",
+      "pyarrow": "25.0.1",
+      "pydantic": "2.13.5",
+      "pydantic_core": "2.46.5",
+      "pyparsing": "3.3.2",
+      "pytest": "9.1.1",
+      "python-dateutil": "2.9.0.post0",
+      "ruff": "0.16.7",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "setuptools": "84.0.0",
+      "six": "1.17.0",
+      "starlette": "1.6.0",
+      "threadpoolctl": "3.6.0",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.53.0",
+      "wheel": "0.48.0"
+    },
+    "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "postgres": "PostgreSQL 18.3 on aarch64-apple-darwin25.2.0, compiled by Apple clang version 17.0.0 (clang-1700.4.4.1), 64-bit",
+    "python": "3.14.0"
+  },
+  "failures": {
+    "conflicting_telemetry": {
+      "body": {
+        "error": {
+          "code": "telemetry_conflict",
+          "message": "Existing telemetry is immutable",
+          "service_id": "api-gateway",
+          "timestamp": "2026-01-05T00:00:00+00:00"
+        }
+      },
+      "latency_ms": 3.428499912843108,
+      "status": 409
+    },
+    "incomplete_history": {
+      "body": {
+        "error": {
+          "code": "incomplete_history",
+          "message": "15 exact minute samples are required",
+          "missing_minutes": 14
+        }
+      },
+      "latency_ms": 5.0287500489503145,
+      "status": 422
+    },
+    "unknown_service": {
+      "body": {
+        "error": {
+          "code": "invalid_request",
+          "fields": [
+            [
+              "body",
+              "service_id"
+            ]
+          ],
+          "message": "Request does not match the API contract"
+        }
+      },
+      "latency_ms": 0.6339999381452799,
+      "status": 422
+    }
+  },
+  "feature_parity": {
+    "dtype": "float64",
+    "exact": true,
+    "features": 49,
+    "max_probability_error": 0.0,
+    "windows": 121
+  },
+  "limitations": [
+    "Local one-worker Uvicorn over loopback; no production SLO.",
+    "Retrospective event-time scoring at server availability cutoff.",
+    "Docker Compose not exercised by this script."
+  ],
+  "model": {
+    "artifact_hashes": {
+      "boosting_raw.joblib": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+      "boosting_raw.json": "1a2a654c2ad3819aadcb2563ac754ef09bc9782ffdbd2eb74bacf699b46b147d",
+      "config.json": "2dee5b8d73faed6f83f803db308d40781979ec24fb6b7b4ee7a2e27177e792a9",
+      "environment.json": "e4a78a77b0c62e6c1d064d4b5521e28f0602d4190927933e2c288b2bf8b2e402",
+      "feature_schema.json": "93d4e4ff402f7c483f44d06f29901669fd8cbe5091172b224b512c9335b7fb53",
+      "selection.json": "100501bdc9ed74a24f0ea7fbec761e9d3e9b03ab83f79d9378a0422417a5f350"
+    },
+    "feature_version": "1.0",
+    "id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+    "name": "boosting_raw",
+    "runtime": {
+      "dependencies": {
+        "joblib": "1.6.0",
+        "matplotlib": "3.11.2",
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "pyarrow": "25.0.1",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "threadpoolctl": "3.6.0"
+      },
+      "python": "3.14.0"
+    },
+    "sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+    "threshold": 0.5700000000000001
+  },
+  "persisted_predictions": 121,
+  "schema_revision": "c001",
+  "source_sha256": {
+    "migrations/env.py": "1394ad346740cd422f9a81759bb3a1b2f32617b74917a16937beeba1abcdff37",
+    "migrations/versions/c001_initial.py": "3c6766e2ae690a5dbd8ca9a54c44375c7c3af89d5df4e1a47da26685fdc835d5",
+    "scripts/batch_c_evidence.py": "98d68cea4ff9f10ea5a0eeec5f1d7327ba911632c51620fc826233d2e1424975",
+    "src/reliability_intelligence/serving/__init__.py": "d49ee35b01fb4833bacf3d2bdb0a96c6139673bb0c40666495a7ab1ccb3dc72f",
+    "src/reliability_intelligence/serving/analytics.py": "7870c826543e7ae3d77fac91b034cc3ea390156834672c3381e1a00e1ec630ba",
+    "src/reliability_intelligence/serving/api.py": "93fecd2b254fb1369fb527f10f44a432a2cc1fa2929405ca1e1848809b02dea0",
+    "src/reliability_intelligence/serving/artifact.py": "f5a78b68617320bd4969defcf27d1e2ebfa359ae53a5df95723c25b5f7472580",
+    "src/reliability_intelligence/serving/contracts.py": "107da28bf723465b9f5357ccf18489999a5de73fd27f7bda0593c5a5223a7ffe",
+    "src/reliability_intelligence/serving/database.py": "3ce81c49828e062b26aba7588a26159f3e58e07abf93685ddc95dfa1c94d0384",
+    "src/reliability_intelligence/serving/repository.py": "6d019c762b649012d589ed28cdb7d875c83e9ccf8d8195177d6fee289cb0086a"
+  },
+  "telemetry_rows": 184,
+  "telemetry_sha256": "c1520d3bdc674dcb9d4a70893a2765440f60b67c4bdf115d264cac3f83a2abe1"
+}
