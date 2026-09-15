@@ -216,3 +216,34 @@ def test_rejects_incorrect_semantic_columns(semantic_bundle, tmp_path, table, op
     )
     with pytest.raises(ValueError, match="columns must match"):
         read_dataset(corrupted)
+
+
+def test_read_dataset_rejects_elapsed_history_with_internal_grid_hole(semantic_bundle, tmp_path):
+    """Removing aligned telemetry/label rows cannot preserve later completeness flags."""
+    corrupted = tmp_path / "missing-grid-point"
+    shutil.copytree(semantic_bundle, corrupted)
+    telemetry_path = corrupted / "telemetry.parquet"
+    labels_path = corrupted / "labels.parquet"
+    telemetry = pd.read_parquet(telemetry_path)
+    labels = pd.read_parquet(labels_path)
+    service = telemetry.service_id.iloc[0]
+    missing_timestamp = telemetry.timestamp.min() + pd.Timedelta(minutes=5)
+    missing_key = (telemetry.service_id == service) & (telemetry.timestamp == missing_timestamp)
+    telemetry = telemetry.loc[~missing_key].reset_index(drop=True)
+    label_key = (labels.service_id == service) & (labels.timestamp == missing_timestamp)
+    labels = labels.loc[~label_key].reset_index(drop=True)
+    telemetry.to_parquet(telemetry_path, index=False)
+    labels.to_parquet(labels_path, index=False)
+
+    manifest_path = corrupted / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    for table, path, frame in (
+        ("telemetry", telemetry_path, telemetry),
+        ("labels", labels_path, labels),
+    ):
+        manifest["rows"][table] = len(frame)
+        manifest["sha256"][path.name] = file_hash(path)
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+
+    with pytest.raises(ValueError, match="history_complete is inconsistent"):
+        read_dataset(corrupted)

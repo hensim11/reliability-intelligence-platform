@@ -48,23 +48,29 @@ Exactly one row per operational key, with the same order:
 | Field | Type | Meaning |
 |---|---|---|
 | timestamp, service_id | same as telemetry | Join key |
-| history_complete | boolean | t − 15m ≥ coverage_start (15 elapsed minutes available) |
+| history_complete | boolean | Every configured service-specific grid point in `(t−15m,t]` exists, and the full window is within coverage |
 | horizon_complete | boolean | t + 10m < coverage_end_exclusive |
 | incident_within_horizon | nullable Int8 | 1 if any same-service start lies in `(t,t+10m]`; otherwise 0, or null if horizon incomplete |
 
 At a start timestamp, that incident does not count toward its own future target. Active
 or recovering rows remain in the table; their target concerns a subsequent start. Precursor
-state alone does not define the label. Incomplete histories may have targets but must not
-enter the initial 15-minute feature dataset. Future eligibility is offline information;
-never use `horizon_complete` as a feature or online input.
+state alone does not define the label. The current timestamp is part of the required history;
+the open-left boundary is excluded. For one-minute sampling, a complete history at 00:15
+requires 00:01 through 00:15. Missing internal or boundary samples make the flag false, even
+when elapsed coverage and row count appear sufficient. An off-grid timestamp or another
+service's row cannot replace an expected point. Expectations come from
+`SimulationConfig.interval_seconds`, and only timestamps at or before t are examined.
+Incomplete histories may have targets but must not enter the initial 15-minute feature dataset.
+Future eligibility is offline information; never use `horizon_complete` as a feature or online input.
 
 For example, an incident starting at 00:20 produces positive labels at minute samples
 00:10 through 00:19. 00:20 itself is negative unless another start occurs by 00:30.
 For coverage ending at 01:00 (exclusive), samples 00:50 onward have unknown targets.
 
 Batch B should select complete history/horizon rows and construct trailing features only
-from telemetry. In real ingestion, elapsed coverage flags are insufficient: validate per-service
-sample completeness, arrival times and late data separately. No features are built in Batch A.
+from telemetry. Exact grid membership does not establish arrival-time availability in a real
+stream; ingestion must separately validate late data and event/processing-time semantics.
+No interpolation, imputation or features are implemented in Batch A.
 
 ## Reproduction and integrity
 

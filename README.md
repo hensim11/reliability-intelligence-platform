@@ -93,9 +93,10 @@ ruff format --check .
 python -m pip check
 ```
 
-Tests cover exact target boundaries, right censoring, configuration, deterministic schedules and
-signals, lifecycle continuity, scenario counterfactuals, schema/leakage guards, Parquet integrity,
-and an end-to-end CLI/evidence run. GitHub Actions runs these checks on Linux/Python 3.14, then
+Tests cover exact target boundaries, right censoring, exact service-specific telemetry-grid
+history, configuration, deterministic schedules and signals, lifecycle continuity, scenario
+counterfactuals, schema/leakage guards, Parquet integrity, and an end-to-end CLI/evidence run.
+GitHub Actions runs these checks on Linux/Python 3.14, then
 regenerates the default dataset/evidence and uploads evidence. Remote CI has not run in this
 local workspace; local results are recorded in [PROJECT_STATE.md](PROJECT_STATE.md).
 

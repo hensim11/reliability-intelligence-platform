@@ -82,11 +82,14 @@ both sets of 13 evidence files matched the saved evidence byte-for-byte.
 
 ## 8. Test / CI status
 
-58 pytest cases passed locally. Added tests alter Parquet contents and refresh their manifest hashes,
+66 pytest cases passed locally. Added tests alter Parquet contents and refresh their manifest hashes,
 proving semantic rejection independently of integrity hashes. They cover invalid and wrong targets,
 horizon/null mismatches, incident types/services/lifecycle ordering/overlap, manifest/config coverage
 disagreement and missing/unexpected semantic columns. Valid round trips and typed empty incident
-bundles remain supported. Ruff lint/format checks and dependency consistency passed. Editable
+bundles remain supported. Grid-specific tests cover complete histories; missing internal, oldest and
+current samples; equal row counts with an off-grid replacement; service isolation; configured
+30-second sampling; and bundle-level rejection after hashes and row counts are refreshed. Ruff
+lint/format checks and dependency consistency passed. Editable
 installation, two default generations and two evidence commands succeeded. CI is configured for
 Linux/Python 3.14 with the same checks plus regenerated evidence uploads. Remote CI is **unrun**;
 local macOS validation is not claimed as a Linux/GitHub-hosted result.
@@ -112,7 +115,7 @@ Branch: `feat/batch-a-foundation`.
 Commit title: `feat: establish reproducible telemetry and incident simulation foundation`
 
 Suggested description: Add validated service simulation and four incident lifecycles, separate
-Parquet telemetry/truth/future labels, reproducible evidence, 58 tests, CI and architecture/state
+Parquet telemetry/truth/future labels, reproducible evidence, 66 tests, CI and architecture/state
 documentation. Fix the forecasting contract at 15-minute history and 10-minute future starts.
 
 ## 13. Logical start for Batch B

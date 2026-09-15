@@ -4,6 +4,11 @@ Updated: 2026-09-15. **Current milestone: Batch A complete locally; ready for re
 Batch B has not started. Objective: use the latest 15 minutes of service telemetry to
 estimate the probability of an incident start within the next 10 minutes.
 
+The final review finding is closed: the former flag checked only whether t was at least
+15 minutes after coverage start, so an internal gap could still be marked complete. The flag
+now matches actual per-service timestamps against the grid derived from `interval_seconds`.
+No samples are filled, and no timestamp after t participates.
+
 ## Completed
 
 - Installable Python 3.14 src-layout package with CLI and structured JSON application logs.
@@ -15,7 +20,8 @@ estimate the probability of an incident start within the next 10 minutes.
 - Immutable Parquet runs, atomic dataset publication, resolved config and integrity manifest.
 - Data-derived evidence command, seven saved figures, four CSV tables, JSON summary and report.
 - Strict read-time validation for configuration/coverage, incident truth and recomputed labels.
-- 58 deterministic pytest cases, Ruff quality configuration, exact dependency snapshot and CI.
+- Exact service-specific telemetry-grid completeness for `(t−15m,t]`, derived from configuration.
+- 66 deterministic pytest cases, Ruff quality configuration, exact dependency snapshot and CI.
 - Vision, roadmap, decisions, setup, data contract, simulation assumptions and completion report.
 
 ## Current commands
@@ -58,15 +64,15 @@ environment versions; no visual reinspection was necessary because no output dif
 
 ## Validation / repository status
 
-- `pytest -q --tb=short`: **58 passed** (2.73 seconds on the final local test run).
+- `pytest -q --tb=short`: **66 passed** (3.35 seconds on the final local test run).
 - `ruff check .`: passed; `ruff format --check .`: passed.
 - `python -m pip check`: no broken requirements.
 - Editable package installation and both default CLI commands succeeded.
 - Local environment: macOS arm64, Python 3.14.0; dependencies in requirements-lock.txt.
 - CI: `.github/workflows/ci.yml` targets Linux/Python 3.14, runs checks and generates/upload evidence.
   Equivalent application/check commands passed locally. GitHub-hosted execution has **not** run.
-- Git was initialised for the requested `feat/batch-a-foundation` initial commit. No remote, PR
-  or deployment was created during implementation. Only intentional project files are visible
+- Git branch `feat/batch-a-foundation` contains the initial Batch A commit and focused telemetry-grid
+  hardening. No remote, PR or deployment was created. Only intentional project files are visible
   to Git; virtualenv, caches, packaging output, audit outputs and raw data are ignored.
 
 ## Known limitations / intentionally deferred
@@ -102,6 +108,8 @@ packages imply these features exist.
 - [x] Operational fields separated from simulation metadata and future targets.
 - [x] Correct future labels, exact boundary tests and unknown incomplete horizons.
 - [x] Read-time truth/label semantics, configuration coverage and service membership enforced.
+- [x] History completeness requires every expected configured grid timestamp for that service;
+  internal/boundary gaps, off-grid replacements and cross-service substitutions are detected.
 - [x] Fixed-seed reproducibility, including full reference bundle comparison.
 - [x] Operational allowlist and counterfactual tests guard obvious leakage.
 

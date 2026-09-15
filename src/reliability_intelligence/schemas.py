@@ -167,6 +167,7 @@ def validate_labels(
         coverage_end=coverage_end,
         horizon_minutes=config.horizon_minutes,
         observation_minutes=config.observation_minutes,
+        interval_seconds=config.interval_seconds,
     )
     for column in ("history_complete", "horizon_complete", "incident_within_horizon"):
         if not frame[column].equals(expected[column]):

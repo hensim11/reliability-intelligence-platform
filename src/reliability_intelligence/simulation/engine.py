@@ -137,5 +137,6 @@ def simulate(config: SimulationConfig) -> SimulationResult:
         coverage_end=timestamps[0] + pd.Timedelta(minutes=config.duration_minutes),
         horizon_minutes=config.horizon_minutes,
         observation_minutes=config.observation_minutes,
+        interval_seconds=config.interval_seconds,
     )
     return SimulationResult(telemetry, truth, labels)
