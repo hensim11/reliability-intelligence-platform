@@ -1,4 +1,4 @@
-name: Batch A validation
+name: Foundation and ML validation
 on:
   push:
   pull_request:

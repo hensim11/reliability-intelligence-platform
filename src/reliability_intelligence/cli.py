@@ -33,6 +33,14 @@ def main(argv: list[str] | None = None) -> int:
     evidence = commands.add_parser("evidence", help="Create plots and a report from saved data")
     evidence.add_argument("--dataset", type=Path, required=True)
     evidence.add_argument("--output", type=Path, required=True)
+    batch_b = commands.add_parser("batch-b", help="Generate/reuse corpus, fit and evaluate Batch B")
+    batch_b.add_argument("--config", type=Path, required=True)
+    batch_b.add_argument("--corpus", type=Path, required=True)
+    batch_b.add_argument("--output", type=Path, required=True)
+    batch_b.add_argument("--evidence", type=Path)
+    ml_evidence = commands.add_parser("batch-b-evidence", help="Regenerate saved ML evidence")
+    ml_evidence.add_argument("--experiment", type=Path, required=True)
+    ml_evidence.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     handler = logging.StreamHandler()
     handler.setFormatter(JsonFormatter())
@@ -53,6 +61,21 @@ def main(argv: list[str] | None = None) -> int:
                     }
                 },
             )
+        elif args.command == "batch-b":
+            from reliability_intelligence.experiment import ExperimentConfig, run_experiment
+            from reliability_intelligence.ml_evidence import generate_ml_evidence
+
+            if args.evidence is not None and args.evidence.exists():
+                raise FileExistsError(f"Evidence output exists: {args.evidence}")
+            run_experiment(ExperimentConfig.load(args.config), args.corpus, args.output)
+            if args.evidence is not None:
+                generate_ml_evidence(args.output, args.evidence)
+            LOGGER.info("experiment_written", extra={"fields": {"output": str(args.output)}})
+        elif args.command == "batch-b-evidence":
+            from reliability_intelligence.ml_evidence import generate_ml_evidence
+
+            generate_ml_evidence(args.experiment, args.output)
+            LOGGER.info("ml_evidence_written", extra={"fields": {"output": str(args.output)}})
         else:
             from reliability_intelligence.evidence import generate_evidence
 
