@@ -6,6 +6,7 @@ import pandas as pd
 from reliability_intelligence.config import INCIDENT_TYPES, SimulationConfig
 from reliability_intelligence.labels import future_labels
 from reliability_intelligence.simulation.incidents import TRUTH_COLUMNS
+from reliability_intelligence.telemetry_grid import KEY_COLUMNS, configured_telemetry_keys
 
 TELEMETRY_COLUMNS = [
     "timestamp",
@@ -64,7 +65,7 @@ def validate_telemetry(frame: pd.DataFrame) -> None:
         raise ValueError("Telemetry timestamps must use UTC")
     if frame.service_id.map(lambda value: not isinstance(value, str) or not value.strip()).any():
         raise ValueError("Service identifiers must be nonempty strings")
-    if frame.duplicated(["service_id", "timestamp"]).any():
+    if frame.duplicated(KEY_COLUMNS).any():
         raise ValueError("Duplicate service/timestamp keys")
     for _, rows in frame.groupby("service_id", sort=False):
         if not rows.timestamp.is_monotonic_increasing:
@@ -81,6 +82,24 @@ def validate_telemetry(frame: pd.DataFrame) -> None:
         raise ValueError("Resource utilisation must lie in [0, 100]")
     if (frame.latency_p95_ms < frame.latency_p50_ms).any():
         raise ValueError("p95 latency cannot be below p50")
+
+
+def validate_telemetry_grid(frame: pd.DataFrame, config: SimulationConfig) -> None:
+    """Require exactly the configured keys in canonical timestamp/service order."""
+    actual = pd.MultiIndex.from_frame(frame[KEY_COLUMNS])
+    if actual.has_duplicates:
+        raise ValueError("Telemetry grid contains duplicate service/timestamp keys")
+    expected = configured_telemetry_keys(config)
+    missing = expected.difference(actual)
+    unexpected = actual.difference(expected)
+    if len(missing) or len(unexpected):
+        raise ValueError(
+            "Telemetry grid disagrees with configuration: "
+            f"missing {len(missing)} expected key(s); "
+            f"unexpected {len(unexpected)} key(s)"
+        )
+    if not actual.equals(expected):
+        raise ValueError("Telemetry rows must use canonical timestamp/service ordering")
 
 
 def validate_incidents(

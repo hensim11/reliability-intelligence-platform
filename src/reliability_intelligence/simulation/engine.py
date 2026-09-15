@@ -9,6 +9,7 @@ from reliability_intelligence.config import INCIDENT_TYPES, SimulationConfig
 from reliability_intelligence.labels import future_labels
 from reliability_intelligence.schemas import TELEMETRY_COLUMNS, validate_telemetry
 from reliability_intelligence.simulation.incidents import ground_truth, pressure, schedule
+from reliability_intelligence.telemetry_grid import KEY_COLUMNS, configured_timestamps
 
 
 @dataclass(frozen=True)
@@ -35,13 +36,9 @@ def correlated_noise(
 def simulate(config: SimulationConfig) -> SimulationResult:
     seeds = np.random.SeedSequence(config.seed).spawn(2 + len(config.services))
     events = schedule(config, np.random.default_rng(seeds[0]))
-    count = config.duration_minutes * 60 // config.interval_seconds
+    timestamps = configured_timestamps(config)
+    count = len(timestamps)
     minutes = np.arange(count) * config.interval_seconds / 60
-    timestamps = pd.date_range(
-        pd.Timestamp(config.start).tz_convert("UTC"),
-        periods=count,
-        freq=pd.Timedelta(seconds=config.interval_seconds),
-    )
     d = config.dynamics
     shared = correlated_noise(
         np.random.default_rng(seeds[1]), count, config.interval_seconds, d.noise_correlation_minutes
@@ -124,9 +121,7 @@ def simulate(config: SimulationConfig) -> SimulationResult:
                 columns=TELEMETRY_COLUMNS,
             )
         )
-    telemetry = pd.concat(frames, ignore_index=True).sort_values(
-        ["timestamp", "service_id"], ignore_index=True
-    )
+    telemetry = pd.concat(frames, ignore_index=True).sort_values(KEY_COLUMNS, ignore_index=True)
     telemetry["service_id"] = telemetry.service_id.astype("string")
     validate_telemetry(telemetry)
     truth = ground_truth(config, events)

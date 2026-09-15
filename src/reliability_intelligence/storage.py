@@ -12,7 +12,12 @@ import pandas as pd
 
 from reliability_intelligence import __version__
 from reliability_intelligence.config import SimulationConfig
-from reliability_intelligence.schemas import validate_incidents, validate_labels, validate_telemetry
+from reliability_intelligence.schemas import (
+    validate_incidents,
+    validate_labels,
+    validate_telemetry,
+    validate_telemetry_grid,
+)
 from reliability_intelligence.simulation.engine import SimulationResult
 
 TABLES = ("telemetry", "incidents", "labels")
@@ -95,6 +100,7 @@ def read_dataset(path: Path) -> tuple[SimulationResult, dict]:
     for name in TABLES:
         if len(getattr(result, name)) != manifest["rows"][name]:
             raise ValueError(f"Manifest row count mismatch: {name}")
+    validate_telemetry_grid(result.telemetry, config)
     configured_services = {service.name for service in config.services}
     if set(result.telemetry.service_id) != configured_services:
         raise ValueError("Telemetry services disagree with resolved configuration")

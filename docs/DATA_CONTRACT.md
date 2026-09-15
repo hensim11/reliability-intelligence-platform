@@ -83,6 +83,14 @@ same-service non-overlap. It also recomputes history/horizon flags and every fut
 from telemetry keys, configured windows, coverage and incident truth. Nullable targets must be
 exactly null for incomplete horizons and binary otherwise. Typed empty incident tables remain valid.
 
+Telemetry keys are independently checked against the exact Cartesian product of timestamps and
+services defined by the resolved configuration. Timestamps begin at `start_time`, advance by
+`interval_seconds`, and stop before `start_time + duration_minutes`; every configured service is
+required at every timestamp. The comparison detects missing, unexpected and duplicate keys, then
+requires the canonical ascending `(timestamp, service_id)` row order. Validation does not sort,
+fill, drop or otherwise repair malformed telemetry. This bundle-level guarantee is distinct from
+the per-prediction `history_complete` calculation.
+
 These checks detect internally inconsistent or edited bundles even when an affected file's hash is
 refreshed. They do not provide authenticity: a party able to alter every file can construct a new,
 internally consistent bundle. Truth is used only to verify offline targets and is never added to

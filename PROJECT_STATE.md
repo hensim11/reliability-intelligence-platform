@@ -4,10 +4,13 @@ Updated: 2026-09-15. **Current milestone: Batch A complete locally; ready for re
 Batch B has not started. Objective: use the latest 15 minutes of service telemetry to
 estimate the probability of an incident start within the next 10 minutes.
 
-The final review finding is closed: the former flag checked only whether t was at least
-15 minutes after coverage start, so an internal gap could still be marked complete. The flag
-now matches actual per-service timestamps against the grid derived from `interval_seconds`.
-No samples are filled, and no timestamp after t participates.
+The earlier history-level review finding is closed: the former flag checked only whether t was
+at least 15 minutes after coverage start, so an internal gap could still be marked complete. The
+flag now matches actual per-service timestamps against the grid derived from `interval_seconds`.
+A final review then identified that internally consistent recomputed flags could still accompany
+an incomplete raw bundle. Bundle loading now independently requires the exact configured Cartesian
+timestamp/service grid and canonical order. No samples are filled, sorted or otherwise repaired,
+and no timestamp after t participates in per-history completeness.
 
 ## Completed
 
@@ -21,7 +24,8 @@ No samples are filled, and no timestamp after t participates.
 - Data-derived evidence command, seven saved figures, four CSV tables, JSON summary and report.
 - Strict read-time validation for configuration/coverage, incident truth and recomputed labels.
 - Exact service-specific telemetry-grid completeness for `(t−15m,t]`, derived from configuration.
-- 66 deterministic pytest cases, Ruff quality configuration, exact dependency snapshot and CI.
+- Exact generated-bundle key-grid membership and canonical `(timestamp, service_id)` ordering.
+- 71 deterministic pytest cases, Ruff quality configuration, exact dependency snapshot and CI.
 - Vision, roadmap, decisions, setup, data contract, simulation assumptions and completion report.
 
 ## Current commands
@@ -64,7 +68,7 @@ environment versions; no visual reinspection was necessary because no output dif
 
 ## Validation / repository status
 
-- `pytest -q --tb=short`: **66 passed** (3.35 seconds on the final local test run).
+- `pytest -q --tb=short`: **71 passed** (3.57 seconds on the final local test run).
 - `ruff check .`: passed; `ruff format --check .`: passed.
 - `python -m pip check`: no broken requirements.
 - Editable package installation and both default CLI commands succeeded.
@@ -110,6 +114,8 @@ packages imply these features exist.
 - [x] Read-time truth/label semantics, configuration coverage and service membership enforced.
 - [x] History completeness requires every expected configured grid timestamp for that service;
   internal/boundary gaps, off-grid replacements and cross-service substitutions are detected.
+- [x] Bundle telemetry independently matches every configured timestamp/service key exactly and
+  uses canonical ordering, even when downstream labels/history flags have been recomputed.
 - [x] Fixed-seed reproducibility, including full reference bundle comparison.
 - [x] Operational allowlist and counterfactual tests guard obvious leakage.
 

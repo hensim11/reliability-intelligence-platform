@@ -106,6 +106,7 @@ local workspace; local results are recorded in [PROJECT_STATE.md](PROJECT_STATE.
 configs/                        default simulation JSON
 src/reliability_intelligence/
   config.py                     validated configuration and coefficients
+  telemetry_grid.py             authoritative configured timestamp/service grid
   schemas.py                    operational telemetry contract
   simulation/                   scheduling, lifecycle pressure, temporal signals
   labels.py                     offline future-start target generation

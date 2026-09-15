@@ -4,7 +4,7 @@ Environment: macOS arm64, Python 3.14.0; exact versions in requirements-lock.txt
 Editable package build/install: succeeded.
 Default generate command: succeeded (11520 telemetry, 16 incidents, 11520 labels).
 Default evidence command: succeeded (7 PNGs, 4 CSVs, summary.json, REPORT.md).
-pytest -q --tb=short: 66 passed in 3.35s.
+pytest -q --tb=short: 71 passed in 3.57s.
 ruff check .: All checks passed!
 ruff format --check .: passed.
 python -m pip check: No broken requirements found.
@@ -17,6 +17,9 @@ Semantic corruption tests refresh affected hashes before read_dataset rejection.
 Telemetry-grid tests cover a complete window; missing internal, oldest and current samples;
 equal row counts with an off-grid substitute; service isolation; configured 30-second sampling;
 and bundle-level rejection with refreshed hashes and row counts.
+Bundle-grid tests recompute derived labels after raw-key changes and cover missing keys,
+same-count missing/unexpected replacement, duplicates, off-grid timestamps, configured-service
+coverage, noncanonical ordering and a valid configured 30-second grid.
 
 CI workflow configured for Linux/Python 3.14. Remote execution was not available/run.
 This record summarises observed local tool results; it is not a GitHub Actions run log.

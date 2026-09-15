@@ -14,7 +14,7 @@ README.md / PROJECT_VISION.md / ROADMAP.md / PROJECT_STATE.md / DECISIONS.md
 pyproject.toml / requirements-lock.txt / .gitignore
 configs/batch_a.json
 src/reliability_intelligence/
-  config.py / schemas.py / labels.py / storage.py / evidence.py / cli.py
+  config.py / telemetry_grid.py / schemas.py / labels.py / storage.py / evidence.py / cli.py
   __init__.py / __main__.py
   simulation/__init__.py / engine.py / incidents.py
 tests/conftest.py / test_config.py / test_labels.py / test_simulation.py / test_integration.py
@@ -82,7 +82,7 @@ both sets of 13 evidence files matched the saved evidence byte-for-byte.
 
 ## 8. Test / CI status
 
-66 pytest cases passed locally. Added tests alter Parquet contents and refresh their manifest hashes,
+71 pytest cases passed locally. Added tests alter Parquet contents and refresh their manifest hashes,
 proving semantic rejection independently of integrity hashes. They cover invalid and wrong targets,
 horizon/null mismatches, incident types/services/lifecycle ordering/overlap, manifest/config coverage
 disagreement and missing/unexpected semantic columns. Valid round trips and typed empty incident
@@ -115,7 +115,7 @@ Branch: `feat/batch-a-foundation`.
 Commit title: `feat: establish reproducible telemetry and incident simulation foundation`
 
 Suggested description: Add validated service simulation and four incident lifecycles, separate
-Parquet telemetry/truth/future labels, reproducible evidence, 66 tests, CI and architecture/state
+Parquet telemetry/truth/future labels, reproducible evidence, 71 tests, CI and architecture/state
 documentation. Fix the forecasting contract at 15-minute history and 10-minute future starts.
 
 ## 13. Logical start for Batch B

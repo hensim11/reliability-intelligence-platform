@@ -7,8 +7,9 @@ import pandas as pd
 import pytest
 
 from reliability_intelligence.cli import main
-from reliability_intelligence.config import INCIDENT_TYPES, IncidentSpec
+from reliability_intelligence.config import INCIDENT_TYPES, IncidentSpec, SimulationConfig
 from reliability_intelligence.evidence import generate_evidence
+from reliability_intelligence.labels import future_labels
 from reliability_intelligence.simulation.engine import simulate
 from reliability_intelligence.storage import file_hash, read_dataset, write_dataset
 
@@ -25,6 +26,36 @@ def copy_and_mutate_table(source: Path, target: Path, table: str, mutate) -> Pat
     manifest["sha256"][table_path.name] = file_hash(table_path)
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
     return target
+
+
+def rewrite_telemetry_and_labels(bundle: Path, telemetry: pd.DataFrame) -> None:
+    """Recompute derived labels for altered telemetry and refresh bundle bookkeeping."""
+    config = SimulationConfig.load(bundle / "config.json")
+    incidents = pd.read_parquet(bundle / "incidents.parquet")
+    coverage_start = pd.Timestamp(config.start)
+    coverage_end = coverage_start + pd.Timedelta(minutes=config.duration_minutes)
+    labels = future_labels(
+        telemetry,
+        incidents,
+        coverage_start=coverage_start,
+        coverage_end=coverage_end,
+        horizon_minutes=config.horizon_minutes,
+        observation_minutes=config.observation_minutes,
+        interval_seconds=config.interval_seconds,
+    )
+    telemetry_path = bundle / "telemetry.parquet"
+    labels_path = bundle / "labels.parquet"
+    telemetry.to_parquet(telemetry_path, index=False)
+    labels.to_parquet(labels_path, index=False)
+    manifest_path = bundle / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    for table, path, frame in (
+        ("telemetry", telemetry_path, telemetry),
+        ("labels", labels_path, labels),
+    ):
+        manifest["rows"][table] = len(frame)
+        manifest["sha256"][path.name] = file_hash(path)
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 
 
 @pytest.fixture
@@ -218,32 +249,85 @@ def test_rejects_incorrect_semantic_columns(semantic_bundle, tmp_path, table, op
         read_dataset(corrupted)
 
 
-def test_read_dataset_rejects_elapsed_history_with_internal_grid_hole(semantic_bundle, tmp_path):
-    """Removing aligned telemetry/label rows cannot preserve later completeness flags."""
+def test_read_dataset_rejects_recomputed_bundle_with_missing_grid_member(semantic_bundle, tmp_path):
+    """A missing raw key fails even after derived labels are made internally consistent."""
     corrupted = tmp_path / "missing-grid-point"
     shutil.copytree(semantic_bundle, corrupted)
     telemetry_path = corrupted / "telemetry.parquet"
-    labels_path = corrupted / "labels.parquet"
     telemetry = pd.read_parquet(telemetry_path)
-    labels = pd.read_parquet(labels_path)
     service = telemetry.service_id.iloc[0]
     missing_timestamp = telemetry.timestamp.min() + pd.Timedelta(minutes=5)
     missing_key = (telemetry.service_id == service) & (telemetry.timestamp == missing_timestamp)
     telemetry = telemetry.loc[~missing_key].reset_index(drop=True)
-    label_key = (labels.service_id == service) & (labels.timestamp == missing_timestamp)
-    labels = labels.loc[~label_key].reset_index(drop=True)
-    telemetry.to_parquet(telemetry_path, index=False)
-    labels.to_parquet(labels_path, index=False)
+    rewrite_telemetry_and_labels(corrupted, telemetry)
 
-    manifest_path = corrupted / "manifest.json"
-    manifest = json.loads(manifest_path.read_text())
-    for table, path, frame in (
-        ("telemetry", telemetry_path, telemetry),
-        ("labels", labels_path, labels),
-    ):
-        manifest["rows"][table] = len(frame)
-        manifest["sha256"][path.name] = file_hash(path)
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
-
-    with pytest.raises(ValueError, match="history_complete is inconsistent"):
+    with pytest.raises(ValueError, match=r"missing 1 expected key\(s\); unexpected 0"):
         read_dataset(corrupted)
+
+
+def test_grid_identity_rejects_missing_key_with_preserved_row_count(semantic_bundle, tmp_path):
+    corrupted = tmp_path / "same-count-grid-corruption"
+    shutil.copytree(semantic_bundle, corrupted)
+    telemetry = pd.read_parquet(corrupted / "telemetry.parquet")
+    telemetry = telemetry.drop(index=10).reset_index(drop=True)
+    off_grid = telemetry.iloc[[0]].copy()
+    off_grid["timestamp"] = telemetry.timestamp.min() + pd.Timedelta(seconds=30)
+    telemetry = pd.concat([telemetry, off_grid], ignore_index=True).sort_values(
+        ["timestamp", "service_id"], ignore_index=True
+    )
+    rewrite_telemetry_and_labels(corrupted, telemetry)
+
+    with pytest.raises(ValueError, match=r"missing 1 expected key\(s\); unexpected 1 key\(s\)"):
+        read_dataset(corrupted)
+
+
+def test_bundle_rejects_duplicate_telemetry_key(semantic_bundle, tmp_path):
+    corrupted = tmp_path / "duplicate-key"
+    shutil.copytree(semantic_bundle, corrupted)
+    telemetry = pd.read_parquet(corrupted / "telemetry.parquet")
+    telemetry = pd.concat([telemetry, telemetry.iloc[[0]]], ignore_index=True).sort_values(
+        ["timestamp", "service_id"], ignore_index=True
+    )
+    rewrite_telemetry_and_labels(corrupted, telemetry)
+
+    with pytest.raises(ValueError, match="Duplicate service/timestamp keys"):
+        read_dataset(corrupted)
+
+
+def test_bundle_rejects_unexpected_off_grid_timestamp(semantic_bundle, tmp_path):
+    corrupted = tmp_path / "off-grid-key"
+    shutil.copytree(semantic_bundle, corrupted)
+    telemetry = pd.read_parquet(corrupted / "telemetry.parquet")
+    off_grid = telemetry.iloc[[0]].copy()
+    off_grid["timestamp"] = telemetry.timestamp.min() + pd.Timedelta(seconds=30)
+    telemetry = pd.concat([telemetry, off_grid], ignore_index=True).sort_values(
+        ["timestamp", "service_id"], ignore_index=True
+    )
+    rewrite_telemetry_and_labels(corrupted, telemetry)
+
+    with pytest.raises(ValueError, match=r"unexpected 1 key\(s\)"):
+        read_dataset(corrupted)
+
+
+def test_bundle_rejects_noncanonical_telemetry_order(semantic_bundle, tmp_path):
+    corrupted = tmp_path / "wrong-order"
+    shutil.copytree(semantic_bundle, corrupted)
+    telemetry = pd.read_parquet(corrupted / "telemetry.parquet")
+    telemetry = pd.concat(
+        [telemetry.iloc[[1]], telemetry.iloc[[0]], telemetry.iloc[2:]], ignore_index=True
+    )
+    rewrite_telemetry_and_labels(corrupted, telemetry)
+
+    with pytest.raises(ValueError, match="canonical timestamp/service ordering"):
+        read_dataset(corrupted)
+
+
+def test_bundle_grid_uses_configured_subminute_interval(config, tmp_path):
+    configured = replace(config, interval_seconds=30)
+    output = tmp_path / "thirty-second-grid"
+    write_dataset(simulate(configured), configured, output)
+    loaded, _ = read_dataset(output)
+    expected_rows = (
+        configured.duration_minutes * 60 // configured.interval_seconds * len(configured.services)
+    )
+    assert len(loaded.telemetry) == expected_rows
