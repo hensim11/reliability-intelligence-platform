@@ -1,0 +1,37 @@
+name: Batch A validation
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+      - name: Install tested dependencies and package
+        run: |
+          python -m pip install -r requirements-lock.txt
+          python -m pip install --no-deps --no-build-isolation -e '.[dev]'
+      - name: Quality and tests
+        run: |
+          ruff check .
+          ruff format --check .
+          pytest -q
+          python -m pip check
+      - name: Generate default dataset and evidence
+        run: |
+          reliability generate --config configs/batch_a.json --output data/ci
+          reliability evidence --dataset data/ci --output evidence/ci
+      - uses: actions/upload-artifact@v4
+        with:
+          name: batch-a-evidence
+          path: |
+            evidence/ci
+            data/ci/manifest.json
+            data/ci/config.json

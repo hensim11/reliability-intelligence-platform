@@ -1,0 +1,13 @@
+{
+  "start_time": "2026-01-05T00:00:00Z",
+  "duration_minutes": 2880,
+  "interval_seconds": 60,
+  "seed": 42,
+  "incidents_per_service": 4,
+  "services": [
+    {"name": "api-gateway", "baseline_rps": 180, "capacity_rps": 360, "base_latency_ms": 35, "base_dependency_ms": 12, "base_memory_pct": 38},
+    {"name": "auth-service", "baseline_rps": 65, "capacity_rps": 140, "base_latency_ms": 55, "base_dependency_ms": 20, "base_memory_pct": 42},
+    {"name": "catalog-service", "baseline_rps": 100, "capacity_rps": 200, "base_latency_ms": 70, "base_dependency_ms": 30, "base_memory_pct": 45},
+    {"name": "search-service", "baseline_rps": 80, "capacity_rps": 160, "base_latency_ms": 110, "base_dependency_ms": 35, "base_memory_pct": 48}
+  ]
+}

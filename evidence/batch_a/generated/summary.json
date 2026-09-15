@@ -1,0 +1,72 @@
+{
+  "synthetic": true,
+  "source_manifest": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-07T00:00:00+00:00",
+    "rows": {
+      "telemetry": 11520,
+      "incidents": 16,
+      "labels": 11520
+    },
+    "sha256": {
+      "telemetry.parquet": "c1520d3bdc674dcb9d4a70893a2765440f60b67c4bdf115d264cac3f83a2abe1",
+      "incidents.parquet": "383764136e92364c582824dbff6e5f5cb69635695d4b8317e8cb8bf76f310722",
+      "labels.parquet": "152dd9f0b3571b3962c7b8bdab94a9f2f38c06b2e32d9763f0c775d2581b12a2",
+      "config.json": "3aff5c9f04de20e9310af11bf59d95c173be26a0abb09ad06c090dadcfda6970"
+    }
+  },
+  "telemetry_rows": 11520,
+  "services": [
+    "api-gateway",
+    "auth-service",
+    "catalog-service",
+    "search-service"
+  ],
+  "incidents": 16,
+  "incident_counts_by_type": {
+    "cpu_saturation": 4,
+    "database_degradation": 4,
+    "memory_leak": 4,
+    "traffic_overload": 4
+  },
+  "incident_counts_by_service": {
+    "api-gateway": 4,
+    "auth-service": 4,
+    "catalog-service": 4,
+    "search-service": 4
+  },
+  "active_duration_minutes": {
+    "min": 30.0,
+    "mean": 30.0,
+    "max": 30.0
+  },
+  "labels": {
+    "positive": 160,
+    "negative": 11320,
+    "unknown": 40,
+    "positive_fraction_observed": 0.013937282229965157,
+    "history_incomplete": 60,
+    "eligible_rows": 11420,
+    "positive_fraction_eligible": 0.014010507880910683
+  },
+  "examples": {
+    "normal": {
+      "service_id": "api-gateway",
+      "rows": 120
+    },
+    "memory_leak": "incident-0006",
+    "database_degradation": "incident-0001",
+    "cpu_saturation": "incident-0000",
+    "traffic_overload": "incident-0004"
+  }
+}

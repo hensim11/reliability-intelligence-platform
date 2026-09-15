@@ -1,0 +1,22 @@
+# Decision log
+
+All entries were adopted for Batch A on 2026-09-15. Revisit with evidence in later batches.
+
+| ID | Decision and rationale | Trade-off / revisit trigger |
+|---|---|---|
+| A01 | Forecast starts in `(t, t+10m]`, rather than classify current anomalies. This matches proactive investigation. | A fault may already be developing; onset needs a precise domain definition. Revisit against external incident records. |
+| A02 | Fix a 15-minute observation window and 10-minute horizon. Long enough for short precursors while retaining actionable lead time. | Initial product assumptions, not empirically optimal values. Compare alternatives explicitly in later research without silently changing the task. |
+| A03 | Controlled simulation first, external validation later. It supplies known lifecycles and reproducible experiments. | Synthetic mechanisms and prevalence may be easy to learn and fail in reality. No transfer claim. |
+| A04 | Python 3.14, src-layout packaging, NumPy/pandas and pytest. Supports reusable numerical code and later service integration. | Local validation and CI target 3.14; other Python versions are not claimed. Broad dependency constraints permit change; the committed exact snapshot supports reproduction. |
+| A05 | Parquet is canonical. Typed UTC timestamps, nullable integer labels and compact columnar scans suit later ML. | Requires PyArrow; CSV evidence remains convenient for review. No database yet. |
+| A06 | Separate telemetry, incident catalogue and labels, joined only by explicit keys. An operational allowlist blocks metadata leakage. | Separation alone cannot prevent a future developer from choosing leaking features; Batch B must enforce its own feature contract. |
+| A07 | Time-aware evaluation with boundary purging and training-only fitting is mandatory. | Fewer independent evaluation examples; random row splits are prohibited. Exact splits deferred to Batch B. |
+| A08 | PostgreSQL is the intended durable operational/prediction store. | More setup than local files; transactions and SQL justify it when online ingestion exists. No placeholder adapter now. |
+| A09 | FastAPI is the intended serving interface. | Useful typed Python integration, but concurrency and latency need measurement in Batch C. No API scaffold now. |
+| A10 | Keep infrastructure proportional. No Docker/cloud/queue/web frontend in Batch A. | Local workflows precede deployment; explicit package boundaries reduce later restructuring without empty modules. |
+| A11 | Seeded per-service stratified schedules with non-overlapping lifecycles; explicit schedules override generation. Four events per service cover all four types. | Coverage-oriented timing and severity are artificial; counts greater than four cycle types. No simultaneous faults within one service. |
+| A12 | Onset is the injected fault reaching 70% of its peak severity; active pressure rises to peak then recovery decays. | Ground truth describes a controlled failure state, not a universal SLO threshold. Severity changes metric consequences; some faults may not breach a real SLO. |
+| A13 | Right-censor incomplete horizons to nullable labels, even if a positive is already known. Keep history completeness as a separate offline eligibility field. | Conservative exclusion sacrifices some usable positives, but avoids asymmetric end-of-run label rules. |
+| A14 | Separate seeded random streams for schedule, shared noise and each service. Save resolved configuration, realised incidents, dependency versions and SHA-256 hashes. | Same seed/config/environment reproduces tables. Changing service order, library versions or simulator version can change values; Parquet bytes can differ between environments. |
+| A15 | Immutable output directories and atomic dataset publication. Evidence verifies input hashes. | Re-runs need a new output path; hashes detect alteration but are not cryptographic proof of provenance or authenticity. |
+| A16 | No active-incident filtering of raw future targets. Every row follows the same next-start definition. | Operational alert suppression and known-current-incident policy need a separately justified inference-time contract in Batch B/C. |
