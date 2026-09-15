@@ -1,0 +1,8 @@
+run_id,group,seed,duration_minutes,telemetry_rows,incidents
+development-101,development,101,5760,23040,128
+development-202,development,202,5760,23040,128
+development-303,development,303,5760,23040,128
+heldout_seed-404,heldout_seed,404,5760,23040,128
+heldout_seed-505,heldout_seed,505,5760,23040,128
+heldout_regime-606,heldout_regime,606,5760,23040,103
+heldout_regime-707,heldout_regime,707,5760,23040,103

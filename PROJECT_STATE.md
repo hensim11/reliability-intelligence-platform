@@ -1,150 +1,92 @@
 # Project state
 
-Updated: 2026-09-15. **Current milestone: Batch A complete locally; ready for review.**
-Batch B has not started. Objective: use the latest 15 minutes of service telemetry to
-estimate the probability of an incident start within the next 10 minutes.
-
-The earlier history-level review finding is closed: the former flag checked only whether t was
-at least 15 minutes after coverage start, so an internal gap could still be marked complete. The
-flag now matches actual per-service timestamps against the grid derived from `interval_seconds`.
-A final review then identified that internally consistent recomputed flags could still accompany
-an incomplete raw bundle. Bundle loading now independently requires the exact configured Cartesian
-timestamp/service grid and canonical order. No samples are filled, sorted or otherwise repaired,
-and no timestamp after t participates in per-history completeness.
+Updated: 2026-09-15. **Current milestone: Batch B complete locally; ready for review.**
+Batch A remains intact. Batch C has not started. Objective: use telemetry in `(t−15m,t]`
+to estimate whether a service incident starts in `(t,t+10m]`.
 
 ## Completed
 
-- Installable Python 3.14 src-layout package with CLI and structured JSON application logs.
-- Validated central configuration, four service profiles, cyclic load and persistent noise.
-- Memory leak, database degradation, CPU saturation and traffic overload with explicit
-  precursor → active → recovery lifecycles and seeded/explicit schedules.
-- Separate operational telemetry, ground truth and nullable future labels; UTC contract,
-  exact open-left/closed-right horizon, history eligibility and conservative end censoring.
-- Immutable Parquet runs, atomic dataset publication, resolved config and integrity manifest.
-- Data-derived evidence command, seven saved figures, four CSV tables, JSON summary and report.
-- Strict read-time validation for configuration/coverage, incident truth and recomputed labels.
-- Exact service-specific telemetry-grid completeness for `(t−15m,t]`, derived from configuration.
-- Exact generated-bundle key-grid membership and canonical `(timestamp, service_id)` ordering.
-- 71 deterministic pytest cases, Ruff quality configuration, exact dependency snapshot and CI.
-- Vision, roadmap, decisions, setup, data contract, simulation assumptions and completion report.
+- Batch A: validated four-service telemetry, separate truth/nullable labels, exact configured
+  grid, deterministic simulation, immutable Parquet bundles and 71 original tests.
+- Batch B: 49 telemetry-only float64 features, exact causal per-service one-minute windows,
+  strict inference schema, key-aligned target eligibility and chronological boundary purges.
+- Separate seven-run, 846-event corpus: three development seeds, two held-out seeds, two
+  changed schedule/duration/severity regime seeds, four days each, 161280 telemetry rows.
+- Training/calibration/validation/temporal-test stages, fixed prevalence/logistic/boosting
+  candidates, measured sigmoid calibration and validation-frozen thresholds.
+- Immutable model/config/schema/version/hash artefacts and keyed prediction outputs.
+- Row metrics, reliability bins, incident detection/lead, episode precision/false-alert burden,
+  whole-run uncertainty and per-service diagnostics. No active/recovery truth suppression.
+- CLI corpus/training/evaluation and saved-evidence regeneration; five reviewed PNGs,
+  machine-readable tables/manifests and generated report under `evidence/batch_b/generated`.
+- 133 passing tests, including stage isolation and execution-order audit before holdout scoring.
+- Feature/evaluation protocols, decisions, completion checklist, README and roadmap updated.
 
-## Current commands
+## Frozen result and interpretation
 
-From the repository root, once Python 3.14 is available:
+Selected `boosting_raw`, threshold `0.5700000000000001`. Raw family selected by validation AP;
+sigmoid was not selected because it failed to improve both validation Brier and log loss.
+
+| Partition | Rows / positives | AP | Brier | Detected / scorable | Mean lead (m) | False episodes / service-day |
+| --- | --- | --- | --- | --- | --- | --- |
+| validation | 10068 / 597 | 0.9199532597153073 | 0.014008618734939667 | 60 / 60 | 8.199379172222221 | 0.5721096543504172 |
+| temporal_test | 13524 / 720 | 0.8800795523231142 | 0.01584777333970374 | 70 / 72 | 8.29760032904762 | 1.2777284826974267 |
+| heldout_seed | 45880 / 2560 | 0.9133911284430838 | 0.013834647196806493 | 249 / 256 | 8.50489691900937 | 1.0671316477768091 |
+| heldout_regime | 45880 / 2060 | 0.4512755938169232 | 0.03491791750138341 | 133 / 206 | 6.760603341854637 | 2.3853530950305144 |
+
+These are controlled synthetic feasibility results. The changed regime causes a substantial
+ranking/detection loss, and all final partitions exceed the validation false-episode budget.
+Always-on baselines expose a weakness in an episode-only budget: their matched long episodes
+hide excessive burden unless alert minutes and row precision are considered. The rule and
+choices were not revised after holdout inspection. No production operating recommendation.
+
+## Validation and reproducibility
+
+- `pytest -q`: 133 passed, 12.07s; one macOS joblib core-discovery fallback warning.
+- `ruff check .` / `ruff format --check .`: pass; `python -m pip check`: no broken requirements.
+- Python 3.14.0, macOS arm64; exact runtime versions in requirements-lock.txt and evidence.
+- Full CLI generation/evaluation passed twice. All five models, keyed predictions, frozen
+  decisions and numerical evaluation outputs are byte-identical across runs.
+- Evidence-only CLI reproduced all 26 compact files byte-for-byte.
+- All five final figures were visually reviewed; calibration layout corrected and rechecked.
+- GitHub-hosted CI is configured but **unrun**; local success is not remote CI success.
+
+## Gate and review entry points
+
+**Batch B's requested local acceptance gate passes.** The complete 16-item checklist, exact
+commands, validation details, module list and limitations are in
+[docs/BATCH_B_COMPLETION.md](docs/BATCH_B_COMPLETION.md).
+
+- [Generated evidence/report](evidence/batch_b/generated/REPORT.md)
+- [Feature contract](docs/FEATURE_CONTRACT.md)
+- [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
+- [Decisions](DECISIONS.md)
+- [Batch A completion record](docs/BATCH_A_COMPLETION.md)
+
+Raw corpus: `data/batch_b/`; final experiment: `data/batch_b_experiment/` (both Git-ignored).
+Initial audit outputs and repeated evidence remain ignored under `data/batch_b_initial_*`
+and `data/batch_b_repeated_evidence`. No output was silently overwritten.
+
+## Commands
 
 ```bash
-python3.14 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements-lock.txt
-python -m pip install --no-deps --no-build-isolation -e '.[dev]'
-reliability generate --config configs/batch_a.json --output data/my_run
-reliability evidence --dataset data/my_run --output evidence/my_run
+reliability batch-b --config configs/batch_b.json --corpus data/batch_b --output data/batch_b_next --evidence data/batch_b_next_evidence
 pytest -q
 ruff check .
 ruff format --check .
 python -m pip check
 ```
 
-Choose unused output paths on subsequent runs. The existing `.venv` is installed and ready.
+Use unused output/evidence paths. Existing corpus bundles are reused only after strict
+configuration/hash/semantic validation. See README for fresh setup and evidence-only commands.
 
-## Dataset / evidence status
+## Git and next step
 
-The local raw reference is `data/batch_a/`, intentionally ignored by Git. Its coverage is
-2026-01-05 00:00 UTC to 2026-01-07 00:00 UTC (exclusive), sampled every minute, seed 42.
-There are 11,520 telemetry rows and matching labels across four services, with 16 incidents
-(four per service, four per type), each with a 30-minute active duration. Generated precursor
-and recovery durations are 25 and 20 minutes respectively.
+Branch `batch-b-ml-evaluation`, based on completed Batch A `f04274f`. Two coherent local
+Batch B commits cover implementation/tests and evidence/documentation. No remote, PR, push,
+merge or deployment was performed. See `git log -2 --oneline` for commit identifiers.
 
-Labels: **160 positive, 11,320 negative, 40 unknown**. Positive fraction among observed labels:
-**1.3937%**. There are 60 rows lacking full history; **11,420** have both full history and horizon
-(positive fraction **1.4011%**). No incomplete horizon is labelled negative.
-
-[evidence/batch_a/generated/REPORT.md](evidence/batch_a/generated/REPORT.md) is the saved review
-entry point. All seven PNGs were visually inspected for legibility and expected mechanics.
-Two fresh CLI simulations produced exactly equal tables, configuration, manifest and all four
-hashed files against each other and the saved reference. All 13 files from each fresh evidence
-run matched the saved evidence byte-for-byte. Generated evidence includes source hashes and
-environment versions; no visual reinspection was necessary because no output differed.
-
-## Validation / repository status
-
-- `pytest -q --tb=short`: **71 passed** (3.57 seconds on the final local test run).
-- `ruff check .`: passed; `ruff format --check .`: passed.
-- `python -m pip check`: no broken requirements.
-- Editable package installation and both default CLI commands succeeded.
-- Local environment: macOS arm64, Python 3.14.0; dependencies in requirements-lock.txt.
-- CI: `.github/workflows/ci.yml` targets Linux/Python 3.14, runs checks and generates/upload evidence.
-  Equivalent application/check commands passed locally. GitHub-hosted execution has **not** run.
-- Git branch `feat/batch-a-foundation` contains the initial Batch A commit and focused telemetry-grid
-  hardening. No remote, PR or deployment was created. Only intentional project files are visible
-  to Git; virtualenv, caches, packaging output, audit outputs and raw data are ignored.
-
-## Known limitations / intentionally deferred
-
-Synthetic equations, schedule structure and small event count do not establish real forecasting
-ability. Onset is a controlled fault-pressure definition rather than a measured SLO. No service
-failure propagation, within-service overlapping faults, late/missing telemetry or real data.
-Normal aggregate metrics and latency tails are assumptions. Reproduction across library/platform
-changes is not byte-guaranteed. Only Python 3.14 and the recorded local environment were tested;
-Linux results await remote CI. The dependency snapshot pins versions without wheel hashes.
-
-Features/models, time-split policy details, calibration/decision thresholds, API, PostgreSQL,
-Docker, deployment, monitoring and external validation are intentionally deferred. No empty
-packages imply these features exist.
-
-## Batch A acceptance gate
-
-### Foundation
-
-- [x] Professional Python repository and executable package.
-- [x] Cohesive package boundaries support later stages without empty boilerplate.
-- [x] Central configuration and accurate implementation documentation.
-
-### Simulation
-
-- [x] Multiple service profiles and normal time-dependent telemetry.
-- [x] Four differentiated developing incident scenarios.
-- [x] Precursors and recovery, explicit lifecycle and separate ground truth.
-
-### Data validity
-
-- [x] Documented schema, units, timestamps and coverage semantics.
-- [x] Operational fields separated from simulation metadata and future targets.
-- [x] Correct future labels, exact boundary tests and unknown incomplete horizons.
-- [x] Read-time truth/label semantics, configuration coverage and service membership enforced.
-- [x] History completeness requires every expected configured grid timestamp for that service;
-  internal/boundary gaps, off-grid replacements and cross-service substitutions are detected.
-- [x] Bundle telemetry independently matches every configured timestamp/service key exactly and
-  uses canonical ordering, even when downstream labels/history flags have been recomputed.
-- [x] Fixed-seed reproducibility, including full reference bundle comparison.
-- [x] Operational allowlist and counterfactual tests guard obvious leakage.
-
-### Evidence
-
-- [x] Reproducible command operating on verified saved data.
-- [x] Normal and all scenario plots; statistics, incident durations/counts, class balance and correlations.
-- [x] Saved and visually reviewed artefacts, with explicit synthetic-data limitations.
-
-### Engineering quality
-
-- [x] Meaningful unit tests and small end-to-end CLI/Parquet/evidence tests.
-- [x] All tests and quality checks pass locally.
-- [x] CI configured; its executable application/check steps pass locally to the extent possible.
-- [x] Documented installation and execution commands were exercised.
-
-### State management
-
-- [x] State reflects the delivered implementation and actual validation.
-- [x] Roadmap identifies Batch B as next; Batch B has not begun.
-- [x] Decision log records initial choices and their trade-offs.
-
-**Unmet Batch A criteria: none under the requested local validation scope.** Remote CI is an
-explicit verification still pending after a repository push, not a claimed successful run.
-
-## Exact next starting point: Batch B
-
-Read docs/DATA_CONTRACT.md and docs/SIMULATION.md, then design an allowlisted, per-service
-feature contract over `(t−15m,t]` using only telemetry. Specify chronological partitions and
-boundary purging before computing features or fitting preprocessing. Join labels by service/time,
-exclude incomplete histories/horizons, and plan held-out seeds/schedule regimes with substantially
-more events. Establish a naive forecast baseline and incident-level metrics before stronger models.
+Review Batch B findings before planning Batch C. A revised statistical operating rule needs
+fresh holdouts and a hard alert-burden constraint; existing holdouts cannot be reused for tuning.
+API, PostgreSQL, Docker, external validation, deployment and monitoring remain deferred.

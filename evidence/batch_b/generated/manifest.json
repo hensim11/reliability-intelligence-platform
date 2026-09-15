@@ -1,0 +1,30 @@
+{
+  "schema_version": "batch-b-1.0",
+  "sha256": {
+    "REPORT.md": "a7d1890600033175a5da60228c0758959a8aac360d69fe35911beda596da50d1",
+    "boundaries.csv": "9e47df3ceafb3d329897573986d1bc55c3c319c62e8e963bb376bc1cba88df69",
+    "calibration.csv": "7032d6eb570b76dad0be942c98f005e586a59ec9040f5b9753df66a4999f07c4",
+    "calibration.png": "ad34985599c78e70a1a1069d25cb005c46e6e4d0848b7f2a04f9e025443f8be3",
+    "coefficients.csv": "69556af93999f3af558a37af87e3ba33ff69d49db271081171f0b55d644ae3e8",
+    "coefficients.png": "62dd38c283cf1a17c2764c752af3e02748374b2d63e1b1dde1c57eb35f567429",
+    "config.json": "2dee5b8d73faed6f83f803db308d40781979ec24fb6b7b4ee7a2e27177e792a9",
+    "corpus.csv": "7cbfac6cf7c283600638bb8ed17c978f9d8e566b6d5c0c6575d4f463784fe5ae",
+    "corpus_manifests.json": "e22270185788cf8b3f20731b6742e07ddcdc19551a6bcca566d8d8ec8de0e4a0",
+    "environment.json": "e4a78a77b0c62e6c1d064d4b5521e28f0602d4190927933e2c288b2bf8b2e402",
+    "event_counts.csv": "5f103ca00b51370f142867517a883c8ea143f09e1ddaf630cccedb5faba9724a",
+    "experiment_manifest.json": "5c0b4e8fde17cd164046660a1e4d478235f498f3664f9359be66a9fa885f29aa",
+    "feature_schema.json": "93d4e4ff402f7c483f44d06f29901669fd8cbe5091172b224b512c9335b7fb53",
+    "incident_results.csv": "9778d27f9d9e536277f2a390ba831c9716038523fc84c5cd105065333aa59dcb",
+    "metrics.csv": "ce6a31c828c11fe9be5c7805fd6caf3b1448ebbf90365efa9cd4c684435764c7",
+    "operations.png": "0106c2a24233698260434374002b4833581a6c69d6a1d2ecf61f9261406749e8",
+    "precision_recall.png": "b1c489ae982b2e36bd1a99f3978982eb50507b804ea43688c65e69e11fa65ed2",
+    "selection.json": "100501bdc9ed74a24f0ea7fbec761e9d3e9b03ab83f79d9378a0422417a5f350",
+    "service_metrics.csv": "527134d6377a8861741fb45bb5df1f59d61efd32c0c338d2d27adb4a8fa28a76",
+    "splits.csv": "23b15c83b28873f19d939a0aabfc2c9bc7fe1b22fcbd121d89320b62983cfda3",
+    "summary.json": "a2c8049cf21d4e338c2a77a2a0f96cecc8d3fb2dc23b2cbc407e38ae6bcc5adf",
+    "thresholds.csv": "497f89c373c180a6222489316d37edcdbedc6a37500987a262dd4eed4b37cd61",
+    "thresholds.png": "41dfe622442bcb050e880d8a79a04c4fd3b36d24e26d7835225549732c42a791",
+    "uncertainty.json": "b054c7aae9b101701cb3bd4bf7c97c90c30736b5e4a755f23c6fde6c2f3ab848",
+    "validation_candidates.csv": "c0c3e61743795a434197c3ffdb4ad89502f90bb1cb9dfdd5c49382052b0f204a"
+  }
+}
