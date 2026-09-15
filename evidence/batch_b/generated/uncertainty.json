@@ -1,0 +1,66 @@
+{
+  "heldout_regime": {
+    "groups": 2,
+    "repeats": 200,
+    "seed": 2026,
+    "unit": "whole simulation run (all services together)",
+    "intervals": {
+      "average_precision": [
+        0.42769798372709883,
+        0.4813457349329473
+      ],
+      "incident_detection_rate": [
+        0.6407766990291263,
+        0.6504854368932039
+      ]
+    }
+  },
+  "heldout_seed": {
+    "groups": 2,
+    "repeats": 200,
+    "seed": 2026,
+    "unit": "whole simulation run (all services together)",
+    "intervals": {
+      "average_precision": [
+        0.901531710389962,
+        0.9247237813966983
+      ],
+      "incident_detection_rate": [
+        0.953125,
+        0.9921875
+      ]
+    }
+  },
+  "temporal_test": {
+    "groups": 3,
+    "repeats": 200,
+    "seed": 2026,
+    "unit": "whole simulation run (all services together)",
+    "intervals": {
+      "average_precision": [
+        0.8649491811777436,
+        0.9077197018047014
+      ],
+      "incident_detection_rate": [
+        0.9583333333333334,
+        1.0
+      ]
+    }
+  },
+  "validation": {
+    "groups": 3,
+    "repeats": 200,
+    "seed": 2026,
+    "unit": "whole simulation run (all services together)",
+    "intervals": {
+      "average_precision": [
+        0.9040313732061716,
+        0.9297255748673727
+      ],
+      "incident_detection_rate": [
+        1.0,
+        1.0
+      ]
+    }
+  }
+}

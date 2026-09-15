@@ -1,0 +1,177 @@
+{
+  "development-101": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 128,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "049a45c6552f36a2e7cf5f695b4a204820affa7e07ba25a8026ffda5e3f7b266",
+      "incidents.parquet": "d859cbcf2fa9e8380bf096ef4f48a432164f51df86c1f30a16d608b5d9d461a0",
+      "labels.parquet": "052d361ea78c599d26c4d7375f37993aaf60503b2656e974316ed56b5f99e70c",
+      "config.json": "ac4a11a7d86818865f6fd19d3e0a053ee6320c97f39c7f3ccdafbd288bd20ee6"
+    }
+  },
+  "development-202": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 128,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "ce3f593c89c02ab3c81362032465a4d4a711e093cdadd46f6a7ee9eee258dbb7",
+      "incidents.parquet": "f78839d903f8d25ca281bedefd6f7be73c8c994b5ae4aed0aa1a3829eed9db37",
+      "labels.parquet": "e09c1f9e75cf2807c075714992b57f1c6327f056ae14aedc39cb69b6061ffeff",
+      "config.json": "91860903552fa9621a864c9c7549d0792d04298bdfae70d79d982d86ab663db0"
+    }
+  },
+  "development-303": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 128,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "d9944e437bb493a64eec7a6d9fde5b8efda2e29bca05fab7db67336c8d042606",
+      "incidents.parquet": "d28af9dcd3cae6c337d05709bd0be1f34e49587226ec6accfa464bdf196f0cd1",
+      "labels.parquet": "73c33658817bcaa446ea775a939ec19c2a1f6364723310f317b6fee47a37ef89",
+      "config.json": "4f1fb14c8bb29387d2607b8518ee1b3f4ff6095d5ae161295e95113ab975f2da"
+    }
+  },
+  "heldout_seed-404": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 128,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "cfa74615a98b763d2050b39674aab82059eaec42376431ee98aee127f98d0dc1",
+      "incidents.parquet": "fa9fe9aa2d83d64bfa0f2edbb67f6c30c94bc4bf0cb1f7bc38ce2f705d24d403",
+      "labels.parquet": "ec062ad21849513731378090df148ba33fccb3b529b5dc27f83432c8badbc74d",
+      "config.json": "542f8300ec243ae9c9fe671b6d5be6049f19b15b2a5383d61edc38d65d2b00a4"
+    }
+  },
+  "heldout_seed-505": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 128,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "5fd16169acd6c177c4fc40c46c6f64fb2d961d9b37b7d610c10eb5b60bba7f6e",
+      "incidents.parquet": "b0570ad7e2dacd27500a197396a38d706aab97f4e48ee3ccd0a597bddb100c1a",
+      "labels.parquet": "54d9426fb8fce7d568d32bc1d030da05d5e636f36f36d8092c7b23e690705bd6",
+      "config.json": "5a48b81338296e7549a5b75dd4eca4f545e1f55b28ca30a42df78a1da110a696"
+    }
+  },
+  "heldout_regime-606": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 103,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "66ac5cf9596276329497bf66a4cbbcf169f19226a378d91b1ccca6a84af044d1",
+      "incidents.parquet": "04f4a97c7ef88d6dd99e709f46ff534c51d8fada30d214c6735c0b03c4f2d0c3",
+      "labels.parquet": "c9cdf51af17abd447dcff17af1b7f4d662c13ca4e8641e61b20c3583bbecbc27",
+      "config.json": "55818f8e021d6163b0819a5b4516da7f096be5f3375249c4dd0cf17f0b07d33b"
+    }
+  },
+  "heldout_regime-707": {
+    "schema_version": "1.0",
+    "package_version": "0.1.0",
+    "synthetic": true,
+    "python_version": "3.14.0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.1",
+      "matplotlib": "3.11.2"
+    },
+    "coverage_start": "2026-01-05T00:00:00+00:00",
+    "coverage_end_exclusive": "2026-01-09T00:00:00+00:00",
+    "rows": {
+      "telemetry": 23040,
+      "incidents": 103,
+      "labels": 23040
+    },
+    "sha256": {
+      "telemetry.parquet": "11ab6ef90d15708f30cc82482ce7d1421ec2269fda81cf31423f70a3e0cf78a4",
+      "incidents.parquet": "c613c25d71a256d81a6deb61acba58c1c812f9399b27e940ea6981249d12a792",
+      "labels.parquet": "0f170061b1d27f65c4c2f10c8d98d0457115dc99bcec85ff3b5318489566eb17",
+      "config.json": "a445f1ddb74b7cb8790b740ab239c46944f1403e0d458d136f83cb3c0936170b"
+    }
+  }
+}

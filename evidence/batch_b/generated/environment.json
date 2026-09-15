@@ -1,0 +1,34 @@
+{
+  "python": "3.14.0",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "dependencies": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.6.0"
+  },
+  "source_sha256": {
+    "src/reliability_intelligence/__init__.py": "4a8100bb24ca6011cd4ff2d9e890a9ff75372d13350d7dd83b566bb25bde0732",
+    "src/reliability_intelligence/__main__.py": "b06c576384313f08be8ad28864a0a28bd18bfde3477dd1bd195586877861959e",
+    "src/reliability_intelligence/cli.py": "9a13115eaec43dcab405dd48bc00f4e3072d514e985c92c6e2037fc175efa20b",
+    "src/reliability_intelligence/config.py": "0e7db6262f846f25dd7970f0aebbf9299903b0ab9e198d49885b92e64ddefcdc",
+    "src/reliability_intelligence/evaluation.py": "0d81ff920e5d2769f8178b215991e9fbe2a782428886fbee607f3cc0079d0b96",
+    "src/reliability_intelligence/evidence.py": "9734a4bd5a1c359efefee36d1f2929d58051032976c13e6c3d053140ac90e9b9",
+    "src/reliability_intelligence/experiment.py": "7587daee5be2f2c7066bd4f2c2dce5bc0fd872ba6aff2946c346cf6026d4b259",
+    "src/reliability_intelligence/features.py": "ee7996170a20645b5f35d35c84c6e491fe57a0575d17c058fb456b216d2ed83f",
+    "src/reliability_intelligence/labels.py": "77cd72af66b4a2ccc54531f95eed5ad96816a666009b592bd3f6b3e4112b2c5f",
+    "src/reliability_intelligence/ml_evidence.py": "1bf79b3dd503b69aaf78344f86da2a5d1ba44b852207bc5142cdb61a810fa8ce",
+    "src/reliability_intelligence/models.py": "3f93670f3225830c3511d9c826ecee1eef8b1c0f94833de209c4ec3722728269",
+    "src/reliability_intelligence/schemas.py": "20509f333e69c4b3b9c366ca8ee6aa7208ab19917b69819edd0df1123a248e37",
+    "src/reliability_intelligence/simulation/__init__.py": "58a88bd9ff9cae6390a0bc71dffb2fcae13cbea5716d963a305ed87e542992fe",
+    "src/reliability_intelligence/simulation/engine.py": "0cf9330a9739b4d8e339933e4494f2ccb6de8b230920ffbce2cdc5a279078c7d",
+    "src/reliability_intelligence/simulation/incidents.py": "6ecec49deade76b5b2bef62b35d17a6d63efc684182d323c71582109304a6e77",
+    "src/reliability_intelligence/storage.py": "70b53ae394a759b263e5f8dfc0f1a2a4419398eced30fd633168dc4887ce5b4b",
+    "src/reliability_intelligence/telemetry_grid.py": "c8107005f41351e3c627a7729e9398d4f2fe41a1e7f45b4ccba4418887d7611b"
+  },
+  "model_seed": 2026
+}

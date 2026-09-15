@@ -1,0 +1,18 @@
+{
+  "candidate_thresholds": {
+    "prevalence_raw": 0.05,
+    "logistic_raw": 0.0,
+    "logistic_sigmoid": 0.0,
+    "boosting_raw": 0.5700000000000001,
+    "boosting_sigmoid": 0.61
+  },
+  "candidate": "boosting_raw",
+  "threshold": 0.5700000000000001,
+  "false_alert_budget": 1.0,
+  "family_rule": "highest raw validation average precision; ties use log loss then name",
+  "calibration_rule": "sigmoid only if validation Brier AND log loss strictly improve",
+  "threshold_rule": "max detection within budget; tie: fewer alert minutes, then higher threshold",
+  "fit_partition": "train",
+  "calibration_partition": "calibration",
+  "selection_partition": "validation"
+}

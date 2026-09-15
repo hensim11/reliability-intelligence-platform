@@ -11,7 +11,7 @@ behaviour, four incident lifecycles, separate Parquet tables, evidence, tests an
 censoring; saved data-derived evidence; passing local checks; accurate state and decisions.
 Current gate results are in PROJECT_STATE.md.
 
-## Batch B — ML + Evaluation (next)
+## Batch B — ML + Evaluation (complete locally)
 
 **Goal:** assess whether preceding telemetry supports calibrated near-term incident forecasting.
 
@@ -23,10 +23,13 @@ incident-level recall, warning lead time, false alarms and precision/recall evid
 or label windows overlap partitions; preprocessing fitted only on training data; untouched test
 period and held-out seeds/schedule regimes; reproducible comparisons and honest limits.
 
-Start by specifying the feature contract and time-split eligibility from the three Batch A tables.
-Do not treat 16 generated events as an adequate model-selection dataset.
+Delivered: 49 telemetry-only features, 846-event corpus, purged four-stage split, fixed prevalence /
+logistic / boosting candidates, measured calibration, frozen operating points, five reviewed plots,
+row/incident metrics and reproducible immutable outputs. See docs/BATCH_B_COMPLETION.md.
+The schedule holdout exposes substantial degradation and the alert budget does not transfer;
+the gate establishes controlled evaluation capability, not production-performance suitability.
 
-## Batch C — Production Serving + Persistence
+## Batch C — Production Serving + Persistence (next; not started)
 
 **Goal:** reusable inference with durable inputs and outputs.
 

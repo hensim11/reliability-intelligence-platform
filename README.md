@@ -4,17 +4,17 @@ A production-style software/ML engineering project for estimating whether a serv
 **enter an incident within the next 10 minutes**, using its most recent **15 minutes of
 available telemetry**.
 
-**Current status: Batch A — foundation and synthetic telemetry system.** The package generates
-time-dependent signals for four fictional SaaS services, controlled incident lifecycles,
-future-start labels and reproducible evidence. It does not yet train models, serve predictions,
-connect to PostgreSQL or deploy infrastructure. Synthetic results are not evidence of real-world
-outage prediction.
+**Current status: Batch B — ML and evaluation implemented and locally verified.** The
+package generates validated synthetic telemetry, builds causal features, trains fixed model
+candidates and evaluates frozen choices on temporal and seed/schedule holdouts. The changed
+schedule regime exposes substantial performance loss; synthetic feasibility is not real-world
+forecasting validity. API, PostgreSQL and deployment remain deferred.
 
 ## Why this exists
 
 Useful incident prediction requires trustworthy temporal data, defensible targets, reliable
-software and operational evaluation. This first milestone makes those assumptions inspectable
-before modelling begins. The final system will support on-call investigation with calibrated
+software and operational evaluation. The foundation and ML workflow make those assumptions inspectable
+through reproducible data and controlled evaluation. The final system will support on-call investigation with calibrated
 risk, durable predictions and monitoring; see [the project vision](PROJECT_VISION.md).
 
 ## Current architecture
@@ -36,7 +36,7 @@ Parquet bundle + resolved config + integrity manifest
 
 Inference-time fields are strictly separate from incident metadata and future labels.
 Starts in `(t, t+10m]` count as positives. Incomplete future coverage produces null targets,
-not negatives. No feature engineering or ground-truth-derived predictor is exported.
+not negatives. The separate ML workflow builds only allowlisted operational features; truth never enters predictors.
 
 ## Setup
 
@@ -84,6 +84,32 @@ The delivered reference report is [Batch A evidence](evidence/batch_a/generated/
 Its local raw bundle is `data/batch_a/`; raw generated runs are Git-ignored and reproducible from
 configuration. The small reference plots/reports are intended for version control.
 
+## Batch B: reproduce ML and evaluation
+
+```bash
+reliability batch-b --config configs/batch_b.json --corpus data/batch_b --output data/batch_b_experiment --evidence evidence/batch_b/generated
+```
+
+This command generates or strictly verifies/reuses seven independent four-day bundles (846
+incidents, 161,280 rows), fits training-only prevalence/logistic/boosting candidates, compares
+calibration and selects thresholds on separate chronological stages, then scores frozen choices.
+Use unused experiment/evidence paths on repeat runs. Raw corpus, model binaries and all keyed
+predictions are Git-ignored; compact configuration, tables, five plots and hashes are committed.
+
+To regenerate evidence from saved predictions without fitting:
+
+```bash
+reliability batch-b-evidence --experiment data/batch_b_experiment --output evidence/batch_b/repeated
+```
+
+Start with [the generated Batch B report](evidence/batch_b/generated/REPORT.md),
+[feature contract](docs/FEATURE_CONTRACT.md), [evaluation protocol](docs/EVALUATION_PROTOCOL.md)
+and [completion/checklist](docs/BATCH_B_COMPLETION.md). Raw boosting was selected. Its temporal-test
+AP is 0.8800795523231142 and changed-regime AP is 0.4512755938169232. Final false-alert frequencies
+exceed the validation budget, so the selected threshold is an experimental reference, not a
+production operating recommendation. Always-on baselines expose an episode-budget weakness;
+alert burden must accompany detection/episode precision.
+
 ## Tests and quality
 
 ```bash
@@ -112,15 +138,20 @@ src/reliability_intelligence/
   labels.py                     offline future-start target generation
   storage.py                    immutable Parquet bundles and hash checks
   evidence.py                   data-derived plots, statistics and report
+  features.py                   exact causal feature and purge contracts
+  models.py                     stage-restricted fitting and persisted inference
+  evaluation.py                 row, episode, event and uncertainty scoring
+  experiment.py                 corpus, partitions and immutable experiment output
+  ml_evidence.py                saved ML plots, tables and report
   cli.py, __main__.py            executable interface
 tests/                         unit and integration tests
 data/                          ignored generated raw bundles; usage README
-evidence/batch_a/              saved reference evidence and validation record
+evidence/batch_a/, batch_b/    saved reference evidence and validation records
 docs/                          data contract, mechanisms, completion report
 .github/workflows/ci.yml        tests/quality/evidence CI
 ```
 
-There are no empty API/model/monitoring packages. Later capabilities can be added alongside
+There are no empty API/monitoring packages. Later capabilities can be added alongside
 these cohesive modules without relocating the simulator.
 
 ## Roadmap and limits
@@ -134,4 +165,4 @@ faults within a service. Sixteen synthetic events are a review fixture, not an a
 selection corpus. Onset is a controlled fault-pressure boundary, not a universal production SLO.
 
 Review [decisions](DECISIONS.md), [current state](PROJECT_STATE.md) and the
-[Batch A completion report](docs/BATCH_A_COMPLETION.md) before starting Batch B.
+[Batch A completion report](docs/BATCH_A_COMPLETION.md) before planning the next batch. Batch C has not started.
