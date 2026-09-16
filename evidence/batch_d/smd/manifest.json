@@ -1,0 +1,14 @@
+{
+  "schema_version": "batch-d-1",
+  "files": {
+    "REPORT.md": "fb61b569e42c719cd7618205f574c4a47c2b213817721014bd51f0f643d5e32a",
+    "environment.json": "1752f593e2204408800656a0e48776bfe6bc393208db9907c001839e92aa4508",
+    "external_results.png": "4f87ab100e2462bf5ddb0fd36e12d58ca67bacff3e4c9d77bf1521b5e7830fbb",
+    "per_machine.csv": "74863c0caadfbc0445fbf2bec155b2471068970f611cb4c5791fcb821b69e3a8",
+    "pooled.csv": "17f03a121f7e16883c6de7748e76e7f35ab638f42799dd22e77b4bd9f73ca33f",
+    "protocol.json": "e6a40e4303931c12a1d5f4708949043cb848987c01190f56fd25680b72f9ee10",
+    "results.json": "178a044673df1af905fec7652ef84ef52d6c8a1ca3f333a38cead2979b4d9646",
+    "source.json": "01ae73e8cf0d2f566a695108bcedefdaa5f326a32e5c840ed2c32e3eff3ec3c5"
+  },
+  "sha256": "1867b70abb519bae23a0bbe5634c3681c83174d02f72328891df4064975768ca"
+}

@@ -29,7 +29,7 @@ row/incident metrics and reproducible immutable outputs. See docs/BATCH_B_COMPLE
 The schedule holdout exposes substantial degradation and the alert budget does not transfer;
 the gate establishes controlled evaluation capability, not production-performance suitability.
 
-## Batch C — Production Serving + Persistence (locally accepted)
+## Batch C — Production Serving + Persistence (merged and locally accepted)
 
 **Goal:** reusable inference with durable inputs and outputs.
 
@@ -44,10 +44,9 @@ explicit retrospective availability cutoff, shared Batch B inference, SQL operat
 real PostgreSQL integration and HTTP evidence, concurrency exercise, and local Compose files.
 Native and **clean-volume Docker Compose acceptance pass**, including restart durability,
 idempotency, SQL analytics and 205 tests with zero skips. Gate 14 is closed; hosted CI and
-PR review remain separate workflow checks. See docs/BATCH_C_COMPLETION.md. No merge or
-Batch D/E completion is implied.
+PR review completed in PR #2, merged at `450a7d6`. See docs/BATCH_C_COMPLETION.md for historical evidence.
 
-## Batch D — Monitoring + Reliability + External Validation
+## Batch D — Monitoring + Reliability + External Validation (locally accepted)
 
 **Goal:** test operational and statistical behaviour beyond controlled scenarios.
 
@@ -56,6 +55,12 @@ failure exercises; external telemetry study with an explicit mapping of metrics 
 
 **Gate:** observable failures, verifiable delayed outcomes, documented domain mismatch, no unsupported
 transfer claims, reproducible evidence of limitations and monitoring behaviour.
+
+Delivered: immutable training reference and PostgreSQL snapshots, bounded Prometheus metrics,
+certified delayed outcomes, actual database/model failure exercises and pinned all-machine SMD
+ordinal study. 238 tests with zero skips, clean-volume Compose, migration and reproducibility gates
+pass. External results are weak and domain mismatch is explicit; no production validity or direct
+transfer claim. See docs/BATCH_D_COMPLETION.md. Batch D PR remains unmerged for review.
 
 ## Batch E — Hardening + Deployment + Portfolio Release
 

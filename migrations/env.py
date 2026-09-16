@@ -4,6 +4,7 @@ import os
 
 from alembic import context
 
+import reliability_intelligence.monitoring.schema  # noqa: F401
 from reliability_intelligence.serving.database import make_engine, metadata
 
 config = context.config

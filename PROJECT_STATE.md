@@ -1,10 +1,12 @@
 # Project state
 
-Updated: 2026-09-16. **Batch C is locally accepted: native and clean-volume Docker Compose
-validation pass, including Gate 14.** Hosted CI and PR review are separate workflow checks.
+Updated: 2026-09-16. **Batch D's original local acceptance and committed evidence are attributable
+to implementation `92ebb54`; the current reviewed implementation is `1248c9e`.** The review fixes
+were validated separately against PostgreSQL: **241 passed, 0 skipped**. Batch C merged on main at
+`450a7d6`; Batch D PR review remains open and separate from local acceptance.
 
 Target unchanged: use telemetry in `(t−15m,t]` to estimate incident starts in `(t,t+10m]`.
-Advisory investigation only; Batch D/E and production-performance claims remain out of scope.
+Advisory investigation only; Batch E and production-performance claims remain out of scope.
 
 ## Delivered
 
@@ -74,14 +76,52 @@ choices were not revised after holdout inspection. No production operating recom
 4. [Decisions](DECISIONS.md), especially C01–C12.
 5. [Batch B completion/findings](docs/BATCH_B_COMPLETION.md).
 
-Branch `batch-c-production-serving-persistence`, starting at accepted Batch B merge `fb7cfa8`.
-Implementation `05d987d`, native evidence `d986a83`, Compose runner `42f4061`;
-subsequent documentation/evidence commits are identifiable in git history.
+## Batch D original acceptance evidence (`92ebb54`)
 
-**Next workflow action:** verify CI for the final evidence commit and review the PR into main.
-The PR must remain unmerged. Batch D has not started; no external deployment was performed.
-Monitoring, external validation and deployment remain deferred. Any statistical revision needs
-fresh holdouts; existing Batch B holdouts cannot be reused for tuning.
+- Branch `batch-d-monitoring-reliability-external-validation` from clean updated main `450a7d6`.
+- Training-only immutable monitoring reference: 34,260 rows, 49 features plus frozen probability;
+  deterministic boundaries/heuristic configuration, model identity and sealed source/file hashes.
+- Alembic d001: immutable monitoring snapshots and separate incident starts/coverage certificates.
+  Trusted local transactional imports, certified delayed labels, bounded read-only retrieval.
+- Process-local low-cardinality Prometheus metrics; liveness/readiness separation preserved.
+- Clean-volume Compose evidence: **238 passed, 0 skips, 15.83 s**; lint, formatting (76 files),
+  dependency integrity and migration upgrade/repeat/downgrade/re-upgrade/schema drift pass.
+- Real outage: live 200, ready 503, predictions 503, metrics 200; recovery and restart verified.
+  Durable counts: 12,380 telemetry, 520 predictions, 1 incident, 1 certificate, 3 snapshots.
+- Reference-like monitoring: 11,460 feature samples, 400 probabilities; all 50 distributions stable,
+  probability PSI 0.0482073989063377. Shift: 800 feature samples, 120 probabilities; all 50 severe,
+  probability PSI 2.0296097096569135. Delayed fixture: 30 eligible, 1 positive, 0 detected.
+- Original Batch C HTTP parity: 121 windows/all 49 features exact, maximum probability error 0.0;
+  same-key race gives 1 created/31 reused. These remain synthetic/local diagnostics.
+- All 28 SMD machines validated at pinned upstream commit. Separate step-based study: logistic
+  available on 22 machines, final AP 0.005968969761866583, 1/85 starts, 424 false episodes and
+  2,777 alert rows. Six machines have no development-training positive starts. Prevalence baseline
+  covers all 28, detects 0/108. Differing denominators and undefined metrics are explicit.
+- Reference (2 files), study (5) and compact external export (9) regenerate byte-identically in
+  the recorded environment. Operational clocks, UUIDs and latencies intentionally vary.
+
+## Batch D reviewed implementation (`1248c9e`)
+
+Review fixes canonicalize timezone-aware snapshot cutoffs to UTC before identity, queries and
+persistence; preserve sub-minute precision; and observe unexpected HTTP failures with bounded
+`5xx`, duration and rejection metrics before re-raising. Monitoring documentation now accurately
+describes finite underflow/overflow binning and non-finite invalid observations. This source-code
+follow-up passed the full disposable-PostgreSQL suite separately: **241 passed, 0 skipped**. It did
+not alter the immutable `92ebb54` evidence or its measured results.
+
+See [Batch D completion/gates](docs/BATCH_D_COMPLETION.md), [monitoring](docs/MONITORING.md),
+[external study](docs/EXTERNAL_VALIDATION.md) and [evidence index](evidence/batch_d/README.md).
+
+## Remaining limitations and Batch E
+
+No real incident-prediction validity, direct model transfer or ten-minute SMD warning claim.
+Drift thresholds are operational heuristics; snapshots require explicit CLI scheduling. Application
+counters reset on restart and cannot supply durable rejected-request history. Registry completeness
+is trusted certification; false certificates need a future versioned correction policy. Historical
+predictions remain retrospective. Authentication, TLS, deployment, backups/recovery policy,
+production SLOs and operator response automation remain Batch E. No deployment occurred.
+
+The Batch D PR must remain unmerged. Existing Batch B holdouts cannot be reused for tuning.
 
 Generated datasets/models remain ignored under `data/`. Compact Batch C evidence is under
 `evidence/batch_c/reference`; repeat Batch B evidence is ignored under `data/batch_c_batch_b_recheck`.

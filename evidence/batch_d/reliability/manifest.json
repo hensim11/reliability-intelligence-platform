@@ -1,0 +1,8 @@
+{
+  "schema_version": "batch-d-1",
+  "files": {
+    "compose_validation.json": "7566703257e8b568ed888463e859077bfe04ba1008dd317de8dafb465152ec68",
+    "reliability.json": "ed478a9f0981d72acad395905961a23fe3a7c98eaf51fc45e377f647010180da"
+  },
+  "sha256": "2386f7b99bace08ab490ccba6e7ddb40674f0e9b0285416b7b5a8a381af291ad"
+}

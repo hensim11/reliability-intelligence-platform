@@ -81,3 +81,10 @@ windows from all four services: every key/order/dtype/value and frozen-model pro
 matches offline output exactly (no numerical tolerance needed in the validated environment).
 Ingestion JSON uses standard Python float serialisation to retain round-trip float64 precision.
 See [the serving contract](SERVING.md) for arrival-time and retrospective-scoring limitations.
+
+## Batch D monitoring
+
+Monitoring rebuilds this same feature builder from bounded operational telemetry queries. The
+training reference joins only verified Batch B training assignment keys after corpus/hash checks.
+No model fit, formula, feature order or threshold changes occur. Separate SMD study features have
+incompatible semantics and never enter this model or the serving API.

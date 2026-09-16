@@ -312,7 +312,7 @@ def test_unready_database(artifact_dir):
 def test_migrations_and_drift(db):
     with db.connect() as c:
         assert compare_metadata(MigrationContext.configure(c), metadata) == []
-        assert c.scalar(sa.text("SELECT version_num FROM alembic_version")) == "c001"
+        assert c.scalar(sa.text("SELECT version_num FROM alembic_version")) == "d001"
         assert c.scalar(sa.text("SELECT count(*) FROM services")) == 4
     config = Config("alembic.ini")
     config.attributes["database_url"] = os.environ["RIP_TEST_DATABASE_URL"]
