@@ -1,0 +1,14 @@
+{
+  "source_commit": "7fb0e0acf89ea49908896bcc9f9e80fcfff6baf4",
+  "observation_steps": 15,
+  "horizon_steps": 10,
+  "train_fraction": 0.5,
+  "validation_end_fraction": 0.7,
+  "logistic_C": 1.0,
+  "logistic_max_iter": 2000,
+  "seed": 2026,
+  "threshold": 0.5,
+  "selection": "No family or threshold selection; report both fixed baselines",
+  "features": "38 anonymous dimensions: current and preceding-15-step mean",
+  "pooling": "Fit separately per machine; pooled evaluation concatenates frozen machine predictions"
+}

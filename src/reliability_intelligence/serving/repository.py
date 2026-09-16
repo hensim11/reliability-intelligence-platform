@@ -78,11 +78,24 @@ class Repository:
         with self.engine.connect() as connection:
             if connection.execute(
                 sa.text("SELECT version_num FROM alembic_version")
-            ).scalars().all() != ["c001"]:
+            ).scalars().all() != ["d001"]:
                 raise DomainError("schema_unready", "Apply the current database migrations", 503)
             if set(connection.execute(sa.select(services.c.id)).scalars()) != set(SERVICES):
                 raise DomainError("schema_unready", "Service catalogue is incompatible", 503)
-            for table in (telemetry, models, predictions):
+            from reliability_intelligence.monitoring.schema import (
+                incident_starts,
+                outcome_coverage,
+                snapshots,
+            )
+
+            for table in (
+                telemetry,
+                models,
+                predictions,
+                incident_starts,
+                outcome_coverage,
+                snapshots,
+            ):
                 connection.execute(sa.select(table).limit(0))
                 if not connection.scalar(
                     sa.text(

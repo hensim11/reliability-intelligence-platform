@@ -49,6 +49,7 @@ class StrictModel(BaseModel):
 class Settings(StrictModel):
     database_url: SecretStr
     model_directory: Path
+    monitoring_reference: Path | None = None
 
     @field_validator("database_url")
     @classmethod
@@ -60,7 +61,9 @@ class Settings(StrictModel):
     @classmethod
     def from_env(cls):
         return cls(
-            database_url=os.environ["RIP_DATABASE_URL"], model_directory=os.environ["RIP_MODEL_DIR"]
+            database_url=os.environ["RIP_DATABASE_URL"],
+            model_directory=os.environ["RIP_MODEL_DIR"],
+            monitoring_reference=os.environ.get("RIP_MONITORING_REFERENCE"),
         )
 
 
