@@ -1,7 +1,7 @@
 # Project state
 
-Updated: 2026-09-15. **Batch C serving/persistence implemented and native local validation
-passes. Full acceptance is pending Docker Compose runtime validation: Docker is absent.**
+Updated: 2026-09-16. **Batch C is locally accepted: native and clean-volume Docker Compose
+validation pass, including Gate 14.** Hosted CI and PR review are separate workflow checks.
 
 Target unchanged: use telemetry in `(t−15m,t]` to estimate incident starts in `(t,t+10m]`.
 Advisory investigation only; Batch D/E and production-performance claims remain out of scope.
@@ -39,7 +39,7 @@ Always-on baselines expose a weakness in an episode-only budget: their matched l
 hide excessive burden unless alert minutes and row precision are considered. The rule and
 choices were not revised after holdout inspection. No production operating recommendation.
 
-## Latest validation
+## Native reference validation (2026-09-15)
 
 - Full pytest with real PostgreSQL: **205 passed**, 0 skipped, 14.23 s (133 existing + 72 new).
 - Ruff lint/format passed (58 files); pip check reports no broken requirements.
@@ -50,22 +50,36 @@ choices were not revised after holdout inspection. No production operating recom
   race gave one created prediction and 31 identical retries. No production latency SLO.
 - Saved Batch B evidence regenerated: all 26 files byte-identical, without training.
 - Python 3.14.0/macOS arm64, PostgreSQL 18.3; exact snapshot in requirements-lock.txt.
-- Docker command unavailable; Compose build/startup/smoke **not run**. Hosted CI unrun.
+
+## Compose close-out (2026-09-16 UTC)
+
+- Tested clean source `42f40614e922384eee64d4fbe1dfcccd321df17d`; later evidence/docs commits
+  do not change the tested implementation.
+- Docker Desktop 4.91.0 / Engine 29.8.0 / Compose 5.5.1, Linux arm64 containers,
+  PostgreSQL 18.3 and Python 3.14.0. Clean build, empty-volume startup, c001 and health pass.
+- Ingested 16 rows, created/retrieved one prediction; SQL analytics pass. Database/API restart
+  preserves 16/1 rows; retry returns the same UUID, no duplicates; migration rerun stays c001.
+- **205 passed, zero skips**, 14.89 s; 23 real PostgreSQL tests. Ruff lint and format
+  (59 files), dependency integrity pass. Two unchanged upstream deprecation warnings.
+- Disposable containers and volume removed after checks.
+- [hosted CI for tested source](https://github.com/hensim11/reliability-intelligence-platform/actions/runs/35012633105) passed. The evidence commit requires its own CI; see branch checks/PR for the final result.
+- [Compose report](evidence/batch_c/COMPOSE_VALIDATION.md) records hashes, commands,
+  environment deviations and log review; the earlier native reference remains unchanged.
 
 ## Review and next step
 
-1. [Batch C acceptance record](docs/BATCH_C_COMPLETION.md) — all 25 gates and the open Docker gate.
+1. [Batch C acceptance record](docs/BATCH_C_COMPLETION.md) — all 25 local gates passed.
 2. [Serving contract/runbook](docs/SERVING.md) — API, storage, clocks, migration and Compose steps.
 3. [HTTP/PostgreSQL evidence](evidence/batch_c/reference/REPORT.md).
 4. [Decisions](DECISIONS.md), especially C01–C12.
 5. [Batch B completion/findings](docs/BATCH_B_COMPLETION.md).
 
 Branch `batch-c-production-serving-persistence`, starting at accepted Batch B merge `fb7cfa8`.
-Two coherent local commits cover implementation and documentation/evidence; no push, PR, merge
-or external deployment. Use `git log -2 --oneline` for their identifiers.
+Implementation `05d987d`, native evidence `d986a83`, Compose runner `42f4061`;
+subsequent documentation/evidence commits are identifiable in git history.
 
-**Next required acceptance action:** run documented Docker Compose build/startup/smoke on a
-Docker-capable host and record evidence. Do not mark full Batch C accepted before this passes.
+**Next workflow action:** verify CI for the final evidence commit and review the PR into main.
+The PR must remain unmerged. Batch D has not started; no external deployment was performed.
 Monitoring, external validation and deployment remain deferred. Any statistical revision needs
 fresh holdouts; existing Batch B holdouts cannot be reused for tuning.
 

@@ -4,12 +4,12 @@ A production-style software/ML engineering project for estimating whether a serv
 **enter an incident within the next 10 minutes**, using its most recent **15 minutes of
 available telemetry**.
 
-**Current status: Batch C serving and PostgreSQL persistence implemented; native local
-validation passed. Docker Compose runtime validation remains blocked by missing Docker.**
+**Current status: Batch C serving and PostgreSQL persistence locally accepted. Native and
+clean-volume Docker Compose validation passed, including all 205 tests with zero skips.**
 The package generates validated synthetic telemetry, builds causal features, evaluates frozen
 models and serves durable advisory predictions. The changed schedule regime exposes substantial
 performance loss; synthetic feasibility is not real-world forecasting validity. See the
-[Batch C acceptance record](docs/BATCH_C_COMPLETION.md) for the outstanding gate.
+[Batch C acceptance record](docs/BATCH_C_COMPLETION.md) for the completed local gates and remaining limitations.
 
 ## Why this exists
 
@@ -137,8 +137,9 @@ and an eight-client concurrency exercise. New predictions had local p50 **84.00 
 Historical event-time requests use data available at the recorded scoring cutoff; they do not
 claim that late-arriving inputs were known at historical t.
 
-Docker Compose is supplied but unrun because Docker is absent on the validation host.
-Native PostgreSQL 18.3 + Uvicorn integration and evidence passed. Batch D/E remain deferred.
+[Docker Compose acceptance](evidence/batch_c/COMPOSE_VALIDATION.md) passed: clean build,
+empty-volume migration, ready API, smoke/SQL checks, restart durability and idempotency.
+Native PostgreSQL 18.3 + Uvicorn evidence is preserved. Batch D/E remain deferred.
 
 ## Tests and quality
 
@@ -155,8 +156,9 @@ Tests cover exact target boundaries, right censoring, exact service-specific tel
 history, configuration, deterministic schedules and signals, lifecycle continuity, scenario
 counterfactuals, schema/leakage guards, Parquet integrity, and an end-to-end CLI/evidence run.
 GitHub Actions provisions PostgreSQL and runs these checks on Linux/Python 3.14, then
-regenerates the default dataset/evidence and uploads evidence. Remote CI has not run in this
-local workspace; local results are recorded in [PROJECT_STATE.md](PROJECT_STATE.md).
+regenerates the default dataset/evidence and uploads evidence. Hosted CI for tested source `42f4061` passed;
+final branch/PR checks track subsequent evidence commits. Local results are recorded in
+[PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## Repository structure
 
@@ -201,4 +203,4 @@ faults within a service. Sixteen synthetic events are a review fixture, not an a
 selection corpus. Onset is a controlled fault-pressure boundary, not a universal production SLO.
 
 Review [decisions](DECISIONS.md), [current state](PROJECT_STATE.md) and the
-[Batch A completion report](docs/BATCH_A_COMPLETION.md) alongside the [Batch C completion record](docs/BATCH_C_COMPLETION.md). Docker validation is still outstanding.
+[Batch A completion report](docs/BATCH_A_COMPLETION.md) alongside the [Batch C completion record](docs/BATCH_C_COMPLETION.md). All local Batch C gates pass; PR review is separate and no merge is authorised.

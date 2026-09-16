@@ -145,9 +145,11 @@ Post-start database outages are checked on readiness and return controlled 503s 
 
 ## Local Docker Compose workflow
 
-Docker Engine/Desktop with Compose v2 is required. It was **not installed in the validation
-host**; the supplied Docker workflow is not yet runtime-validated. This remains an acceptance
-blocker, distinct from the passing native PostgreSQL/Uvicorn path.
+Docker Engine/Desktop with the `docker compose` plugin is required. The clean-volume
+workflow passed with Desktop 4.91.0, Engine 29.8.0 and Compose 5.5.1 on macOS arm64,
+using PostgreSQL 18.3/Python 3.14.0 Linux arm64 images. This bundled Compose release
+supersedes the original v2 prerequisite. See the
+[acceptance report](../evidence/batch_c/COMPOSE_VALIDATION.md) for exact evidence and deviations.
 
 From a fresh checkout, follow the root README Python setup and regenerate Batch B artefacts
 if the ignored local experiment is absent. Do not modify or retune the saved reference.
@@ -205,6 +207,27 @@ non-root user and mounts the model read-only. No binaries/data/secrets enter the
 This local stack uses the database owner for migrations and API; least-privilege deployment
 roles, TLS and authentication are deferred, so do not expose it outside loopback.
 
+### Automated acceptance repeat
+
+With the existing frozen model, telemetry fixture, ignored `.env` and `.venv` available, use
+a new project/work/output name for every attempt. Host ports 5432/8000 must be free.
+Ensure Docker and its credential helper are on PATH (on this Mac:
+`export PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"`).
+
+```bash
+.venv/bin/python scripts/validate_compose.py \
+  --project rip-batchc-repeat \
+  --work data/batch_c_compose_repeat \
+  --output data/batch_c_compose_repeat_evidence
+```
+
+The runner refuses an existing project/volume, builds with `--pull --no-cache`, checks
+health/ingestion/prediction/history/SQL, restarts both services, verifies idempotency and
+reruns c001. It creates a separate disposable `reliability_test` database for all 205 tests,
+then runs lint/format/dependency checks and removes its containers and volume on success.
+Failures leave local logs and the stack for diagnosis; inspect them before cleaning up.
+The smoke database is never used as the schema-resetting test database. No training occurs.
+
 ## Native setup, tests and evidence
 
 With PostgreSQL 18 and empty databases `rip_test` and `rip_demo` already created:
@@ -236,7 +259,8 @@ python -m pip check
 
 **Tests reset the public schema of RIP_TEST_DATABASE_URL. Only use a disposable database.**
 Without this variable PostgreSQL tests explicitly skip; that is not full validation. CI now
-provisions PostgreSQL and sets the variable, but hosted CI has not been run in this workspace.
+provisions PostgreSQL and sets the variable. Hosted CI passed for tested source `42f4061`;
+consult final branch/PR checks for later evidence commits.
 Test models are small temporary Batch B-compatible artefacts, not committed binaries. The
 HTTP evidence uses the actual saved Batch B boosting reference.
 

@@ -1,9 +1,9 @@
 # Batch C implementation and acceptance record
 
-2026-09-15, branch `batch-c-production-serving-persistence`, based on accepted Batch B merge
-`fb7cfa8`. **Serving/persistence is implemented and the native local gate passes. The full
-Batch C gate is NOT yet satisfied: Docker Compose build/startup/smoke remains unrun because
-Docker is not installed on this host.** No push, PR, merge or external deployment performed.
+Updated 2026-09-16 UTC, branch `batch-c-production-serving-persistence`, based on accepted Batch B merge
+`fb7cfa8`. **Batch C is locally accepted: all 25 gates pass, including clean-volume Docker
+Compose startup/smoke (Gate 14).** Hosted CI and PR review are separate workflow checks.
+No merge, external deployment or Batch D work is included.
 
 ## Delivered system and review entry points
 
@@ -21,7 +21,7 @@ Docker is not installed on this host.** No push, PR, merge or external deploymen
   reference model. [Report](../evidence/batch_c/reference/REPORT.md) and
   [machine-readable results](../evidence/batch_c/reference/results.json).
 - Updated README architecture, PROJECT_STATE, ROADMAP, DECISIONS, data/feature contracts,
-  dependency bounds/exact snapshot and PostgreSQL-enabled CI (hosted CI remains unrun).
+  dependency bounds/exact snapshot and PostgreSQL-enabled CI (hosted CI for tested source `42f4061` passed).
 
 No existing Batch A/B implementation was changed. No fit/calibration/threshold selection
 was performed during this batch. The 49-feature contract, 15-minute window, 10-minute target,
@@ -43,23 +43,24 @@ Model output is advisory, with no truth/label dependency, suppression or automat
 
 | Check | Result |
 | --- | --- |
-| Full `pytest -q` with PostgreSQL configured | **205 passed, 0 failed, 0 skipped**, 14.23 s |
+| Full `pytest -q` with PostgreSQL configured | **205 passed, 0 failed, 0 skipped**, 14.89 s (Compose PostgreSQL repeat) |
 | Existing Batch A/B tests | All **133** retained and passing |
 | Batch C tests | All **72** passing, including **23** real PostgreSQL tests |
 | Ruff lint | Passed |
-| Ruff formatting | Passed, **58 files** |
+| Ruff formatting | Passed, **59 files** |
 | `python -m pip check` | No broken requirements |
 | Editable package installation | Passed; Python 3.14.0 |
 | Migration from empty database | Passed, revision c001; repeat upgrade, downgrade/re-upgrade and metadata drift checks passed |
 | Native HTTP/PostgreSQL integration | Passed with real saved Batch B boosting model |
 | Saved Batch B evidence regeneration | **26/26 files byte-identical**, no retraining |
-| Docker Compose version/build/startup/smoke | **Blocked: `docker: command not found`** |
-| Hosted GitHub Actions | Configured with PostgreSQL; unrun |
+| Docker Compose version/build/startup/smoke | **Passed**, clean build/volume, health, smoke/SQL, restart persistence and idempotency |
+| Hosted GitHub Actions | Passed for `42f4061`; final evidence commit tracked in branch/PR checks |
 
 Two upstream test-client deprecation warnings remain: Starlette's httpx adapter and its anyio
 BlockingPortal alias. They do not fail tests. No test weakening or warning suppression was used.
 The final numerical dependencies are unchanged from Batch B; serving dependencies were added.
-The version-pinned snapshot is validated on macOS arm64, not yet a validated Linux image lock.
+The version-pinned snapshot also builds and serves in the validated Linux arm64 images;
+full regression tests run on macOS against Compose PostgreSQL. Hosted CI runs Linux tests.
 
 The test suite includes empty migrations/schema drift, SQL constraints/foreign keys/uniqueness,
 ingest conflicts and batch rollback, immutable records, failed model and failed database writes,
@@ -123,7 +124,7 @@ Timestamps, UUIDs and timings vary on repetition; counts and exact parity are as
 | 11 | SQL operational analytics | Pass |
 | 12 | Controlled meaningful failures | Pass |
 | 13 | Transaction/idempotency tests | Pass |
-| 14 | PostgreSQL + API through Docker Compose startup | **Outstanding: Docker absent** |
+| 14 | PostgreSQL + API through Docker Compose startup | **Pass: clean-volume Compose evidence** |
 | 15 | Genuine end-to-end integration | Pass, native PostgreSQL/Uvicorn |
 | 16 | Concurrent local inference exercised | Pass |
 | 17 | Full existing tests pass | Pass, 133 |
@@ -138,10 +139,12 @@ Timestamps, UUIDs and timings vary on repetition; counts and exact parity are as
 
 ## Remaining work and limitations
 
-Run the documented Compose build/startup/readiness/ingest/predict/query smoke on a
-Docker-capable host and record results before accepting Batch C. The native exercise does
-not substitute for container validation. No approval denial caused this limitation: Docker
-simply is not installed. This task did not install a system Docker runtime.
+[Compose report](../evidence/batch_c/COMPOSE_VALIDATION.md) and
+[machine-readable evidence](../evidence/batch_c/compose_validation.json) close the independent
+review’s remaining Gate 14. Docker Desktop installation was explicitly authorised. The
+clean source tested was `42f40614e922384eee64d4fbe1dfcccd321df17d`; later close-out commits
+record evidence/docs without changing implementation. The original native results remain intact.
+Final hosted CI and PR review must be checked against the pushed evidence commit; no merge.
 
 The synthetic model remains unsuitable for a production-performance claim: changed-regime
 holdout degraded substantially, and final partitions breached the validation false-alert
@@ -150,5 +153,6 @@ authentication, backup/recovery or production SLO is delivered. Fixed four-servi
 trusted-local joblib, retrospective availability semantics and single-worker local measurement
 are deliberate limits, not hidden production capabilities.
 
-Implementation and documentation/evidence are separate coherent local commits. Consult
-`git log -2 --oneline` for their identifiers. No remote operation is part of this handoff.
+Implementation `05d987d`, native documentation/evidence `d986a83`, and acceptance runner
+`42f4061` remain separate. Subsequent commits record Compose close-out evidence. See git
+history and the branch/PR checks for those identifiers and hosted validation.

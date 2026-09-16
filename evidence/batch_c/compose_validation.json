@@ -1,0 +1,1317 @@
+{
+  "artifact_sha256": {
+    "boosting_raw.joblib": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+    "boosting_raw.json": "1a2a654c2ad3819aadcb2563ac754ef09bc9782ffdbd2eb74bacf699b46b147d",
+    "config.json": "2dee5b8d73faed6f83f803db308d40781979ec24fb6b7b4ee7a2e27177e792a9",
+    "environment.json": "e4a78a77b0c62e6c1d064d4b5521e28f0602d4190927933e2c288b2bf8b2e402",
+    "feature_schema.json": "93d4e4ff402f7c483f44d06f29901669fd8cbe5091172b224b512c9335b7fb53",
+    "selection.json": "100501bdc9ed74a24f0ea7fbec761e9d3e9b03ab83f79d9378a0422417a5f350"
+  },
+  "branch": "batch-c-production-serving-persistence",
+  "cleanup": {
+    "containers_removed": true,
+    "volume_removed": true
+  },
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "label": "source_commit"
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0,
+      "label": "branch"
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "label": "initial_worktree"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "exit_code": 0,
+      "label": "docker_version"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "version",
+        "--short"
+      ],
+      "exit_code": 0,
+      "label": "compose_version"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "label": "existing_volume_names"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "ps",
+        "-aq",
+        "--filter",
+        "label=com.docker.compose.project=rip-batchc-closeout-20260916-r4"
+      ],
+      "exit_code": 0,
+      "label": "existing_project_containers"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "label": "compose_config"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "build",
+        "--pull",
+        "--no-cache"
+      ],
+      "exit_code": 0,
+      "label": "clean_build"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "180"
+      ],
+      "exit_code": 0,
+      "label": "clean_startup"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "ps",
+        "--all",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "label": "initial_container_status"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version_num FROM alembic_version"
+      ],
+      "exit_code": 0,
+      "label": "initial_revision"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0,
+      "label": "initial_telemetry_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0,
+      "label": "initial_prediction_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version()"
+      ],
+      "exit_code": 0,
+      "label": "postgresql_version"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "--version"
+      ],
+      "exit_code": 0,
+      "label": "container_python"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import platform; print(platform.platform()); print(platform.machine())"
+      ],
+      "exit_code": 0,
+      "label": "container_platform"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import importlib.metadata as m, json; print(json.dumps({d.metadata['Name']: d.version for d in m.distributions()}))"
+      ],
+      "exit_code": 0,
+      "label": "container_dependencies"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "images",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "label": "image_ids"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0,
+      "label": "smoke_telemetry_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0,
+      "label": "smoke_prediction_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT row_to_json(r) FROM latest_risk r"
+      ],
+      "exit_code": 0,
+      "label": "latest_risk"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT row_to_json(r) FROM daily_risk r"
+      ],
+      "exit_code": 0,
+      "label": "daily_risk"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import json, os\nfrom datetime import datetime, timedelta\nfrom reliability_intelligence.serving.database import make_engine\nfrom reliability_intelligence.serving.analytics import coverage, risk_summary\nengine=make_engine(os.environ['RIP_DATABASE_URL'])\nstart=datetime.fromisoformat('2026-01-05T00:00:00+00:00')\nwith engine.connect() as connection:\n    print(json.dumps({'coverage':coverage(connection,start,start+timedelta(minutes=16)),\n        'risk':risk_summary(connection,start,start+timedelta(minutes=16))},default=str))\n"
+      ],
+      "exit_code": 0,
+      "label": "operational_analytics"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "restart",
+        "db"
+      ],
+      "exit_code": 0,
+      "label": "restart_database"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "120",
+        "db"
+      ],
+      "exit_code": 0,
+      "label": "database_after_restart"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "restart",
+        "api"
+      ],
+      "exit_code": 0,
+      "label": "restart_api"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0,
+      "label": "restart_telemetry_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0,
+      "label": "restart_prediction_count"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM (SELECT service_id,timestamp,model_id FROM predictions GROUP BY 1,2,3 HAVING count(*)>1) r"
+      ],
+      "exit_code": 0,
+      "label": "duplicate_predictions"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "run",
+        "--rm",
+        "migrate"
+      ],
+      "exit_code": 0,
+      "label": "migration_rerun"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version_num FROM alembic_version"
+      ],
+      "exit_code": 0,
+      "label": "final_revision"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "logs",
+        "--no-color",
+        "db",
+        "migrate",
+        "api"
+      ],
+      "exit_code": 0,
+      "label": "smoke_service_logs"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "createdb",
+        "-U",
+        "reliability",
+        "reliability_test"
+      ],
+      "exit_code": 0,
+      "label": "create_disposable_test_database"
+    },
+    {
+      "command": [
+        ".venv/bin/pytest",
+        "-q",
+        "--junitxml=data/batch_c_compose_run_20260916_r4/tests.xml"
+      ],
+      "exit_code": 0,
+      "label": "full_pytest"
+    },
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "ruff_check"
+    },
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "exit_code": 0,
+      "label": "ruff_format"
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0,
+      "label": "pip_check"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0,
+      "label": "smoke_survives_tests"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "ps",
+        "--all",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "label": "final_container_status"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "logs",
+        "--no-color",
+        "db",
+        "migrate",
+        "api"
+      ],
+      "exit_code": 0,
+      "label": "service_logs"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "compose",
+        "--project-name",
+        "rip-batchc-closeout-20260916-r4",
+        "--env-file",
+        ".env",
+        "down",
+        "--volumes"
+      ],
+      "exit_code": 0,
+      "label": "cleanup"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "ps",
+        "-aq",
+        "--filter",
+        "label=com.docker.compose.project=rip-batchc-closeout-20260916-r4"
+      ],
+      "exit_code": 0,
+      "label": "cleanup_containers"
+    },
+    {
+      "command": [
+        "/Applications/Docker.app/Contents/Resources/bin/docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "label": "cleanup_volumes"
+    }
+  ],
+  "deviations": [
+    "Docker Desktop installed with user authorization. Bundled Compose 5.5.1 used instead of the runbook original v2 requirement; docker compose interface unchanged.",
+    "Docker binary directory added to PATH for docker-credential-desktop.",
+    "Earlier attempts encountered a Docker container-start stall. Desktop restart restored a no-mount probe; a subsequent full run passed after a long unexplained startup/UI delay. This final clean-volume repeat verifies startup without that delay. No application or Compose changes were needed."
+  ],
+  "final_status": [
+    {
+      "Command": "\"uvicorn reliability\u2026\"",
+      "CreatedAt": "2026-09-16 06:08:14 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "43ea61e48205",
+      "Image": "rip-batchc-closeout-20260916-r4-api",
+      "Labels": "desktop.docker.io/binds/0/Source=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_b_experiment,desktop.docker.io/binds/0/SourceKind=hostFile,com.docker.compose.container-number=1,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.version=5.5.1,desktop.docker.io/binds/0/Target=/model,desktop.docker.io/ports.scheme=v2,com.docker.compose.image=sha256:50db93d08bb3e1ce80c5520c6b96242760508531e4e9aa1fc9ab8106b72919ba,com.docker.compose.project=rip-batchc-closeout-20260916-r4,desktop.docker.io/ports/8000/tcp=127.0.0.1:8000,com.docker.compose.config-hash=b800c027e97f01462fb3cb0c2208a950c98d1d82dcf43a46130d66ffa1d1a33c,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.depends_on=migrate:service_completed_successfully:false,com.docker.compose.service=api",
+      "LocalVolumes": "0",
+      "Mounts": "/host_mnt/User\u2026",
+      "Name": "rip-batchc-closeout-20260916-r4-api-1",
+      "Names": "rip-batchc-closeout-20260916-r4-api-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "127.0.0.1:8000->8000/tcp",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [
+        {
+          "Protocol": "tcp",
+          "PublishedPort": 8000,
+          "TargetPort": 8000,
+          "URL": "127.0.0.1"
+        }
+      ],
+      "RunningFor": "35 seconds ago",
+      "Service": "api",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 20 seconds (healthy)"
+    },
+    {
+      "Command": "\"docker-entrypoint.s\u2026\"",
+      "CreatedAt": "2026-09-16 06:08:13 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "4762ede0c3d2",
+      "Image": "postgres:18.3",
+      "Labels": "com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.service=db,com.docker.compose.version=5.5.1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:0c24d31b13a9801233f136bc80e908bda9577ab7e9c622e572eebc13c186ed4d,com.docker.compose.project=rip-batchc-closeout-20260916-r4,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/5432/tcp=127.0.0.1:5432,com.docker.compose.config-hash=96142a8abd5039e5491addbd31724b0f3f87f2d82e912f78b8493c60b876d7eb,com.docker.compose.container-number=1,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml",
+      "LocalVolumes": "1",
+      "Mounts": "rip-batchc-clo\u2026",
+      "Name": "rip-batchc-closeout-20260916-r4-db-1",
+      "Names": "rip-batchc-closeout-20260916-r4-db-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "127.0.0.1:5432->5432/tcp",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [
+        {
+          "Protocol": "tcp",
+          "PublishedPort": 5432,
+          "TargetPort": 5432,
+          "URL": "127.0.0.1"
+        }
+      ],
+      "RunningFor": "36 seconds ago",
+      "Service": "db",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 23 seconds (healthy)"
+    },
+    {
+      "Command": "\"alembic upgrade head\"",
+      "CreatedAt": "2026-09-16 06:08:14 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "",
+      "ID": "08881c37e31e",
+      "Image": "rip-batchc-closeout-20260916-r4-migrate",
+      "Labels": "com.docker.compose.container-number=1,com.docker.compose.depends_on=db:service_healthy:false,com.docker.compose.project=rip-batchc-closeout-20260916-r4,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=f45fec2166bdca07d25ab74b114bb77aef0f25fe6fb5a541aa92327fe3cefc5e,com.docker.compose.image=sha256:5eec78d17013863a5844f3669abb0370b405c034ab0cc489fc92cebb768898c3,com.docker.compose.oneoff=False,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.service=migrate,com.docker.compose.version=5.5.1",
+      "LocalVolumes": "0",
+      "Mounts": "",
+      "Name": "rip-batchc-closeout-20260916-r4-migrate-1",
+      "Names": "rip-batchc-closeout-20260916-r4-migrate-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [],
+      "RunningFor": "35 seconds ago",
+      "Service": "migrate",
+      "Size": "0B",
+      "State": "exited",
+      "Status": "Exited (0) 31 seconds ago"
+    }
+  ],
+  "finished_at_utc": "2026-09-16T05:08:50.168378+00:00",
+  "history": {
+    "body": [
+      {
+        "available_as_of": "2026-09-16T05:08:24.647494Z",
+        "decision": "not-elevated-risk",
+        "feature_version": "1.0",
+        "id": "b2335b7c-4547-4f2e-a50a-432d890947e1",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "model_name": "boosting_raw",
+        "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+        "probability": 0.00036702774501820524,
+        "produced_at": "2026-09-16T05:08:24.664148Z",
+        "service_id": "api-gateway",
+        "threshold": 0.5700000000000001,
+        "timestamp": "2026-01-05T00:15:00Z",
+        "window_end": "2026-01-05T00:15:00Z",
+        "window_start": "2026-01-05T00:00:00Z"
+      }
+    ],
+    "status": 200
+  },
+  "image_ids": [
+    {
+      "ContainerName": "rip-batchc-closeout-20260916-r4-api-1",
+      "Created": "2026-09-16T05:07:58.255960708Z",
+      "ID": "sha256:062448e9a45b9d949d8d5c14ebff5592624676a7ba3eab6c436110ded359d931",
+      "LastTagTime": "2026-09-16T05:08:10.053314047Z",
+      "Platform": "linux/arm64",
+      "Repository": "rip-batchc-closeout-20260916-r4-api",
+      "Size": 1195745876,
+      "Tag": "latest"
+    },
+    {
+      "ContainerName": "rip-batchc-closeout-20260916-r4-db-1",
+      "Created": "2026-05-08T19:34:14.32241568Z",
+      "ID": "sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db",
+      "LastTagTime": "2026-09-15T23:35:33.903259052Z",
+      "Platform": "linux/arm64/v8",
+      "Repository": "postgres",
+      "Size": 664977219,
+      "Tag": "18.3"
+    },
+    {
+      "ContainerName": "rip-batchc-closeout-20260916-r4-migrate-1",
+      "Created": "2026-09-16T05:07:58.255960708Z",
+      "ID": "sha256:400f9dd29fc3378ba600f9945c55282ae54c20e3becf472bee2d415212a3c9ca",
+      "LastTagTime": "2026-09-16T05:08:10.052961506Z",
+      "Platform": "linux/arm64",
+      "Repository": "rip-batchc-closeout-20260916-r4-migrate",
+      "Size": 1195745880,
+      "Tag": "latest"
+    }
+  ],
+  "ingestion": {
+    "body": {
+      "inserted": 16,
+      "unchanged": 0
+    },
+    "status": 200
+  },
+  "initial_status": [
+    {
+      "Command": "\"uvicorn reliability\u2026\"",
+      "CreatedAt": "2026-09-16 06:08:14 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "43ea61e48205",
+      "Image": "rip-batchc-closeout-20260916-r4-api",
+      "Labels": "com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.version=5.5.1,desktop.docker.io/binds/0/Target=/model,desktop.docker.io/ports/8000/tcp=127.0.0.1:8000,com.docker.compose.service=api,com.docker.compose.config-hash=b800c027e97f01462fb3cb0c2208a950c98d1d82dcf43a46130d66ffa1d1a33c,com.docker.compose.oneoff=False,com.docker.compose.project=rip-batchc-closeout-20260916-r4,desktop.docker.io/ports.scheme=v2,desktop.docker.io/binds/0/Source=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_b_experiment,desktop.docker.io/binds/0/SourceKind=hostFile,com.docker.compose.container-number=1,com.docker.compose.depends_on=migrate:service_completed_successfully:false,com.docker.compose.image=sha256:50db93d08bb3e1ce80c5520c6b96242760508531e4e9aa1fc9ab8106b72919ba,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform",
+      "LocalVolumes": "0",
+      "Mounts": "/host_mnt/User\u2026",
+      "Name": "rip-batchc-closeout-20260916-r4-api-1",
+      "Names": "rip-batchc-closeout-20260916-r4-api-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "127.0.0.1:8000->8000/tcp",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [
+        {
+          "Protocol": "tcp",
+          "PublishedPort": 8000,
+          "TargetPort": 8000,
+          "URL": "127.0.0.1"
+        }
+      ],
+      "RunningFor": "9 seconds ago",
+      "Service": "api",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 5 seconds (healthy)"
+    },
+    {
+      "Command": "\"docker-entrypoint.s\u2026\"",
+      "CreatedAt": "2026-09-16 06:08:13 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "4762ede0c3d2",
+      "Image": "postgres:18.3",
+      "Labels": "com.docker.compose.project=rip-batchc-closeout-20260916-r4,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,com.docker.compose.service=db,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/5432/tcp=127.0.0.1:5432,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.version=5.5.1,com.docker.compose.config-hash=96142a8abd5039e5491addbd31724b0f3f87f2d82e912f78b8493c60b876d7eb,com.docker.compose.image=sha256:0c24d31b13a9801233f136bc80e908bda9577ab7e9c622e572eebc13c186ed4d,com.docker.compose.oneoff=False",
+      "LocalVolumes": "1",
+      "Mounts": "rip-batchc-clo\u2026",
+      "Name": "rip-batchc-closeout-20260916-r4-db-1",
+      "Names": "rip-batchc-closeout-20260916-r4-db-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "127.0.0.1:5432->5432/tcp",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [
+        {
+          "Protocol": "tcp",
+          "PublishedPort": 5432,
+          "TargetPort": 5432,
+          "URL": "127.0.0.1"
+        }
+      ],
+      "RunningFor": "10 seconds ago",
+      "Service": "db",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 9 seconds (healthy)"
+    },
+    {
+      "Command": "\"alembic upgrade head\"",
+      "CreatedAt": "2026-09-16 06:08:14 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "",
+      "ID": "08881c37e31e",
+      "Image": "rip-batchc-closeout-20260916-r4-migrate",
+      "Labels": "com.docker.compose.container-number=1,com.docker.compose.depends_on=db:service_healthy:false,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.image=sha256:5eec78d17013863a5844f3669abb0370b405c034ab0cc489fc92cebb768898c3,com.docker.compose.oneoff=False,com.docker.compose.project=rip-batchc-closeout-20260916-r4,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,com.docker.compose.service=migrate,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=f45fec2166bdca07d25ab74b114bb77aef0f25fe6fb5a541aa92327fe3cefc5e",
+      "LocalVolumes": "0",
+      "Mounts": "",
+      "Name": "rip-batchc-closeout-20260916-r4-migrate-1",
+      "Names": "rip-batchc-closeout-20260916-r4-migrate-1",
+      "Networks": "rip-batchc-closeout-20260916-r4_default",
+      "Ports": "",
+      "Project": "rip-batchc-closeout-20260916-r4",
+      "Publishers": [],
+      "RunningFor": "9 seconds ago",
+      "Service": "migrate",
+      "Size": "0B",
+      "State": "exited",
+      "Status": "Exited (0) 6 seconds ago"
+    }
+  ],
+  "initial_worktree": "",
+  "limitations": [
+    "Local loopback validation; no production SLO/security/deployment claim.",
+    "Historical predictions use retrospective availability cutoff.",
+    "Hosted CI and PR review are separate checks."
+  ],
+  "liveness": {
+    "body": {
+      "status": "alive"
+    },
+    "status": 200
+  },
+  "log_review": {
+    "explanation": "The smoke FATAL is connection termination during the requested database restart. Subsequent constraint, immutability, missing-table and injected-write errors match tests/test_serving.py failure cases.",
+    "unexpected_errors": 0
+  },
+  "migration": {
+    "initial": "c001",
+    "rerun": "c001"
+  },
+  "prediction": {
+    "body": {
+      "available_as_of": "2026-09-16T05:08:24.647494Z",
+      "decision": "not-elevated-risk",
+      "feature_version": "1.0",
+      "id": "b2335b7c-4547-4f2e-a50a-432d890947e1",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "model_name": "boosting_raw",
+      "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+      "probability": 0.00036702774501820524,
+      "produced_at": "2026-09-16T05:08:24.664148Z",
+      "service_id": "api-gateway",
+      "threshold": 0.5700000000000001,
+      "timestamp": "2026-01-05T00:15:00Z",
+      "window_end": "2026-01-05T00:15:00Z",
+      "window_start": "2026-01-05T00:00:00Z"
+    },
+    "status": 201
+  },
+  "readiness": {
+    "body": {
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "status": "ready"
+    },
+    "status": 200
+  },
+  "regression_log_error_line_count": 15,
+  "restart": {
+    "duplicate_keys": 0,
+    "persisted_predictions": 1,
+    "persisted_telemetry": 16,
+    "readiness": {
+      "body": {
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "status": "ready"
+      },
+      "status": 200
+    },
+    "retry": {
+      "body": {
+        "available_as_of": "2026-09-16T05:08:24.647494Z",
+        "decision": "not-elevated-risk",
+        "feature_version": "1.0",
+        "id": "b2335b7c-4547-4f2e-a50a-432d890947e1",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "model_name": "boosting_raw",
+        "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+        "probability": 0.00036702774501820524,
+        "produced_at": "2026-09-16T05:08:24.664148Z",
+        "service_id": "api-gateway",
+        "threshold": 0.5700000000000001,
+        "timestamp": "2026-01-05T00:15:00Z",
+        "window_end": "2026-01-05T00:15:00Z",
+        "window_start": "2026-01-05T00:00:00Z"
+      },
+      "status": 200
+    }
+  },
+  "smoke_log_error_lines": [
+    "db-1  | 2026-09-16 05:08:25.610 UTC [96] FATAL:  terminating connection due to administrator command"
+  ],
+  "source_sha256": {
+    "Dockerfile": "9c0411faa14bfc21607a2da6b6cc4d2573031fe21f79c4cf27cb62bcc93935bb",
+    "compose.yaml": "2d3b0fffdac7e95f70134301791f0fab57a1dbf05c51d6c8aa9a5f33444dad25",
+    "migrations/env.py": "1394ad346740cd422f9a81759bb3a1b2f32617b74917a16937beeba1abcdff37",
+    "migrations/versions/c001_initial.py": "3c6766e2ae690a5dbd8ca9a54c44375c7c3af89d5df4e1a47da26685fdc835d5",
+    "requirements-lock.txt": "a046f2cefc547cd766f224f92f562fb7c1f3af40db3b2bb46a91a9095255c6aa",
+    "scripts/validate_compose.py": "a5889494da8e6d8033fc243687d866e6777d6e9ec1b9485795a27570d85cb75e",
+    "src/reliability_intelligence/serving/__init__.py": "d49ee35b01fb4833bacf3d2bdb0a96c6139673bb0c40666495a7ab1ccb3dc72f",
+    "src/reliability_intelligence/serving/analytics.py": "7870c826543e7ae3d77fac91b034cc3ea390156834672c3381e1a00e1ec630ba",
+    "src/reliability_intelligence/serving/api.py": "93fecd2b254fb1369fb527f10f44a432a2cc1fa2929405ca1e1848809b02dea0",
+    "src/reliability_intelligence/serving/artifact.py": "f5a78b68617320bd4969defcf27d1e2ebfa359ae53a5df95723c25b5f7472580",
+    "src/reliability_intelligence/serving/contracts.py": "107da28bf723465b9f5357ccf18489999a5de73fd27f7bda0593c5a5223a7ffe",
+    "src/reliability_intelligence/serving/database.py": "3ce81c49828e062b26aba7588a26159f3e58e07abf93685ddc95dfa1c94d0384",
+    "src/reliability_intelligence/serving/repository.py": "6d019c762b649012d589ed28cdb7d875c83e9ccf8d8195177d6fee289cb0086a"
+  },
+  "sql": {
+    "coverage": [
+      {
+        "expected_minutes": 16,
+        "missing_minutes": 0,
+        "observed_minutes": 16,
+        "service_id": "api-gateway"
+      },
+      {
+        "expected_minutes": 16,
+        "missing_minutes": 16,
+        "observed_minutes": 0,
+        "service_id": "auth-service"
+      },
+      {
+        "expected_minutes": 16,
+        "missing_minutes": 16,
+        "observed_minutes": 0,
+        "service_id": "catalog-service"
+      },
+      {
+        "expected_minutes": 16,
+        "missing_minutes": 16,
+        "observed_minutes": 0,
+        "service_id": "search-service"
+      }
+    ],
+    "daily_risk": {
+      "day": "2026-01-05",
+      "elevated_predictions": 0,
+      "max_probability": 0.00036702774501820524,
+      "mean_probability": 0.00036702774501820524,
+      "median_probability": 0.00036702774501820524,
+      "min_probability": 0.00036702774501820524,
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "predictions": 1,
+      "service_id": "api-gateway"
+    },
+    "latest_risk": {
+      "available_as_of": "2026-09-16T05:08:24.647494+00:00",
+      "elevated": false,
+      "id": "b2335b7c-4547-4f2e-a50a-432d890947e1",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "model_name": "boosting_raw",
+      "probability": 0.00036702774501820524,
+      "produced_at": "2026-09-16T05:08:24.664148+00:00",
+      "service_id": "api-gateway",
+      "threshold": 0.5700000000000001,
+      "timestamp": "2026-01-05T00:15:00+00:00"
+    },
+    "risk": [
+      {
+        "max_probability": 0.00036702774501820524,
+        "mean_probability": 0.00036702774501820524,
+        "median_probability": 0.00036702774501820524,
+        "min_probability": 0.00036702774501820524,
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 1,
+        "service_id": "api-gateway"
+      }
+    ]
+  },
+  "started_at_utc": "2026-09-16T05:06:59.649283+00:00",
+  "status": "passed",
+  "telemetry_sha256": "c1520d3bdc674dcb9d4a70893a2765440f60b67c4bdf115d264cac3f83a2abe1",
+  "tested_source_commit": "42f40614e922384eee64d4fbe1dfcccd321df17d",
+  "validation": {
+    "pip_check": "No broken requirements found.",
+    "postgresql_tests": 23,
+    "pytest": "........................................................................ [ 35%]\n........................................................................ [ 70%]\n.............................................................            [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.14/site-packages/fastapi/testclient.py:1\n  /Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n.venv/lib/python3.14/site-packages/starlette/testclient.py:53\n  /Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.venv/lib/python3.14/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n205 passed, 2 warnings in 14.89s",
+    "ruff_check": "passed",
+    "ruff_format": "59 files already formatted",
+    "skips": 0,
+    "test_count": 205
+  },
+  "versions": {
+    "compose": "5.5.1",
+    "container_dependencies": {
+      "Mako": "1.4.1",
+      "MarkupSafe": "3.0.3",
+      "Pygments": "2.21.0",
+      "SQLAlchemy": "2.0.53",
+      "alembic": "1.20.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "certifi": "2026.7.22",
+      "click": "8.5.0",
+      "cloudpickle": "3.1.2",
+      "contourpy": "1.4.0",
+      "cycler": "0.12.1",
+      "fastapi": "0.141.1",
+      "fonttools": "4.65.0",
+      "greenlet": "3.5.6",
+      "h11": "0.16.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "idna": "3.19",
+      "iniconfig": "2.3.0",
+      "joblib": "1.6.0",
+      "kiwisolver": "1.5.1",
+      "matplotlib": "3.11.2",
+      "narwhals": "2.26.0",
+      "numpy": "2.5.3",
+      "packaging": "26.3",
+      "pandas": "3.0.5",
+      "pillow": "12.3.0",
+      "pip": "25.2",
+      "pluggy": "1.6.0",
+      "psycopg": "3.3.5",
+      "psycopg-binary": "3.3.5",
+      "pyarrow": "25.0.1",
+      "pydantic": "2.13.5",
+      "pydantic_core": "2.46.5",
+      "pyparsing": "3.3.2",
+      "pytest": "9.1.1",
+      "python-dateutil": "2.9.0.post0",
+      "reliability-intelligence": "0.1.0",
+      "ruff": "0.16.7",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "setuptools": "84.0.0",
+      "six": "1.17.0",
+      "starlette": "1.6.0",
+      "threadpoolctl": "3.6.0",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.53.0",
+      "wheel": "0.48.0"
+    },
+    "container_platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.41\naarch64",
+    "container_python": "Python 3.14.0",
+    "docker": {
+      "Client": {
+        "ApiVersion": "1.56",
+        "Arch": "arm64",
+        "BuildTime": "Thu Sep  3 21:49:43 2026",
+        "Context": "desktop-linux",
+        "DefaultAPIVersion": "1.56",
+        "GitCommit": "88096ef",
+        "GoVersion": "go1.26.8",
+        "Os": "darwin",
+        "Version": "29.8.0"
+      },
+      "Server": {
+        "ApiVersion": "1.56",
+        "Arch": "arm64",
+        "BuildTime": "2026-09-03T21:49:37.000000000+00:00",
+        "Components": [
+          {
+            "Details": {
+              "ApiVersion": "1.56",
+              "Arch": "arm64",
+              "BuildTime": "Thu Sep  3 21:49:37 2026",
+              "Experimental": "false",
+              "GitCommit": "3ce5872",
+              "GoVersion": "go1.26.8",
+              "KernelVersion": "7.0.12-linuxkit",
+              "MinAPIVersion": "1.40",
+              "Module": "github.com/moby/moby/v2",
+              "ModuleVersion": "v2.0.0+unknown",
+              "Os": "linux"
+            },
+            "Name": "Engine",
+            "Version": "29.8.0"
+          },
+          {
+            "Details": {
+              "GitCommit": "db8809540e1a7a9da5d518876894933ff55692ab"
+            },
+            "Name": "containerd",
+            "Version": "v2.3.4"
+          },
+          {
+            "Details": {
+              "GitCommit": "v1.4.3-0-gbb14dabe"
+            },
+            "Name": "runc",
+            "Version": "1.4.3"
+          },
+          {
+            "Details": {
+              "GitCommit": "de40ad0"
+            },
+            "Name": "docker-init",
+            "Version": "0.19.0"
+          }
+        ],
+        "GitCommit": "3ce5872",
+        "GoVersion": "go1.26.8",
+        "KernelVersion": "7.0.12-linuxkit",
+        "MinAPIVersion": "1.40",
+        "Os": "linux",
+        "Platform": {
+          "Name": "Docker Desktop 4.91.0 (239619)"
+        },
+        "Version": "29.8.0"
+      }
+    },
+    "docker_desktop": "4.91.0 (239619)",
+    "host_architecture": "arm64",
+    "host_platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "host_python": "3.14.0",
+    "postgresql": "PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  }
+}
