@@ -24,7 +24,8 @@ renormalized. These thresholds are configurable when generating a **new** refere
 p-values, confidence limits or tuned holdout guarantees. Any severe feature/probability gives the
 aggregate severe status; inspect all details because correlated features are not independent tests.
 Nonfinite observations are invalid; empty or fewer-than-minimum samples are insufficient, with
-null PSI. No-data never means stable. A value beyond the finite reference boundary is rejected.
+null PSI. No-data never means stable. Finite values outside the reference range enter the explicit
+underflow or overflow bin and contribute to PSI; non-finite observations are classified invalid.
 
 ## Durable snapshots
 
@@ -42,8 +43,10 @@ cap at 100,000 records and fail rather than truncate. Snapshot retrieval is limi
 
 Each snapshot stores kind, interval, cutoff, computation time, model/reference identity, status,
 counts, thresholds and sealed detailed results. Its identity hashes kind/interval/cutoff/model/
-reference; retries return the original result. Use the **same explicit cutoff** for an idempotent
-retry; omitting it deliberately requests a fresh snapshot. GET never recomputes or writes.
+reference; retries return the original result. Cutoffs require an explicit timezone and are
+normalized to UTC without losing sub-minute precision, so equivalent instants have one identity.
+Use the **same cutoff instant** for an idempotent retry; omitting it deliberately requests a fresh
+snapshot. GET never recomputes or writes.
 Results include per-service volume, expected/missing minutes, completeness, latest-event freshness
 relative to cutoff, ingestion-lag min/median/max, feature PSI, probability PSI, prediction count and
 elevated-risk fraction. Rejected requests are explicitly unavailable in durable snapshots: their

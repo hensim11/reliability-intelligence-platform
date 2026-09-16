@@ -1,6 +1,6 @@
 """Batch D contracts, including real PostgreSQL transactions and immutable snapshots."""
 
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime, timedelta, timezone
 
 import numpy as np
 import pytest
@@ -192,9 +192,40 @@ def test_application_metrics(client):
     text = client.get("/metrics").text
     assert 'route="unmatched"' in text and "/unknown/1234" not in text
     assert 'route="/monitoring/{kind}"' in text
+    assert (
+        'rip_http_requests_total{method="POST",route="/predictions",status_class="4xx"} 1.0' in text
+    )
     assert 'rip_predictions_total{outcome="incomplete_history"} 1.0' in text
     assert 'rip_predictions_total{outcome="reused"} 1.0' in text
     assert "rip_ready 1.0" in text
+
+
+def test_unexpected_and_handled_http_failures_are_observed_once(client):
+    def unexpected():
+        raise RuntimeError("test-only unexpected failure")
+
+    def handled():
+        raise DomainError("test_failure", "test-only handled failure", 503)
+
+    client.app.add_api_route("/test/unexpected", unexpected, methods=["GET"])
+    client.app.add_api_route("/test/handled", handled, methods=["GET"])
+
+    with pytest.raises(RuntimeError, match="test-only unexpected failure"):
+        client.get("/test/unexpected")
+    assert client.get("/test/handled").status_code == 503
+
+    text = client.get("/metrics").text
+    assert (
+        'rip_http_requests_total{method="GET",route="/test/unexpected",status_class="5xx"} 1.0'
+        in text
+    )
+    assert 'rip_http_request_seconds_count{method="GET",route="/test/unexpected"} 1.0' in text
+    assert 'rip_rejected_requests_total{route="/test/unexpected"} 1.0' in text
+    assert (
+        'rip_http_requests_total{method="GET",route="/test/handled",status_class="5xx"} 1.0' in text
+    )
+    assert 'rip_http_request_seconds_count{method="GET",route="/test/handled"} 1.0' in text
+    assert 'rip_rejected_requests_total{route="/test/handled"} 1.0' in text
 
 
 def test_outcomes_transaction_and_immutability(db):
@@ -283,6 +314,51 @@ def test_durable_snapshot_idempotency_and_delayed(client):
     assert len(snapshot_history(repo.engine, "delayed")) == 2
     with pytest.raises(sa.exc.DBAPIError), repo.engine.begin() as connection:
         connection.execute(snapshots.delete())
+
+
+def test_snapshot_cutoff_is_canonical_utc_and_idempotent(client):
+    repo = client.app.state.repository
+    reference = seal(
+        {
+            "model_id": repo.artifact.metadata["id"],
+            "config": DriftConfig().model_dump(),
+            "distributions": {
+                name: distribution([1] * 100, 10) for name in (*FEATURE_NAMES, "probability")
+            },
+        }
+    )
+    with repo.engine.connect() as connection:
+        database_now = connection.scalar(sa.text("SELECT clock_timestamp()"))
+    cutoff = database_now.astimezone(UTC)
+    equivalent = cutoff.astimezone(timezone(timedelta(hours=1)))
+
+    first = create_snapshot(repo, "drift", T, T + timedelta(minutes=1), cutoff, reference)
+    second = create_snapshot(repo, "drift", T, T + timedelta(minutes=1), equivalent, reference)
+
+    assert first == second
+    assert first["cutoff"] == cutoff
+    assert first["results"]["identity"]["cutoff"] == cutoff.isoformat()
+    assert first["cutoff"].microsecond == database_now.microsecond
+    with repo.engine.connect() as connection:
+        assert connection.scalar(sa.select(sa.func.count()).select_from(snapshots)) == 1
+
+
+def test_snapshot_cutoff_validation(client):
+    repo = client.app.state.repository
+    end = T + timedelta(minutes=1)
+
+    with pytest.raises(ValueError, match="explicit timezone"):
+        create_snapshot(repo, "delayed", T, end, end.replace(tzinfo=None))
+    with pytest.raises(ValueError, match="Invalid bounded interval/cutoff"):
+        create_snapshot(repo, "delayed", T, end, end - timedelta(microseconds=1))
+
+    at_boundary = create_snapshot(repo, "delayed", T, end, end)
+    assert at_boundary["cutoff"] == end
+
+    with repo.engine.connect() as connection:
+        database_now = connection.scalar(sa.text("SELECT clock_timestamp()"))
+    with pytest.raises(ValueError, match="Cutoff cannot be in the future"):
+        create_snapshot(repo, "delayed", T, end, database_now + timedelta(seconds=1))
 
 
 @pytest.mark.parametrize("corrupt", [None, "hash", "heldout", "boundary"])

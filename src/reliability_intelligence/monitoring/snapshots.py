@@ -1,6 +1,6 @@
 """Bounded, cutoff-aware statistical snapshots with immutable idempotent persistence."""
 
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 
 import numpy as np
 import pandas as pd
@@ -27,11 +27,13 @@ def summary(values):
 
 def create_snapshot(repo, kind, start, end, cutoff, reference=None):
     start, end = utc_time(start), utc_time(end)
+    if not isinstance(cutoff, datetime) or cutoff.tzinfo is None or cutoff.utcoffset() is None:
+        raise ValueError("Cutoff must have an explicit timezone")
+    cutoff = cutoff.astimezone(UTC)
     if (
         kind not in ("drift", "delayed")
         or not start < end
         or end - start > timedelta(days=31)
-        or cutoff.tzinfo is None
         or cutoff < end
     ):
         raise ValueError("Invalid bounded interval/cutoff")

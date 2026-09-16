@@ -117,3 +117,15 @@ and sufficiently documented cadence. Its weak results do not validate real ten-m
 Authentication, TLS, production deployment, least-privilege roles, backup/restore, production SLOs,
 retention and operational hardening remain Batch E. The production `boosting_raw` model and
 threshold **0.5700000000000001** are unchanged. The PR must remain unmerged.
+
+## Post-review corrections
+
+Review follow-up canonicalizes every explicitly timezone-aware snapshot cutoff to UTC before
+validation, identity hashing, queries and persistence, while retaining sub-minute precision.
+Equivalent instants therefore resolve to one immutable snapshot. HTTP middleware now records one
+bounded `5xx` request, duration and rejection sample before re-raising an unexpected exception;
+handled responses remain counted once. The monitoring text also correctly states that finite
+out-of-range observations enter explicit underflow/overflow bins while non-finite values are
+invalid. Focused tests and the full real-PostgreSQL suite pass (**241 passed, 0 skipped**). Existing
+measured evidence was not regenerated because these corrections do not change its source inputs,
+protocol or reported results.

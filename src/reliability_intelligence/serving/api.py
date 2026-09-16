@@ -77,13 +77,20 @@ def create_app(settings: Settings | None = None):
     @app.middleware("http")
     async def observe(request, call_next):
         started = perf_counter()
-        response = await call_next(request)
-        route = route_label(request)
         method = (
             request.method
             if request.method in {"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
             else "OTHER"
         )
+        try:
+            response = await call_next(request)
+        except Exception:
+            route = route_label(request)
+            metrics.http.labels(method, route, "5xx").inc()
+            metrics.duration.labels(method, route).observe(perf_counter() - started)
+            metrics.rejections.labels(route).inc()
+            raise
+        route = route_label(request)
         metrics.http.labels(method, route, f"{response.status_code // 100}xx").inc()
         metrics.duration.labels(method, route).observe(perf_counter() - started)
         if response.status_code >= 400:
