@@ -1,7 +1,9 @@
 # Project state
 
-Updated: 2026-09-16. **Batch D locally accepted on committed implementation `92ebb54`.**
-Batch C merged on main at `450a7d6`; Batch D PR review/hosted CI remain separate workflow checks.
+Updated: 2026-09-16. **Batch D's original local acceptance and committed evidence are attributable
+to implementation `92ebb54`; the current reviewed implementation is `1248c9e`.** The review fixes
+were validated separately against PostgreSQL: **241 passed, 0 skipped**. Batch C merged on main at
+`450a7d6`; Batch D PR review remains open and separate from local acceptance.
 
 Target unchanged: use telemetry in `(t−15m,t]` to estimate incident starts in `(t,t+10m]`.
 Advisory investigation only; Batch E and production-performance claims remain out of scope.
@@ -74,7 +76,7 @@ choices were not revised after holdout inspection. No production operating recom
 4. [Decisions](DECISIONS.md), especially C01–C12.
 5. [Batch B completion/findings](docs/BATCH_B_COMPLETION.md).
 
-## Batch D delivered and measured
+## Batch D original acceptance evidence (`92ebb54`)
 
 - Branch `batch-d-monitoring-reliability-external-validation` from clean updated main `450a7d6`.
 - Training-only immutable monitoring reference: 34,260 rows, 49 features plus frozen probability;
@@ -97,6 +99,15 @@ choices were not revised after holdout inspection. No production operating recom
   covers all 28, detects 0/108. Differing denominators and undefined metrics are explicit.
 - Reference (2 files), study (5) and compact external export (9) regenerate byte-identically in
   the recorded environment. Operational clocks, UUIDs and latencies intentionally vary.
+
+## Batch D reviewed implementation (`1248c9e`)
+
+Review fixes canonicalize timezone-aware snapshot cutoffs to UTC before identity, queries and
+persistence; preserve sub-minute precision; and observe unexpected HTTP failures with bounded
+`5xx`, duration and rejection metrics before re-raising. Monitoring documentation now accurately
+describes finite underflow/overflow binning and non-finite invalid observations. This source-code
+follow-up passed the full disposable-PostgreSQL suite separately: **241 passed, 0 skipped**. It did
+not alter the immutable `92ebb54` evidence or its measured results.
 
 See [Batch D completion/gates](docs/BATCH_D_COMPLETION.md), [monitoring](docs/MONITORING.md),
 [external study](docs/EXTERNAL_VALIDATION.md) and [evidence index](evidence/batch_d/README.md).

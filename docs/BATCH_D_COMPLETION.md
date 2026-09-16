@@ -127,5 +127,7 @@ bounded `5xx` request, duration and rejection sample before re-raising an unexpe
 handled responses remain counted once. The monitoring text also correctly states that finite
 out-of-range observations enter explicit underflow/overflow bins while non-finite values are
 invalid. Focused tests and the full real-PostgreSQL suite pass (**241 passed, 0 skipped**). Existing
-measured evidence was not regenerated because these corrections do not change its source inputs,
-protocol or reported results.
+evidence remains immutable and attributable to `92ebb54`. The reviewed implementation `1248c9e`
+changes source code but does not change frozen artifacts, datasets, protocols, thresholds, SMD
+results or previously measured outputs. The follow-up was validated separately with **241 tests
+passing and zero skips**.
