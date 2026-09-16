@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-16",
+  "pytest": {
+    "tests": 205,
+    "batch_c": 72,
+    "existing": 133,
+    "postgresql_tests": 23,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reported_seconds": 14.89,
+    "warnings": 2
+  },
+  "ruff_check": "passed",
+  "ruff_format": {
+    "status": "passed",
+    "files": 59
+  },
+  "pip_check": "No broken requirements found",
+  "migrations": {
+    "revision": "c001",
+    "empty_database": "passed",
+    "repeat_upgrade": "passed",
+    "downgrade_reupgrade": "passed",
+    "metadata_drift": "none"
+  },
+  "batch_b_saved_evidence": {
+    "files": 26,
+    "byte_identical": true,
+    "retrained": false
+  },
+  "docker_compose": {
+    "status": "passed",
+    "gate": 14,
+    "tested_source_commit": "42f40614e922384eee64d4fbe1dfcccd321df17d",
+    "evidence": "compose_validation.json",
+    "report": "COMPOSE_VALIDATION.md",
+    "clean_volume": true,
+    "cleanup": "containers and disposable volume removed"
+  },
+  "hosted_ci": {
+    "status": "success",
+    "source_commit": "42f40614e922384eee64d4fbe1dfcccd321df17d",
+    "url": "https://github.com/hensim11/reliability-intelligence-platform/actions/runs/35012633105",
+    "scope": "Tested source; subsequent evidence commits require their own branch/PR checks."
+  },
+  "commands": [
+    "RIP_TEST_DATABASE_URL=<disposable local PostgreSQL> pytest -q",
+    "ruff check .",
+    "ruff format --check .",
+    "python -m pip check",
+    "reliability batch-b-evidence --experiment data/batch_b_experiment --output data/batch_c_batch_b_recheck"
+  ],
+  "native_reference_date": "2026-09-15",
+  "native_reference_reported_seconds": 14.23,
+  "acceptance": "Batch C locally accepted; all 25 gates passed"
+}

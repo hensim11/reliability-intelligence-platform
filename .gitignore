@@ -10,3 +10,8 @@ dist/
 .env
 data/*
 !data/README.md
+
+# Local serving output; durable Docker data uses a named volume.
+*.log
+.pgdata/
+postgres-data/

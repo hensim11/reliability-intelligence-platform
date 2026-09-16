@@ -70,3 +70,14 @@ rows; this batch does not implement a network-facing readiness/error response.
 
 Tests: `tests/test_features.py`, the grid/label tests inherited from Batch A, and the experiment
 integration audit. The saved `feature_schema.json` and model JSON sidecars enforce version/order.
+
+## Batch C parity implementation
+
+`serving.repository.online_features` verifies exact same-service `(t−15m,t]` membership,
+then calls **this unchanged `build_features` implementation** with coverage_start=t−15m.
+The database query applies both event boundaries and the server availability cutoff first.
+There is no separate online formula or extra predictor. HTTP/PostgreSQL evidence checks 121
+windows from all four services: every key/order/dtype/value and frozen-model probability
+matches offline output exactly (no numerical tolerance needed in the validated environment).
+Ingestion JSON uses standard Python float serialisation to retain round-trip float64 precision.
+See [the serving contract](SERVING.md) for arrival-time and retrospective-scoring limitations.

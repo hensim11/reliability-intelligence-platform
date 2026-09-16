@@ -1,26 +1,25 @@
 # Project state
 
-Updated: 2026-09-15. **Current milestone: Batch B complete locally; ready for review.**
-Batch A remains intact. Batch C has not started. Objective: use telemetry in `(t−15m,t]`
-to estimate whether a service incident starts in `(t,t+10m]`.
+Updated: 2026-09-16. **Batch C is locally accepted: native and clean-volume Docker Compose
+validation pass, including Gate 14.** Hosted CI and PR review are separate workflow checks.
 
-## Completed
+Target unchanged: use telemetry in `(t−15m,t]` to estimate incident starts in `(t,t+10m]`.
+Advisory investigation only; Batch D/E and production-performance claims remain out of scope.
 
-- Batch A: validated four-service telemetry, separate truth/nullable labels, exact configured
-  grid, deterministic simulation, immutable Parquet bundles and 71 original tests.
-- Batch B: 49 telemetry-only float64 features, exact causal per-service one-minute windows,
-  strict inference schema, key-aligned target eligibility and chronological boundary purges.
-- Separate seven-run, 846-event corpus: three development seeds, two held-out seeds, two
-  changed schedule/duration/severity regime seeds, four days each, 161280 telemetry rows.
-- Training/calibration/validation/temporal-test stages, fixed prevalence/logistic/boosting
-  candidates, measured sigmoid calibration and validation-frozen thresholds.
-- Immutable model/config/schema/version/hash artefacts and keyed prediction outputs.
-- Row metrics, reliability bins, incident detection/lead, episode precision/false-alert burden,
-  whole-run uncertainty and per-service diagnostics. No active/recovery truth suppression.
-- CLI corpus/training/evaluation and saved-evidence regeneration; five reviewed PNGs,
-  machine-readable tables/manifests and generated report under `evidence/batch_b/generated`.
-- 133 passing tests, including stage isolation and execution-order audit before holdout scoring.
-- Feature/evaluation protocols, decisions, completion checklist, README and roadmap updated.
+## Delivered
+
+- Batch A: deterministic four-service simulation, separate truth/labels, exact telemetry grid,
+  immutable Parquet bundles and reproducible evidence.
+- Batch B: unchanged 49 float64 telemetry-only features, purged chronological stages,
+  846-event seven-run corpus, frozen model/threshold, immutable model/evaluation evidence.
+- Batch C: FastAPI ingestion/prediction/history and live/ready routes; PostgreSQL telemetry,
+  model metadata and predictions; Alembic migrations; immutable records; atomic transactions
+  and idempotency; SQL latest/daily/coverage/probability analytics; typed configuration.
+- Shared Batch B feature/model implementation, trusted-local manifest/schema/runtime/config
+  validation, explicit event-time versus server availability cutoff. Historical scores are
+  retrospective; late data is never claimed to have been available at historical t.
+- Local Compose files, native PostgreSQL/Uvicorn integration and measured concurrency,
+  72 added tests and compact evidence. No model training or holdout tuning in Batch C.
 
 ## Frozen result and interpretation
 
@@ -40,53 +39,61 @@ Always-on baselines expose a weakness in an episode-only budget: their matched l
 hide excessive burden unless alert minutes and row precision are considered. The rule and
 choices were not revised after holdout inspection. No production operating recommendation.
 
-## Validation and reproducibility
+## Native reference validation (2026-09-15)
 
-- `pytest -q`: 133 passed, 12.07s; one macOS joblib core-discovery fallback warning.
-- `ruff check .` / `ruff format --check .`: pass; `python -m pip check`: no broken requirements.
-- Python 3.14.0, macOS arm64; exact runtime versions in requirements-lock.txt and evidence.
-- Full CLI generation/evaluation passed twice. All five models, keyed predictions, frozen
-  decisions and numerical evaluation outputs are byte-identical across runs.
-- Evidence-only CLI reproduced all 26 compact files byte-for-byte.
-- All five final figures were visually reviewed; calibration layout corrected and rechecked.
-- GitHub-hosted CI is configured but **unrun**; local success is not remote CI success.
+- Full pytest with real PostgreSQL: **205 passed**, 0 skipped, 14.23 s (133 existing + 72 new).
+- Ruff lint/format passed (58 files); pip check reports no broken requirements.
+- Empty database migrations, repeated upgrade, downgrade/re-upgrade and schema drift passed.
+- HTTP evidence: 184 telemetry rows, 121 persisted predictions; all 49 features and frozen
+  probabilities match offline exactly across 121 windows, maximum probability error 0.0.
+- Eight concurrent clients: new-prediction p50 84.00 ms / p95 116.58 ms; 32-request same-key
+  race gave one created prediction and 31 identical retries. No production latency SLO.
+- Saved Batch B evidence regenerated: all 26 files byte-identical, without training.
+- Python 3.14.0/macOS arm64, PostgreSQL 18.3; exact snapshot in requirements-lock.txt.
 
-## Gate and review entry points
+## Compose close-out (2026-09-16 UTC)
 
-**Batch B's requested local acceptance gate passes.** The complete 16-item checklist, exact
-commands, validation details, module list and limitations are in
-[docs/BATCH_B_COMPLETION.md](docs/BATCH_B_COMPLETION.md).
+- Tested clean source `42f40614e922384eee64d4fbe1dfcccd321df17d`; later evidence/docs commits
+  do not change the tested implementation.
+- Docker Desktop 4.91.0 / Engine 29.8.0 / Compose 5.5.1, Linux arm64 containers,
+  PostgreSQL 18.3 and Python 3.14.0. Clean build, empty-volume startup, c001 and health pass.
+- Ingested 16 rows, created/retrieved one prediction; SQL analytics pass. Database/API restart
+  preserves 16/1 rows; retry returns the same UUID, no duplicates; migration rerun stays c001.
+- **205 passed, zero skips**, 14.89 s; 23 real PostgreSQL tests. Ruff lint and format
+  (59 files), dependency integrity pass. Two unchanged upstream deprecation warnings.
+- Disposable containers and volume removed after checks.
+- [hosted CI for tested source](https://github.com/hensim11/reliability-intelligence-platform/actions/runs/35012633105) passed. The evidence commit requires its own CI; see branch checks/PR for the final result.
+- [Compose report](evidence/batch_c/COMPOSE_VALIDATION.md) records hashes, commands,
+  environment deviations and log review; the earlier native reference remains unchanged.
 
-- [Generated evidence/report](evidence/batch_b/generated/REPORT.md)
-- [Feature contract](docs/FEATURE_CONTRACT.md)
-- [Evaluation protocol](docs/EVALUATION_PROTOCOL.md)
-- [Decisions](DECISIONS.md)
-- [Batch A completion record](docs/BATCH_A_COMPLETION.md)
+## Review and next step
 
-Raw corpus: `data/batch_b/`; final experiment: `data/batch_b_experiment/` (both Git-ignored).
-Initial audit outputs and repeated evidence remain ignored under `data/batch_b_initial_*`
-and `data/batch_b_repeated_evidence`. No output was silently overwritten.
+1. [Batch C acceptance record](docs/BATCH_C_COMPLETION.md) — all 25 local gates passed.
+2. [Serving contract/runbook](docs/SERVING.md) — API, storage, clocks, migration and Compose steps.
+3. [HTTP/PostgreSQL evidence](evidence/batch_c/reference/REPORT.md).
+4. [Decisions](DECISIONS.md), especially C01–C12.
+5. [Batch B completion/findings](docs/BATCH_B_COMPLETION.md).
 
-## Commands
+Branch `batch-c-production-serving-persistence`, starting at accepted Batch B merge `fb7cfa8`.
+Implementation `05d987d`, native evidence `d986a83`, Compose runner `42f4061`;
+subsequent documentation/evidence commits are identifiable in git history.
+
+**Next workflow action:** verify CI for the final evidence commit and review the PR into main.
+The PR must remain unmerged. Batch D has not started; no external deployment was performed.
+Monitoring, external validation and deployment remain deferred. Any statistical revision needs
+fresh holdouts; existing Batch B holdouts cannot be reused for tuning.
+
+Generated datasets/models remain ignored under `data/`. Compact Batch C evidence is under
+`evidence/batch_c/reference`; repeat Batch B evidence is ignored under `data/batch_c_batch_b_recheck`.
+
+## Validation commands
 
 ```bash
 source .venv/bin/activate
-reliability batch-b --config configs/batch_b.json --corpus data/batch_b --output data/batch_b_next --evidence data/batch_b_next_evidence
+export RIP_TEST_DATABASE_URL='postgresql+psycopg://USER@127.0.0.1:55432/rip_test'
+# Tests reset this database's public schema. Use a disposable database only.
 pytest -q
 ruff check .
 ruff format --check .
 python -m pip check
 ```
-
-Use unused output/evidence paths. Existing corpus bundles are reused only after strict
-configuration/hash/semantic validation. See README for fresh setup and evidence-only commands.
-
-## Git and next step
-
-Branch `batch-b-ml-evaluation`, based on completed Batch A `f04274f`. Two coherent local
-Batch B commits cover implementation/tests and evidence/documentation. No remote, PR, push,
-merge or deployment was performed. See `git log -2 --oneline` for commit identifiers.
-
-Review Batch B findings before planning Batch C. A revised statistical operating rule needs
-fresh holdouts and a hard alert-burden constraint; existing holdouts cannot be reused for tuning.
-API, PostgreSQL, Docker, external validation, deployment and monitoring remain deferred.

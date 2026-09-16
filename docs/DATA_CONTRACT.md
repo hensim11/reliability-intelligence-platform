@@ -102,3 +102,11 @@ Same configuration and seed under the recorded code/dependency environment repro
 values. No runtime clock or random UUID enters generated data. Binary hashes are reproducible
 locally, but not guaranteed across platforms or writer versions. Preserve the original raw
 bundle; regeneration into a new directory allows comparison without destructive replacement.
+
+## Batch C operational store
+
+The generated-bundle contract above remains frozen. Online ingestion additionally records
+server-assigned `ingested_at`, treats timestamp as event time, accepts incomplete streams but
+rejects incomplete prediction windows, and never ingests truth/labels. Historical scoring uses
+data available at its recorded scoring cutoff, not a reconstructed claim of availability at t.
+See [serving semantics and SQL/API schema](SERVING.md). No late data is silently backdated.

@@ -4,11 +4,12 @@ A production-style software/ML engineering project for estimating whether a serv
 **enter an incident within the next 10 minutes**, using its most recent **15 minutes of
 available telemetry**.
 
-**Current status: Batch B — ML and evaluation implemented and locally verified.** The
-package generates validated synthetic telemetry, builds causal features, trains fixed model
-candidates and evaluates frozen choices on temporal and seed/schedule holdouts. The changed
-schedule regime exposes substantial performance loss; synthetic feasibility is not real-world
-forecasting validity. API, PostgreSQL and deployment remain deferred.
+**Current status: Batch C serving and PostgreSQL persistence locally accepted. Native and
+clean-volume Docker Compose validation passed, including all 205 tests with zero skips.**
+The package generates validated synthetic telemetry, builds causal features, evaluates frozen
+models and serves durable advisory predictions. The changed schedule regime exposes substantial
+performance loss; synthetic feasibility is not real-world forecasting validity. See the
+[Batch C acceptance record](docs/BATCH_C_COMPLETION.md) for the completed local gates and remaining limitations.
 
 ## Why this exists
 
@@ -19,19 +20,27 @@ risk, durable predictions and monitoring; see [the project vision](PROJECT_VISIO
 
 ## Current architecture
 
-```text
-JSON configuration + seed
-          │
-          ▼
-  normal signals + current fault effects
-          ├── operational telemetry ────────────── telemetry.parquet
-          └── realised incident lifecycle ──────── incidents.parquet
-                         │
-telemetry keys + future incident starts
-                         └── offline targets ──── labels.parquet
-
-Parquet bundle + resolved config + integrity manifest
-          └── verified evidence generation → saved PNG / CSV / JSON / Markdown
+```mermaid
+flowchart TD
+  Config[Simulation config + seed] --> Sim[Deterministic telemetry simulator]
+  Sim --> Telemetry[Operational telemetry Parquet]
+  Sim --> Truth[Incident lifecycle truth]
+  Truth --> Labels[Offline future-start labels]
+  Telemetry --> Features[Shared Batch B 49-feature builder]
+  Labels --> Evaluation[Purged training / evaluation]
+  Features --> Evaluation
+  Evaluation --> Frozen[Frozen model + schema / config / hashes]
+  Ingest[POST /telemetry] --> Validate[Operational validation]
+  Validate --> PG[(PostgreSQL immutable telemetry)]
+  Predict[POST /predictions: service + t] --> Window[Exact causal window + availability cutoff]
+  PG --> Window
+  Window --> Features
+  Features --> Inference[Frozen advisory inference]
+  Frozen --> Inference
+  Inference --> Saved[(PostgreSQL models + predictions)]
+  Saved --> Query[GET /predictions + SQL analytics]
+  Migrate[Alembic migrations] --> PG
+  Migrate --> Saved
 ```
 
 Inference-time fields are strictly separate from incident metadata and future labels.
@@ -53,7 +62,7 @@ python -m pip install --no-deps --no-build-isolation -e '.[dev]'
 `requirements-lock.txt` is the exact validated dependency/build-tool snapshot. The package also
 has bounded dependency ranges in `pyproject.toml`; upgrading that snapshot requires revalidation
 and regenerated evidence. The lock is version-pinned, not a wheel/hash lock for every platform.
-No secrets or `.env` file are required.
+Offline workflows require no secrets. Local serving uses environment configuration; keep `.env` ignored.
 
 ## Generate telemetry
 
@@ -110,9 +119,33 @@ exceed the validation budget, so the selected threshold is an experimental refer
 production operating recommendation. Always-on baselines expose an episode-budget weakness;
 alert burden must accompany detection/episode precision.
 
+## Batch C: local API and PostgreSQL
+
+Start with [the serving runbook](docs/SERVING.md): migrations, database/API contracts,
+event-time versus ingestion-time semantics, frozen artefact configuration and Docker Compose
+commands. The API reuses the original Batch B feature builder and model, with no retraining.
+
+- `GET /health/live`, `GET /health/ready`
+- `POST /telemetry` (atomic batches; identical retries are no-ops, conflicts fail)
+- `POST /predictions` (201 new / 200 saved retry; advisory decision and trace metadata)
+- `GET /predictions` (service/time filters; `limit=1` for latest)
+
+[Committed local evidence](evidence/batch_c/reference/REPORT.md): 184 telemetry samples,
+121 stored predictions with **exact parity across all 49 float64 features and probabilities**,
+and an eight-client concurrency exercise. New predictions had local p50 **84.00 ms** and p95
+**116.58 ms**. These loopback measurements establish neither a production SLO nor model validity.
+Historical event-time requests use data available at the recorded scoring cutoff; they do not
+claim that late-arriving inputs were known at historical t.
+
+[Docker Compose acceptance](evidence/batch_c/COMPOSE_VALIDATION.md) passed: clean build,
+empty-volume migration, ready API, smoke/SQL checks, restart durability and idempotency.
+Native PostgreSQL 18.3 + Uvicorn evidence is preserved. Batch D/E remain deferred.
+
 ## Tests and quality
 
 ```bash
+# Set RIP_TEST_DATABASE_URL to a disposable PostgreSQL database for the complete suite.
+# PostgreSQL tests reset its public schema; without it those tests explicitly skip.
 pytest -q
 ruff check .
 ruff format --check .
@@ -122,9 +155,10 @@ python -m pip check
 Tests cover exact target boundaries, right censoring, exact service-specific telemetry-grid
 history, configuration, deterministic schedules and signals, lifecycle continuity, scenario
 counterfactuals, schema/leakage guards, Parquet integrity, and an end-to-end CLI/evidence run.
-GitHub Actions runs these checks on Linux/Python 3.14, then
-regenerates the default dataset/evidence and uploads evidence. Remote CI has not run in this
-local workspace; local results are recorded in [PROJECT_STATE.md](PROJECT_STATE.md).
+GitHub Actions provisions PostgreSQL and runs these checks on Linux/Python 3.14, then
+regenerates the default dataset/evidence and uploads evidence. Hosted CI for tested source `42f4061` passed;
+final branch/PR checks track subsequent evidence commits. Local results are recorded in
+[PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## Repository structure
 
@@ -143,16 +177,20 @@ src/reliability_intelligence/
   evaluation.py                 row, episode, event and uncertainty scoring
   experiment.py                 corpus, partitions and immutable experiment output
   ml_evidence.py                saved ML plots, tables and report
+  serving/                      API, contracts, artefact validation, SQL repositories/analytics
   cli.py, __main__.py            executable interface
-tests/                         unit and integration tests
+migrations/, alembic.ini        frozen database revisions and migration entry point
+Dockerfile, compose.yaml        local PostgreSQL / migration / API stack
+scripts/batch_c_evidence.py     real HTTP + database parity and concurrency exercise
+tests/                         unit and genuine PostgreSQL integration tests
 data/                          ignored generated raw bundles; usage README
-evidence/batch_a/, batch_b/    saved reference evidence and validation records
+evidence/batch_a/, batch_b/, batch_c/  saved reference evidence and validation records
 docs/                          data contract, mechanisms, completion report
 .github/workflows/ci.yml        tests/quality/evidence CI
 ```
 
-There are no empty API/monitoring packages. Later capabilities can be added alongside
-these cohesive modules without relocating the simulator.
+Serving is implemented alongside the unchanged simulator and frozen ML layer. Monitoring and
+external deployment remain future batches.
 
 ## Roadmap and limits
 
@@ -165,4 +203,4 @@ faults within a service. Sixteen synthetic events are a review fixture, not an a
 selection corpus. Onset is a controlled fault-pressure boundary, not a universal production SLO.
 
 Review [decisions](DECISIONS.md), [current state](PROJECT_STATE.md) and the
-[Batch A completion report](docs/BATCH_A_COMPLETION.md) before planning the next batch. Batch C has not started.
+[Batch A completion report](docs/BATCH_A_COMPLETION.md) alongside the [Batch C completion record](docs/BATCH_C_COMPLETION.md). All local Batch C gates pass; PR review is separate and no merge is authorised.
