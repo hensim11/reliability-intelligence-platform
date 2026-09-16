@@ -9,8 +9,9 @@ inference. There is no training in this lifecycle. PostgreSQL history is passed 
 `features.build_features`; no formulas were copied and no Batch A/B equations changed.
 
 The API is an unauthenticated **loopback-only local service**. Compose binds host ports to
-127.0.0.1. Authentication, retention/recovery operations, distributed scaling, external
-validation and monitoring are later work. No production deployment/performance claim.
+127.0.0.1. Authentication, retention/recovery operations and distributed scaling remain later work.
+Batch D adds monitoring and a separate external study; see the current d001 extension below.
+No production deployment/performance claim.
 
 ## Time and availability: two clocks, explicitly retrospective
 
@@ -267,3 +268,22 @@ HTTP evidence uses the actual saved Batch B boosting reference.
 Dependency compatibility references: [FastAPI release notes](https://fastapi.tiangolo.com/release-notes/),
 [psycopg support](https://www.psycopg.org/). See `requirements-lock.txt` for the validated snapshot;
 no unrelated pre-existing dependencies were upgraded.
+
+## Batch D extension (current schema d001)
+
+Batch C is merged at `450a7d6`; historical Batch C evidence above remains unchanged. The current
+application requires `d001`, which adds immutable monitoring snapshots and separately stored incident
+starts/completeness certificates. Run `alembic upgrade head` before restarting the new application.
+A c001 application and d001 database intentionally fail readiness rather than silently accepting
+schema drift. Roll back application/schema together; downgrade drops only Batch D tables and is
+destructive to their contents. Use it only in the documented disposable validation exercises.
+
+New read-only routes: `/metrics`, `/monitoring/drift`, `/monitoring/delayed`. Snapshot routes accept
+start/end/limit and never compute or write. See [MONITORING.md](MONITORING.md) for CLI imports,
+certification, monitoring-reference validation and metrics reset behaviour. Outcome tables cannot
+influence inference. Authentication, TLS, backup/restore and production SLOs remain Batch E.
+
+The current acceptance runner is `scripts/validate_batch_d.py`; it uses ports 55435/58001, a new
+Compose project and separate smoke/test/exercise databases. The historical Batch C runner remains
+an archived c001-specific path; Batch D's runner incorporates those serving/regression checks and
+adds the failure exercises. The HTTP parity script can still run against an empty current database.

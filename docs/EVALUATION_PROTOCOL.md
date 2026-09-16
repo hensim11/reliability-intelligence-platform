@@ -158,3 +158,12 @@ the figures in compact evidence; large row predictions and joblib files stay Git
 trusted-local joblib artefact. Joblib is executable Python data: do not load untrusted files.
 Sidecars/hashes detect corruption, not authenticity. Cross-platform binary identity is not promised.
 No API, model registry, database, Docker, remote publishing or Batch C functionality is included.
+
+## Batch D extensions
+
+The Batch B selection, thresholds and heldouts remain frozen. Operational delayed evaluation is
+specified in [MONITORING.md](MONITORING.md): full matured horizons, separately certified complete
+outcomes available by evaluation cutoff, null for undefined metrics and the unchanged threshold.
+The independent SMD study in [EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md) uses ordinal steps and
+anonymous features. It is neither the production task nor direct model transfer; its results are
+not comparable to Batch B scores as measurements of the same task.

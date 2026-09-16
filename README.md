@@ -4,8 +4,9 @@ A production-style software/ML engineering project for estimating whether a serv
 **enter an incident within the next 10 minutes**, using its most recent **15 minutes of
 available telemetry**.
 
-**Current status: Batch C serving and PostgreSQL persistence locally accepted. Native and
-clean-volume Docker Compose validation passed, including all 205 tests with zero skips.**
+**Current status: Batch D monitoring, reliability and external study locally accepted.**
+Clean-volume Compose validation passed: 238 tests, zero skips; see
+[Batch D acceptance](docs/BATCH_D_COMPLETION.md). Batch C is merged on main.
 The package generates validated synthetic telemetry, builds causal features, evaluates frozen
 models and serves durable advisory predictions. The changed schedule regime exposes substantial
 performance loss; synthetic feasibility is not real-world forecasting validity. See the
@@ -139,7 +140,25 @@ claim that late-arriving inputs were known at historical t.
 
 [Docker Compose acceptance](evidence/batch_c/COMPOSE_VALIDATION.md) passed: clean build,
 empty-volume migration, ready API, smoke/SQL checks, restart durability and idempotency.
-Native PostgreSQL 18.3 + Uvicorn evidence is preserved. Batch D/E remain deferred.
+Native PostgreSQL 18.3 + Uvicorn evidence is preserved. Batch D extends monitoring; Batch E remains deferred.
+
+## Batch D: monitoring, reliability and external study
+
+[Monitoring contract](docs/MONITORING.md): training-only versioned PSI reference, bounded immutable
+PostgreSQL snapshots, process-local Prometheus `/metrics`, certified outcome imports and delayed
+future-start evaluation. New GET routes `/monitoring/drift` and `/monitoring/delayed` only read.
+Alembic `d001` follows `c001`; outcome tables are separate from inference telemetry.
+
+[Local evidence](evidence/batch_d/README.md): 34,260 training reference rows; all 50 distributions
+stable in a reference-like interval and severe under a deterministic shift; real database outage,
+controlled model failure, recovery and restart durability. Full frozen parity remains exact.
+
+[External SMD study](docs/EXTERNAL_VALIDATION.md): all 28 machines, pinned/hash-verified source,
+ordinal sample windows, leakage-safe chronological splits and fixed prevalence/logistic baselines.
+Results are weak: logistic detects 1/85 scorable final-region starts on 22 available machines,
+with 424 false episodes; six training regions have no positive starts. This is neither direct
+model transfer nor evidence of real ten-minute incident warning. Production model and threshold
+remain unchanged. [Acceptance and reproduction](docs/BATCH_D_COMPLETION.md).
 
 ## Tests and quality
 
@@ -189,8 +208,7 @@ docs/                          data contract, mechanisms, completion report
 .github/workflows/ci.yml        tests/quality/evidence CI
 ```
 
-Serving is implemented alongside the unchanged simulator and frozen ML layer. Monitoring and
-external deployment remain future batches.
+Serving and monitoring extend the unchanged simulator and frozen ML layer. Deployment remains Batch E.
 
 ## Roadmap and limits
 
@@ -203,4 +221,4 @@ faults within a service. Sixteen synthetic events are a review fixture, not an a
 selection corpus. Onset is a controlled fault-pressure boundary, not a universal production SLO.
 
 Review [decisions](DECISIONS.md), [current state](PROJECT_STATE.md) and the
-[Batch A completion report](docs/BATCH_A_COMPLETION.md) alongside the [Batch C completion record](docs/BATCH_C_COMPLETION.md). All local Batch C gates pass; PR review is separate and no merge is authorised.
+[Batch A completion report](docs/BATCH_A_COMPLETION.md) alongside the [Batch C completion record](docs/BATCH_C_COMPLETION.md). Batch C is merged; Batch D local gates pass. The Batch D PR is for review and must remain unmerged.

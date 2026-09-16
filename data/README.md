@@ -13,3 +13,10 @@ Batch C loads the ignored `data/batch_b_experiment` artefacts read-only. Generat
 requests and repeat evidence belong under `data/` and remain ignored. PostgreSQL data belongs
 in the Compose named volume (or an isolated native cluster), never in version control.
 The committed compact Batch C report is under `evidence/batch_c/reference`.
+
+## Batch D
+
+`data/external/` contains the ignored official pinned SMD checkout. Never commit raw external data.
+`batch_d_*` local directories contain immutable references/study runs, disposable diagnostics and
+parity evidence. Compact reviewed output is under `evidence/batch_d/`. See docs/MONITORING.md and
+docs/EXTERNAL_VALIDATION.md for new-output reproduction commands. Production models remain frozen.

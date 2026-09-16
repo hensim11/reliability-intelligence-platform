@@ -1,0 +1,1693 @@
+{
+  "started_at_utc": "2026-09-16T12:15:34.278260+00:00",
+  "finished_at_utc": "2026-09-16T12:18:28.044010+00:00",
+  "status": "passed",
+  "tested_source_commit": "92ebb54d8a71a326dca52bbf22133c8dfd623808",
+  "branch": "batch-d-monitoring-reliability-external-validation",
+  "initial_worktree": "M DECISIONS.md\n M docs/DATA_CONTRACT.md\n M docs/EVALUATION_PROTOCOL.md\n M docs/FEATURE_CONTRACT.md\n M docs/SERVING.md\n?? docs/EXTERNAL_VALIDATION.md\n?? docs/MONITORING.md\n?? evidence/batch_d/",
+  "versions": {
+    "docker": {
+      "Client": {
+        "Version": "29.8.0",
+        "ApiVersion": "1.56",
+        "DefaultAPIVersion": "1.56",
+        "GitCommit": "88096ef",
+        "GoVersion": "go1.26.8",
+        "Os": "darwin",
+        "Arch": "arm64",
+        "BuildTime": "Thu Sep  3 21:49:43 2026",
+        "Context": "desktop-linux"
+      },
+      "Server": {
+        "Platform": {
+          "Name": "Docker Desktop 4.91.0 (239619)"
+        },
+        "Version": "29.8.0",
+        "ApiVersion": "1.56",
+        "MinAPIVersion": "1.40",
+        "Os": "linux",
+        "Arch": "arm64",
+        "Components": [
+          {
+            "Name": "Engine",
+            "Version": "29.8.0",
+            "Details": {
+              "ApiVersion": "1.56",
+              "Arch": "arm64",
+              "BuildTime": "Thu Sep  3 21:49:37 2026",
+              "Experimental": "false",
+              "GitCommit": "3ce5872",
+              "GoVersion": "go1.26.8",
+              "KernelVersion": "7.0.12-linuxkit",
+              "MinAPIVersion": "1.40",
+              "Module": "github.com/moby/moby/v2",
+              "ModuleVersion": "v2.0.0+unknown",
+              "Os": "linux"
+            }
+          },
+          {
+            "Name": "containerd",
+            "Version": "v2.3.4",
+            "Details": {
+              "GitCommit": "db8809540e1a7a9da5d518876894933ff55692ab"
+            }
+          },
+          {
+            "Name": "runc",
+            "Version": "1.4.3",
+            "Details": {
+              "GitCommit": "v1.4.3-0-gbb14dabe"
+            }
+          },
+          {
+            "Name": "docker-init",
+            "Version": "0.19.0",
+            "Details": {
+              "GitCommit": "de40ad0"
+            }
+          }
+        ],
+        "GitCommit": "3ce5872",
+        "GoVersion": "go1.26.8",
+        "KernelVersion": "7.0.12-linuxkit",
+        "BuildTime": "2026-09-03T21:49:37.000000000+00:00"
+      }
+    },
+    "compose": "5.5.1",
+    "host_platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "host_architecture": "arm64",
+    "host_python": "3.14.0",
+    "postgresql": "PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "container_python": "Python 3.14.0",
+    "container_platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.41\naarch64",
+    "container_dependencies": {
+      "pip": "25.2",
+      "reliability-intelligence": "0.1.0",
+      "contourpy": "1.4.0",
+      "pytest": "9.1.1",
+      "packaging": "26.3",
+      "setuptools": "84.0.0",
+      "cycler": "0.12.1",
+      "fastapi": "0.141.1",
+      "joblib": "1.6.0",
+      "narwhals": "2.26.0",
+      "MarkupSafe": "3.0.3",
+      "six": "1.17.0",
+      "anyio": "4.15.1",
+      "uvicorn": "0.53.0",
+      "pluggy": "1.6.0",
+      "SQLAlchemy": "2.0.53",
+      "h11": "0.16.0",
+      "threadpoolctl": "3.6.0",
+      "cloudpickle": "3.1.2",
+      "starlette": "1.6.0",
+      "wheel": "0.48.0",
+      "alembic": "1.20.0",
+      "pyarrow": "25.0.1",
+      "fonttools": "4.65.0",
+      "typing-inspection": "0.4.4",
+      "Pygments": "2.21.0",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "idna": "3.19",
+      "annotated-doc": "0.0.5",
+      "kiwisolver": "1.5.1",
+      "click": "8.5.0",
+      "numpy": "2.5.3",
+      "Mako": "1.4.1",
+      "annotated-types": "0.8.0",
+      "matplotlib": "3.11.2",
+      "prometheus_client": "0.26.0",
+      "typing_extensions": "4.16.0",
+      "pydantic": "2.13.5",
+      "pandas": "3.0.5",
+      "iniconfig": "2.3.0",
+      "pillow": "12.3.0",
+      "greenlet": "3.5.6",
+      "httpx": "0.28.1",
+      "psycopg": "3.3.5",
+      "psycopg-binary": "3.3.5",
+      "pyparsing": "3.3.2",
+      "ruff": "0.16.7",
+      "httpcore": "1.0.9",
+      "pydantic_core": "2.46.5",
+      "certifi": "2026.7.22",
+      "python-dateutil": "2.9.0.post0"
+    }
+  },
+  "image_ids": "[{\"ID\":\"sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db\",\"ContainerName\":\"rip-batchd-validation-20260916c-db-1\",\"Repository\":\"postgres\",\"Tag\":\"18.3\",\"Platform\":\"linux/arm64/v8\",\"Size\":664977219,\"Created\":\"2026-05-08T19:34:14.32241568Z\",\"LastTagTime\":\"2026-09-15T23:35:33.903259052Z\"},{\"ID\":\"sha256:32908d8e8bb0ccfd437cd898839010f6845d29d0d3c529579510d00158c869e2\",\"ContainerName\":\"rip-batchd-validation-20260916c-migrate-1\",\"Repository\":\"rip-batchd-validation-20260916c-migrate\",\"Tag\":\"latest\",\"Platform\":\"linux/arm64\",\"Size\":1197165236,\"Created\":\"2026-09-16T12:17:10.850487053Z\",\"LastTagTime\":\"2026-09-16T12:17:23.504811211Z\"},{\"ID\":\"sha256:e2fb0da730e3c34d96f85dbd2ada0b1ff8f89c94641195f7b579571dd494ab8a\",\"ContainerName\":\"rip-batchd-validation-20260916c-api-1\",\"Repository\":\"rip-batchd-validation-20260916c-api\",\"Tag\":\"latest\",\"Platform\":\"linux/arm64\",\"Size\":1197165232,\"Created\":\"2026-09-16T12:17:10.850487053Z\",\"LastTagTime\":\"2026-09-16T12:17:23.504350503Z\"}]",
+  "commands": [
+    {
+      "label": "source_commit",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "branch",
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "initial_worktree",
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "docker_version",
+      "command": [
+        "docker",
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "compose_version",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "version",
+        "--short"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "existing_volume_names",
+      "command": [
+        "docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "existing_project_containers",
+      "command": [
+        "docker",
+        "ps",
+        "-aq",
+        "--filter",
+        "label=com.docker.compose.project=rip-batchd-validation-20260916c"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "compose_config",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "clean_build",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "build",
+        "--pull",
+        "--no-cache"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "clean_startup",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "180"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "initial_container_status",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "ps",
+        "--all",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "initial_revision",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version_num FROM alembic_version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "initial_telemetry_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "initial_prediction_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "postgresql_version",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version()"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "container_python",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "container_platform",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import platform; print(platform.platform()); print(platform.machine())"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "container_dependencies",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import importlib.metadata as m, json; print(json.dumps({d.metadata['Name']: d.version for d in m.distributions()}))"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "image_ids",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "images",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "smoke_telemetry_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "smoke_prediction_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "latest_risk",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT row_to_json(r) FROM latest_risk r"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "daily_risk",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT row_to_json(r) FROM daily_risk r"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "operational_analytics",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-c",
+        "import json, os\nfrom datetime import datetime, timedelta\nfrom reliability_intelligence.serving.database import make_engine\nfrom reliability_intelligence.serving.analytics import coverage, risk_summary\nengine=make_engine(os.environ['RIP_DATABASE_URL'])\nstart=datetime.fromisoformat('2026-01-05T00:00:00+00:00')\nwith engine.connect() as connection:\n    print(json.dumps({'coverage':coverage(connection,start,start+timedelta(minutes=16)),\n        'risk':risk_summary(connection,start,start+timedelta(minutes=16))},default=str))\n"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "restart_database",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "restart",
+        "db"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "database_after_restart",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "120",
+        "db"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "restart_api",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "restart",
+        "api"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "restart_telemetry_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "restart_prediction_count",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "duplicate_predictions",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM (SELECT service_id,timestamp,model_id FROM predictions GROUP BY 1,2,3 HAVING count(*)>1) r"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "migration_rerun",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "run",
+        "--rm",
+        "migrate"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "final_revision",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT version_num FROM alembic_version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "smoke_service_logs",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "logs",
+        "--no-color",
+        "db",
+        "migrate",
+        "api"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "create_disposable_test_database",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "createdb",
+        "-U",
+        "reliability",
+        "reliability_test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "full_pytest",
+      "command": [
+        ".venv/bin/pytest",
+        "-q",
+        "--junitxml=data/batch_d_compose_c/tests.xml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "ruff_check",
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "ruff_format",
+      "command": [
+        ".venv/bin/ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "pip_check",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "smoke_survives_tests",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-X",
+        "-U",
+        "reliability",
+        "-d",
+        "reliability",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "final_container_status",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "ps",
+        "--all",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "service_logs",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "logs",
+        "--no-color",
+        "db",
+        "migrate",
+        "api"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "create_exercise_database",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "createdb",
+        "-U",
+        "reliability",
+        "batch_d_exercises"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "explicit_c001_upgrade",
+      "command": [
+        ".venv/bin/alembic",
+        "upgrade",
+        "c001"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "explicit_d001_upgrade",
+      "command": [
+        ".venv/bin/alembic",
+        "upgrade",
+        "head"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "explicit_d001_downgrade",
+      "command": [
+        ".venv/bin/alembic",
+        "downgrade",
+        "c001"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "explicit_d001_reupgrade",
+      "command": [
+        ".venv/bin/alembic",
+        "upgrade",
+        "head"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "injected_database_outage",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "stop",
+        "db"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "recover_database",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "start",
+        "db"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "batch_d_restart_api",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "restart",
+        "api"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "durable_telemetry",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "reliability",
+        "-d",
+        "batch_d_exercises",
+        "-At",
+        "-c",
+        "SELECT count(*) FROM telemetry"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "durable_predictions",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "reliability",
+        "-d",
+        "batch_d_exercises",
+        "-At",
+        "-c",
+        "SELECT count(*) FROM predictions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "durable_incident_starts",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "reliability",
+        "-d",
+        "batch_d_exercises",
+        "-At",
+        "-c",
+        "SELECT count(*) FROM incident_starts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "durable_outcome_coverage",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "reliability",
+        "-d",
+        "batch_d_exercises",
+        "-At",
+        "-c",
+        "SELECT count(*) FROM outcome_coverage"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "durable_monitoring_snapshots",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "reliability",
+        "-d",
+        "batch_d_exercises",
+        "-At",
+        "-c",
+        "SELECT count(*) FROM monitoring_snapshots"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "cleanup",
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml",
+        "--project-name",
+        "rip-batchd-validation-20260916c",
+        "--env-file",
+        ".env",
+        "down",
+        "--volumes"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "cleanup_containers",
+      "command": [
+        "docker",
+        "ps",
+        "-aq",
+        "--filter",
+        "label=com.docker.compose.project=rip-batchd-validation-20260916c"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "cleanup_volumes",
+      "command": [
+        "docker",
+        "volume",
+        "ls",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "initial_status": [
+    {
+      "Command": "\"uvicorn reliability\u2026\"",
+      "CreatedAt": "2026-09-16 13:17:28 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "a6b9f36e8721",
+      "Image": "rip-batchd-validation-20260916c-api",
+      "Labels": "com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,com.docker.compose.depends_on=migrate:service_completed_successfully:false,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,desktop.docker.io/ports/8000/tcp=127.0.0.1:58001,com.docker.compose.config-hash=45d344c44ee4b2752775c5f734a819be4dc7c46d5ef789cc5d5d785cc385b05d,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,desktop.docker.io/binds/0/Source=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_b_experiment,desktop.docker.io/binds/0/SourceKind=hostFile,com.docker.compose.image=sha256:7b053d4cd8cb91eadaa98bf7db4b765ecee1f8a91852905393be75421b8d83d1,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.service=api,desktop.docker.io/binds/0/Target=/model,com.docker.compose.container-number=1,com.docker.compose.project=rip-batchd-validation-20260916c",
+      "LocalVolumes": "0",
+      "Mounts": "/host_mnt/User\u2026",
+      "Name": "rip-batchd-validation-20260916c-api-1",
+      "Names": "rip-batchd-validation-20260916c-api-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "127.0.0.1:58001->8000/tcp",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [
+        {
+          "URL": "127.0.0.1",
+          "TargetPort": 8000,
+          "PublishedPort": 58001,
+          "Protocol": "tcp"
+        }
+      ],
+      "RunningFor": "9 seconds ago",
+      "Service": "api",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 5 seconds (healthy)"
+    },
+    {
+      "Command": "\"docker-entrypoint.s\u2026\"",
+      "CreatedAt": "2026-09-16 13:17:27 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "6db3ac0113c4",
+      "Image": "postgres:18.3",
+      "Labels": "com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.service=db,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/5432/tcp=127.0.0.1:55435,com.docker.compose.config-hash=c091b5eb7333861ca99ef8876e2e340badfa59cf96fce5d729065f0e39fed076,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:0c24d31b13a9801233f136bc80e908bda9577ab7e9c622e572eebc13c186ed4d,com.docker.compose.project=rip-batchd-validation-20260916c,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform",
+      "LocalVolumes": "1",
+      "Mounts": "rip-batchd-val\u2026",
+      "Name": "rip-batchd-validation-20260916c-db-1",
+      "Names": "rip-batchd-validation-20260916c-db-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "127.0.0.1:55435->5432/tcp",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [
+        {
+          "URL": "127.0.0.1",
+          "TargetPort": 5432,
+          "PublishedPort": 55435,
+          "Protocol": "tcp"
+        }
+      ],
+      "RunningFor": "10 seconds ago",
+      "Service": "db",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 9 seconds (healthy)"
+    },
+    {
+      "Command": "\"alembic upgrade head\"",
+      "CreatedAt": "2026-09-16 13:17:28 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "",
+      "ID": "2a3a36e7f4a8",
+      "Image": "rip-batchd-validation-20260916c-migrate",
+      "Labels": "com.docker.compose.oneoff=False,com.docker.compose.service=migrate,com.docker.compose.container-number=1,com.docker.compose.depends_on=db:service_healthy:false,com.docker.compose.project=rip-batchd-validation-20260916c,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=f45fec2166bdca07d25ab74b114bb77aef0f25fe6fb5a541aa92327fe3cefc5e,com.docker.compose.image=sha256:48c7c85406aca57c55344065d30f20d25c968c6d97c8562853cc55d1672430ca",
+      "LocalVolumes": "0",
+      "Mounts": "",
+      "Name": "rip-batchd-validation-20260916c-migrate-1",
+      "Names": "rip-batchd-validation-20260916c-migrate-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [],
+      "RunningFor": "9 seconds ago",
+      "Service": "migrate",
+      "Size": "0B",
+      "State": "exited",
+      "Status": "Exited (0) 6 seconds ago"
+    }
+  ],
+  "final_status": [
+    {
+      "Command": "\"uvicorn reliability\u2026\"",
+      "CreatedAt": "2026-09-16 13:17:28 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "a6b9f36e8721",
+      "Image": "rip-batchd-validation-20260916c-api",
+      "Labels": "com.docker.compose.project=rip-batchd-validation-20260916c,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,desktop.docker.io/binds/0/SourceKind=hostFile,com.docker.compose.image=sha256:7b053d4cd8cb91eadaa98bf7db4b765ecee1f8a91852905393be75421b8d83d1,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,desktop.docker.io/binds/0/Source=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_b_experiment,desktop.docker.io/binds/0/Target=/model,com.docker.compose.depends_on=migrate:service_completed_successfully:false,com.docker.compose.container-number=1,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.service=api,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8000/tcp=127.0.0.1:58001,com.docker.compose.config-hash=45d344c44ee4b2752775c5f734a819be4dc7c46d5ef789cc5d5d785cc385b05d,com.docker.compose.oneoff=False",
+      "LocalVolumes": "0",
+      "Mounts": "/host_mnt/User\u2026",
+      "Name": "rip-batchd-validation-20260916c-api-1",
+      "Names": "rip-batchd-validation-20260916c-api-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "127.0.0.1:58001->8000/tcp",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [
+        {
+          "URL": "127.0.0.1",
+          "TargetPort": 8000,
+          "PublishedPort": 58001,
+          "Protocol": "tcp"
+        }
+      ],
+      "RunningFor": "35 seconds ago",
+      "Service": "api",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 21 seconds (healthy)"
+    },
+    {
+      "Command": "\"docker-entrypoint.s\u2026\"",
+      "CreatedAt": "2026-09-16 13:17:27 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "healthy",
+      "ID": "6db3ac0113c4",
+      "Image": "postgres:18.3",
+      "Labels": "com.docker.compose.image=sha256:0c24d31b13a9801233f136bc80e908bda9577ab7e9c622e572eebc13c186ed4d,com.docker.compose.oneoff=False,com.docker.compose.project=rip-batchd-validation-20260916c,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,desktop.docker.io/ports/5432/tcp=127.0.0.1:55435,com.docker.compose.config-hash=c091b5eb7333861ca99ef8876e2e340badfa59cf96fce5d729065f0e39fed076,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.service=db,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,com.docker.compose.container-number=1,com.docker.compose.depends_on=",
+      "LocalVolumes": "1",
+      "Mounts": "rip-batchd-val\u2026",
+      "Name": "rip-batchd-validation-20260916c-db-1",
+      "Names": "rip-batchd-validation-20260916c-db-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "127.0.0.1:55435->5432/tcp",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [
+        {
+          "URL": "127.0.0.1",
+          "TargetPort": 5432,
+          "PublishedPort": 55435,
+          "Protocol": "tcp"
+        }
+      ],
+      "RunningFor": "36 seconds ago",
+      "Service": "db",
+      "Size": "0B",
+      "State": "running",
+      "Status": "Up 24 seconds (healthy)"
+    },
+    {
+      "Command": "\"alembic upgrade head\"",
+      "CreatedAt": "2026-09-16 13:17:28 +0100 BST",
+      "Engine": "",
+      "ExitCode": 0,
+      "Health": "",
+      "ID": "2a3a36e7f4a8",
+      "Image": "rip-batchd-validation-20260916c-migrate",
+      "Labels": "com.docker.compose.depends_on=db:service_healthy:false,com.docker.compose.image=sha256:48c7c85406aca57c55344065d30f20d25c968c6d97c8562853cc55d1672430ca,com.docker.compose.project=rip-batchd-validation-20260916c,com.docker.compose.project.config_files=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/compose.yaml,/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/data/batch_d_compose_c/ports.yaml,com.docker.compose.project.environment_file=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.env,com.docker.compose.project.working_dir=/Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform,com.docker.compose.version=5.5.1,desktop.docker.io/ports.scheme=v2,com.docker.compose.config-hash=f45fec2166bdca07d25ab74b114bb77aef0f25fe6fb5a541aa92327fe3cefc5e,com.docker.compose.container-number=1,com.docker.compose.oneoff=False,com.docker.compose.service=migrate",
+      "LocalVolumes": "0",
+      "Mounts": "",
+      "Name": "rip-batchd-validation-20260916c-migrate-1",
+      "Names": "rip-batchd-validation-20260916c-migrate-1",
+      "Networks": "rip-batchd-validation-20260916c_default",
+      "Ports": "",
+      "Project": "rip-batchd-validation-20260916c",
+      "Publishers": [],
+      "RunningFor": "35 seconds ago",
+      "Service": "migrate",
+      "Size": "0B",
+      "State": "exited",
+      "Status": "Exited (0) 32 seconds ago"
+    }
+  ],
+  "migration": {
+    "initial": "d001",
+    "rerun": "d001"
+  },
+  "liveness": {
+    "status": 200,
+    "body": {
+      "status": "alive"
+    }
+  },
+  "readiness": {
+    "status": 200,
+    "body": {
+      "status": "ready",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8"
+    }
+  },
+  "ingestion": {
+    "status": 200,
+    "body": {
+      "inserted": 16,
+      "unchanged": 0
+    }
+  },
+  "prediction": {
+    "status": 201,
+    "body": {
+      "id": "b84a70b6-b6b5-4c72-9d84-b7c5f9d08a7c",
+      "service_id": "api-gateway",
+      "timestamp": "2026-01-05T00:15:00Z",
+      "produced_at": "2026-09-16T12:17:38.376830Z",
+      "available_as_of": "2026-09-16T12:17:38.362630Z",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "model_name": "boosting_raw",
+      "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+      "feature_version": "1.0",
+      "threshold": 0.5700000000000001,
+      "probability": 0.00036702774501820524,
+      "decision": "not-elevated-risk",
+      "window_start": "2026-01-05T00:00:00Z",
+      "window_end": "2026-01-05T00:15:00Z"
+    }
+  },
+  "history": {
+    "status": 200,
+    "body": [
+      {
+        "id": "b84a70b6-b6b5-4c72-9d84-b7c5f9d08a7c",
+        "service_id": "api-gateway",
+        "timestamp": "2026-01-05T00:15:00Z",
+        "produced_at": "2026-09-16T12:17:38.376830Z",
+        "available_as_of": "2026-09-16T12:17:38.362630Z",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "model_name": "boosting_raw",
+        "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+        "feature_version": "1.0",
+        "threshold": 0.5700000000000001,
+        "probability": 0.00036702774501820524,
+        "decision": "not-elevated-risk",
+        "window_start": "2026-01-05T00:00:00Z",
+        "window_end": "2026-01-05T00:15:00Z"
+      }
+    ]
+  },
+  "restart": {
+    "readiness": {
+      "status": 200,
+      "body": {
+        "status": "ready",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8"
+      }
+    },
+    "persisted_telemetry": 16,
+    "persisted_predictions": 1,
+    "retry": {
+      "status": 200,
+      "body": {
+        "id": "b84a70b6-b6b5-4c72-9d84-b7c5f9d08a7c",
+        "service_id": "api-gateway",
+        "timestamp": "2026-01-05T00:15:00Z",
+        "produced_at": "2026-09-16T12:17:38.376830Z",
+        "available_as_of": "2026-09-16T12:17:38.362630Z",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "model_name": "boosting_raw",
+        "model_sha256": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+        "feature_version": "1.0",
+        "threshold": 0.5700000000000001,
+        "probability": 0.00036702774501820524,
+        "decision": "not-elevated-risk",
+        "window_start": "2026-01-05T00:00:00Z",
+        "window_end": "2026-01-05T00:15:00Z"
+      }
+    },
+    "duplicate_keys": 0
+  },
+  "sql": {
+    "latest_risk": {
+      "id": "b84a70b6-b6b5-4c72-9d84-b7c5f9d08a7c",
+      "service_id": "api-gateway",
+      "timestamp": "2026-01-05T00:15:00+00:00",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "available_as_of": "2026-09-16T12:17:38.36263+00:00",
+      "produced_at": "2026-09-16T12:17:38.37683+00:00",
+      "probability": 0.00036702774501820524,
+      "model_name": "boosting_raw",
+      "threshold": 0.5700000000000001,
+      "elevated": false
+    },
+    "daily_risk": {
+      "service_id": "api-gateway",
+      "day": "2026-01-05",
+      "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+      "predictions": 1,
+      "elevated_predictions": 0,
+      "mean_probability": 0.00036702774501820524,
+      "min_probability": 0.00036702774501820524,
+      "max_probability": 0.00036702774501820524,
+      "median_probability": 0.00036702774501820524
+    },
+    "coverage": [
+      {
+        "service_id": "api-gateway",
+        "expected_minutes": 16,
+        "observed_minutes": 16,
+        "missing_minutes": 0
+      },
+      {
+        "service_id": "auth-service",
+        "expected_minutes": 16,
+        "observed_minutes": 0,
+        "missing_minutes": 16
+      },
+      {
+        "service_id": "catalog-service",
+        "expected_minutes": 16,
+        "observed_minutes": 0,
+        "missing_minutes": 16
+      },
+      {
+        "service_id": "search-service",
+        "expected_minutes": 16,
+        "observed_minutes": 0,
+        "missing_minutes": 16
+      }
+    ],
+    "risk": [
+      {
+        "service_id": "api-gateway",
+        "model_id": "2d3f3c7c1e0f72d4c19970e0ad11766c2005644228d8c8f51395edacfd8498c8",
+        "predictions": 1,
+        "mean_probability": 0.00036702774501820524,
+        "min_probability": 0.00036702774501820524,
+        "max_probability": 0.00036702774501820524,
+        "median_probability": 0.00036702774501820524
+      }
+    ]
+  },
+  "validation": {
+    "pytest": "........................................................................ [ 30%]\n........................................................................ [ 60%]\n........................................................................ [ 90%]\n......................                                                   [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.14/site-packages/fastapi/testclient.py:1\n  /Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n.venv/lib/python3.14/site-packages/starlette/testclient.py:53\n  /Users/hensimorina/Desktop/Personal Projects/reliability-intelligence-platform/.venv/lib/python3.14/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n238 passed, 2 warnings in 15.83s",
+    "test_count": 238,
+    "skips": 0,
+    "ruff_check": "passed",
+    "ruff_format": "76 files already formatted",
+    "pip_check": "No broken requirements found."
+  },
+  "smoke_log_error_lines": [
+    "db-1   | 2026-09-16 12:17:39.379 UTC [96] FATAL:  terminating connection due to administrator command"
+  ],
+  "regression_log_error_line_count": 17,
+  "cleanup": {
+    "containers_removed": true,
+    "volume_removed": true
+  },
+  "source_sha256": {
+    "Dockerfile": "9c0411faa14bfc21607a2da6b6cc4d2573031fe21f79c4cf27cb62bcc93935bb",
+    "compose.yaml": "2d3b0fffdac7e95f70134301791f0fab57a1dbf05c51d6c8aa9a5f33444dad25",
+    "requirements-lock.txt": "654f2bb7846535ad2ee0e06e2f44cfc97ae53135752a0ed48d2e774c9e375da2",
+    "scripts/validate_batch_d.py": "dfb8ea9f553a590167ca66ce0f104b05441df12735a85f106c71b0e7ab5a2c45",
+    "src/reliability_intelligence/__init__.py": "4a8100bb24ca6011cd4ff2d9e890a9ff75372d13350d7dd83b566bb25bde0732",
+    "src/reliability_intelligence/__main__.py": "b06c576384313f08be8ad28864a0a28bd18bfde3477dd1bd195586877861959e",
+    "src/reliability_intelligence/cli.py": "9a13115eaec43dcab405dd48bc00f4e3072d514e985c92c6e2037fc175efa20b",
+    "src/reliability_intelligence/config.py": "0e7db6262f846f25dd7970f0aebbf9299903b0ab9e198d49885b92e64ddefcdc",
+    "src/reliability_intelligence/evaluation.py": "0d81ff920e5d2769f8178b215991e9fbe2a782428886fbee607f3cc0079d0b96",
+    "src/reliability_intelligence/evidence.py": "9734a4bd5a1c359efefee36d1f2929d58051032976c13e6c3d053140ac90e9b9",
+    "src/reliability_intelligence/experiment.py": "7587daee5be2f2c7066bd4f2c2dce5bc0fd872ba6aff2946c346cf6026d4b259",
+    "src/reliability_intelligence/external.py": "2bdfddc336468492ac09868f5ddc6d84df8f6107d2afb49be39ea58edb1b7511",
+    "src/reliability_intelligence/features.py": "ee7996170a20645b5f35d35c84c6e491fe57a0575d17c058fb456b216d2ed83f",
+    "src/reliability_intelligence/labels.py": "77cd72af66b4a2ccc54531f95eed5ad96816a666009b592bd3f6b3e4112b2c5f",
+    "src/reliability_intelligence/ml_evidence.py": "1bf79b3dd503b69aaf78344f86da2a5d1ba44b852207bc5142cdb61a810fa8ce",
+    "src/reliability_intelligence/models.py": "3f93670f3225830c3511d9c826ecee1eef8b1c0f94833de209c4ec3722728269",
+    "src/reliability_intelligence/monitoring/__init__.py": "1f6a018ce94658e459117f264bd5382f6a43f7450e7ec2bee7302fd50a6f93e3",
+    "src/reliability_intelligence/monitoring/cli.py": "44172453b0d4658d2b2356931ec2126a647ccaa5b07f6ebb6ca9ed6cc326e866",
+    "src/reliability_intelligence/monitoring/outcomes.py": "f76d09ae83fb6fbd8678e5e75b485ef92a865562679715f5e225681511e8e901",
+    "src/reliability_intelligence/monitoring/reference.py": "85fd8fa498d26804046009e3d83d62e4ea30add47650f87579295fdc45804229",
+    "src/reliability_intelligence/monitoring/schema.py": "ea22b1810865fb031b545a0461d89951485f37904f4b8795c9610157a454d20d",
+    "src/reliability_intelligence/monitoring/snapshots.py": "987b002f75a20abbf957a504994fb7a8aa9bf6048ecc508da9e859f75f12c288",
+    "src/reliability_intelligence/schemas.py": "20509f333e69c4b3b9c366ca8ee6aa7208ab19917b69819edd0df1123a248e37",
+    "src/reliability_intelligence/serving/__init__.py": "d49ee35b01fb4833bacf3d2bdb0a96c6139673bb0c40666495a7ab1ccb3dc72f",
+    "src/reliability_intelligence/serving/analytics.py": "7870c826543e7ae3d77fac91b034cc3ea390156834672c3381e1a00e1ec630ba",
+    "src/reliability_intelligence/serving/api.py": "f98954a09617abbde2db0881c5d7deb207ffb4c3e11cf938d58d34c3a57da529",
+    "src/reliability_intelligence/serving/artifact.py": "f5a78b68617320bd4969defcf27d1e2ebfa359ae53a5df95723c25b5f7472580",
+    "src/reliability_intelligence/serving/contracts.py": "010994546450744820bb0588b7a49e62fa27a52d727a8baf6e6065d001e0b486",
+    "src/reliability_intelligence/serving/database.py": "3ce81c49828e062b26aba7588a26159f3e58e07abf93685ddc95dfa1c94d0384",
+    "src/reliability_intelligence/serving/metrics.py": "d300aa3c355314130115a8f6a55873d315f8c416c36695a30423f0738d93e205",
+    "src/reliability_intelligence/serving/repository.py": "d63c6ce83ffb685aa455ed533ebddec94290649f6d4e5f2d15c41eb4d93304e2",
+    "src/reliability_intelligence/simulation/__init__.py": "58a88bd9ff9cae6390a0bc71dffb2fcae13cbea5716d963a305ed87e542992fe",
+    "src/reliability_intelligence/simulation/engine.py": "0cf9330a9739b4d8e339933e4494f2ccb6de8b230920ffbce2cdc5a279078c7d",
+    "src/reliability_intelligence/simulation/incidents.py": "6ecec49deade76b5b2bef62b35d17a6d63efc684182d323c71582109304a6e77",
+    "src/reliability_intelligence/storage.py": "70b53ae394a759b263e5f8dfc0f1a2a4419398eced30fd633168dc4887ce5b4b",
+    "src/reliability_intelligence/telemetry_grid.py": "c8107005f41351e3c627a7729e9398d4f2fe41a1e7f45b4ccba4418887d7611b",
+    "tests/conftest.py": "42b60e863bd31df07e0f5b4285b98253255430f8872142aa59c3da22b83b2c01",
+    "tests/test_config.py": "8f0701fc15aaa198903da46ece678aa31c399596be8435d1ed0f221b8c5850fd",
+    "tests/test_evaluation.py": "6ed8b5ddaff6e3078d4dd638b94a76580f62eceffde1ae2ddb0616509879fccf",
+    "tests/test_experiment.py": "d45bc2b8310471292eb9333aab92bde56461c96111aac2afa42873e0e179a420",
+    "tests/test_features.py": "e9978b996698d439f188cf8777fb7a54913bbd68b2bf5bb694099b94e360a425",
+    "tests/test_integration.py": "abf0eca5c3627211ca874df1dd5fbbc6fa6fa0cad967de111eb5e7833588535c",
+    "tests/test_labels.py": "f82e011f83a602df4de887406bf7da7722fc29682b99d6c6657709b5c8f404fa",
+    "tests/test_models.py": "17e732c92383a0aa7b4ce3fac46fbf735bbf766eb3e538f6c2e207fd4e906690",
+    "tests/test_monitoring.py": "c588a46c4095c1370430064c5ccd77d102e784ba08ff37b92b8ebcc3be3f8e08",
+    "tests/test_serving.py": "a6ff74df5cbe16a89967f402851bc35656de72741b2a4341f372781434657f38",
+    "tests/test_simulation.py": "9571fedb16dc7af6e69b799885c06ba6b78b94763473b4c85611629771af36d0",
+    "configs/batch_a.json": "5a897f3b76d384188bd3cbb9e4c0b324bd364b237583467618a30ffc7c7f213e",
+    "configs/batch_b.json": "aa92566313bc3dbb0e9aa65dd694eb53fa1bec885c322629710cb4e8a67bd7e0",
+    "configs/batch_d_external.json": "e6a40e4303931c12a1d5f4708949043cb848987c01190f56fd25680b72f9ee10",
+    "scripts/batch_d_exercises.py": "2bf40102eb4808ee59bb31e88567858b4ffe373afdfa1d7cccf323cd6b16c0ab",
+    "migrations/env.py": "3540c74b6ab0c7a60562c7fd5b2b6a5f9ff04d80a7d3b8a432f4cdc890f7c0bc",
+    "migrations/versions/c001_initial.py": "3c6766e2ae690a5dbd8ca9a54c44375c7c3af89d5df4e1a47da26685fdc835d5",
+    "migrations/versions/d001_monitoring.py": "a0979d6fc80c5922b2ac84b92f8232c93d3bbbb059af180ea99a15845095de12"
+  },
+  "artifact_sha256": {
+    "boosting_raw.joblib": "14dba3dcab87892e37e1a00cc6623f9d708be9f874552fcde8f35c51287350ef",
+    "boosting_raw.json": "1a2a654c2ad3819aadcb2563ac754ef09bc9782ffdbd2eb74bacf699b46b147d",
+    "selection.json": "100501bdc9ed74a24f0ea7fbec761e9d3e9b03ab83f79d9378a0422417a5f350",
+    "feature_schema.json": "93d4e4ff402f7c483f44d06f29901669fd8cbe5091172b224b512c9335b7fb53",
+    "environment.json": "e4a78a77b0c62e6c1d064d4b5521e28f0602d4190927933e2c288b2bf8b2e402",
+    "config.json": "2dee5b8d73faed6f83f803db308d40781979ec24fb6b7b4ee7a2e27177e792a9"
+  },
+  "telemetry_sha256": "c1520d3bdc674dcb9d4a70893a2765440f60b67c4bdf115d264cac3f83a2abe1",
+  "limitations": [
+    "Local loopback validation; no production SLO/security/deployment claim.",
+    "Historical predictions use retrospective availability cutoff.",
+    "Hosted CI and PR review are separate checks."
+  ]
+}

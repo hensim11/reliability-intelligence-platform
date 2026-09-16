@@ -110,3 +110,10 @@ server-assigned `ingested_at`, treats timestamp as event time, accepts incomplet
 rejects incomplete prediction windows, and never ingests truth/labels. Historical scoring uses
 data available at its recorded scoring cutoff, not a reconstructed claim of availability at t.
 See [serving semantics and SQL/API schema](SERVING.md). No late data is silently backdated.
+
+## Batch D outcome boundary
+
+Confirmed starts and completeness certificates are imported by a trusted local/admin workflow into
+separate immutable PostgreSQL tables. They are never telemetry fields or inference inputs. Missing
+outcomes remain unknown until full-horizon completeness is certified. Recording times come from the
+database, never clients. See [MONITORING.md](MONITORING.md) for exact interval and availability rules.

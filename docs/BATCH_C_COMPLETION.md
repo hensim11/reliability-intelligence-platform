@@ -1,5 +1,8 @@
 # Batch C implementation and acceptance record
 
+Historical record: Batch C was subsequently merged in PR #2 at `450a7d6`.
+Current Batch D acceptance is documented in [BATCH_D_COMPLETION.md](BATCH_D_COMPLETION.md).
+
 Updated 2026-09-16 UTC, branch `batch-c-production-serving-persistence`, based on accepted Batch B merge
 `fb7cfa8`. **Batch C is locally accepted: all 25 gates pass, including clean-volume Docker
 Compose startup/smoke (Gate 14).** Hosted CI and PR review are separate workflow checks.

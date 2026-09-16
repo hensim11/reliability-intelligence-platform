@@ -1,0 +1,24 @@
+{
+  "reference": {
+    "manifest.json": true,
+    "reference.json": true
+  },
+  "smd_study": {
+    "environment.json": true,
+    "manifest.json": true,
+    "protocol.json": true,
+    "results.json": true,
+    "source.json": true
+  },
+  "smd_export": {
+    "REPORT.md": true,
+    "environment.json": true,
+    "external_results.png": true,
+    "manifest.json": true,
+    "per_machine.csv": true,
+    "pooled.csv": true,
+    "protocol.json": true,
+    "results.json": true,
+    "source.json": true
+  }
+}
